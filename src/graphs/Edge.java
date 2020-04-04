@@ -4,27 +4,27 @@ import java.util.Objects;
 
 public class Edge {
 
-    private Vertice vertice1;
-    private Vertice vertice2;
+    private Vertex vertex1;
+    private Vertex vertex2;
 
-    protected Edge(Vertice u, Vertice v) {
+    protected Edge(Vertex u, Vertex v) {
 
         // Only the Graph class can use this constructor. The graph class assures provided vertices are not null.
-        vertice1 = u;
-        vertice2 = v;
+        vertex1 = u;
+        vertex2 = v;
     }
 
-    public Vertice vert1() {
-        return vertice1;
+    public Vertex vert1() {
+        return vertex1;
     }
 
-    public Vertice vert2() {
-        return vertice2;
+    public Vertex vert2() {
+        return vertex2;
     }
 
     @Override
     public String toString() {
-        return "{" + vertice1.toString() + ", " + vertice2.toString() + "}";
+        return "{" + vertex1.toString() + ", " + vertex2.toString() + "}";
     }
 
     @Override
@@ -32,12 +32,12 @@ public class Edge {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Edge edge = (Edge) o;
-        return Objects.equals(vertice1, edge.vertice1) &&
-                Objects.equals(vertice2, edge.vertice2);
+        return Objects.equals(vertex1, edge.vertex1) &&
+                Objects.equals(vertex2, edge.vertex2);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(vertice1, vertice2);
+        return Objects.hash(vertex1, vertex2);
     }
 }

@@ -2,19 +2,19 @@ package graphs;
 
 import java.util.Objects;
 
-public class Vertice {
+public class Vertex {
 
     private int id;
     private float xPos;
     private float yPos;
 
-    protected Vertice(int id) {
+    protected Vertex(int id) {
         this.id = id;
         xPos = 0f;
         yPos = 0f;
     }
 
-    protected Vertice(int id, float x, float y) {
+    protected Vertex(int id, float x, float y) {
         this.id = id;
         xPos = x;
         yPos = y;
@@ -41,8 +41,8 @@ public class Vertice {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Vertice vertice = (Vertice) o;
-        return id == vertice.id;
+        Vertex vertex = (Vertex) o;
+        return id == vertex.id;
     }
 
     @Override
