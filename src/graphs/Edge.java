@@ -7,12 +7,9 @@ public class Edge {
     private Vertice vertice1;
     private Vertice vertice2;
 
-    Edge(Vertice u, Vertice v) throws NullVerticeException {
+    protected Edge(Vertice u, Vertice v) {
 
-        if (u == null || v == null) {
-            throw new NullVerticeException();
-        }
-
+        // Only the Graph class can use this constructor. The graph class assures provided vertices are not null.
         vertice1 = u;
         vertice2 = v;
     }
@@ -37,12 +34,5 @@ public class Edge {
     @Override
     public int hashCode() {
         return Objects.hash(vertice1, vertice2);
-    }
-
-    public static class NullVerticeException extends RuntimeException {
-        @Override
-        public String toString() {
-            return "Tried to assign null to one or more of Edge's vertices.";
-        }
     }
 }
