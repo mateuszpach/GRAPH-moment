@@ -14,12 +14,17 @@ public class Edge {
         vertice2 = v;
     }
 
-    public Vertice getVertice1() {
+    public Vertice vert1() {
         return vertice1;
     }
 
-    public Vertice getVertice2() {
+    public Vertice vert2() {
         return vertice2;
+    }
+
+    @Override
+    public String toString() {
+        return "{" + vertice1.toString() + ", " + vertice2.toString() + "}";
     }
 
     @Override

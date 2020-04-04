@@ -4,36 +4,37 @@ import java.util.Objects;
 
 public class Vertice {
 
-    private static int numberOfVerticesOnScene = 0;
-
-    public static int getNumberOfVerticesOnScene() {
-        return numberOfVerticesOnScene;
-    }
-
     private int id;
     private float xPos;
     private float yPos;
 
-    Vertice() {
-        numberOfVerticesOnScene++;
-        id = numberOfVerticesOnScene;
+    protected Vertice(int id) {
+        this.id = id;
         xPos = 0f;
         yPos = 0f;
     }
 
-    Vertice(float x, float y) {
-        numberOfVerticesOnScene++;
-        id = numberOfVerticesOnScene;
+    protected Vertice(int id, float x, float y) {
+        this.id = id;
         xPos = x;
         yPos = y;
     }
 
-    public float getXPos() {
+    public int id() {
+        return id;
+    }
+
+    public float xPos() {
         return xPos;
     }
 
-    public float getYPos() {
+    public float yPos() {
         return yPos;
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(id);
     }
 
     @Override
