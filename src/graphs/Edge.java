@@ -8,7 +8,6 @@ public class Edge {
     private Vertex vertex2;
 
     protected Edge(Vertex u, Vertex v) {
-
         // Only the Graph class can use this constructor. The graph class assures provided vertices are not null.
         vertex1 = u;
         vertex2 = v;
