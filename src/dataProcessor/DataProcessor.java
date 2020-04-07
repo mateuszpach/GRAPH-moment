@@ -5,7 +5,7 @@ import graphs.Graph;
 public class DataProcessor {       //TODO: when implemented differentiate between directed and undirected,weighted and unweighted edges
                                     //TODO implement writing output out of given graph
     public enum Type{
-        adjacencyMatrix, edgeList,incidenceMatrix;  //TODO: implement adjacencyList
+        ADJACENCY_MATRIX, EDGE_LIST, INCIDENCE_MATRIX;  //TODO: implement adjacencyList
     }
 
     private Graph inputGraph;
@@ -13,7 +13,7 @@ public class DataProcessor {       //TODO: when implemented differentiate betwee
 
     //textInput is in form of regular representation of graph such as in algorithm tasks
 
-    public Graph processInput(String textInput,Type tempType) throws IncorrectInputFormatException {    //TODO: is this what we want from this method, just to give Graph out of text and Type?
+    public Graph makeGraphFromInput(String textInput, Type tempType) throws IncorrectInputFormatException {    //TODO: is this what we want from this method, just to give Graph out of text and Type?
 
         if(textInput==null||tempType==null)
             throw new IncorrectInputFormatException(tempType,textInput);
@@ -21,13 +21,13 @@ public class DataProcessor {       //TODO: when implemented differentiate betwee
         inputType=tempType;
         inputGraph=new Graph();
         switch (inputType){
-            case edgeList:
+            case EDGE_LIST:
                 readEdgeList(textInput);
                 break;
-            case adjacencyMatrix:
+            case ADJACENCY_MATRIX:
                 readAdjacencyMatrix(textInput);
                 break;
-            case incidenceMatrix:
+            case INCIDENCE_MATRIX:
                 readIncidenceMatrix(textInput);
                 break;
         }
