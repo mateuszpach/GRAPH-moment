@@ -1,4 +1,4 @@
-package graphs;
+package com.github.mtdrewski.GRAPH_moment.main.model.graphs;
 
 import java.util.Vector;
 
@@ -29,7 +29,7 @@ public class Graph {
     public void addEdge(int vertexId1, int vertexId2) throws LoopEdgeException, NonExistingVertexException {
 
         if (vertexId1 < 1 || vertexId1 > size() ||
-            vertexId2 < 1 || vertexId2 > size()   ) {
+                vertexId2 < 1 || vertexId2 > size()) {
 
             throw new NonExistingVertexException(vertexId1, vertexId2, size());
         }
@@ -63,7 +63,7 @@ public class Graph {
 
     @Override
     public String toString() {
-        return vertices.toString() + ", " +edges.toString();
+        return vertices.toString() + ", " + edges.toString();
     }
 
     public static class LoopEdgeException extends RuntimeException { //TODO maybe create other file for this?

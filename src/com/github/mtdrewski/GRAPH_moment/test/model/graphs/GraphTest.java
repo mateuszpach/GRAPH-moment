@@ -1,6 +1,6 @@
-package tests;
+package com.github.mtdrewski.GRAPH_moment.test.model.graphs;
 
-import graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.main.model.graphs.Graph;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -49,11 +49,9 @@ public class GraphTest {
 
         try {
             graph.addEdge(0, 1);
-        }
-        catch (Graph.NonExistingVertexException e) {
+        } catch (Graph.NonExistingVertexException e) {
             flag = true;
-        }
-        finally {
+        } finally {
             assertTrue(flag);
             flag = false;
         }
@@ -65,44 +63,36 @@ public class GraphTest {
 
         try {
             graph.addEdge(1, 1);
-        }
-        catch (Graph.LoopEdgeException e) {
+        } catch (Graph.LoopEdgeException e) {
             flag = true;
-        }
-        finally {
+        } finally {
             assertTrue(flag);
             flag = false;
         }
 
         try {
             graph.addEdge(1, -1);
-        }
-        catch (Graph.NonExistingVertexException e) {
+        } catch (Graph.NonExistingVertexException e) {
             flag = true;
-        }
-        finally {
+        } finally {
             assertTrue(flag);
             flag = false;
         }
 
         try {
             graph.addEdge(2, 5);
-        }
-        catch (Graph.NonExistingVertexException e) {
+        } catch (Graph.NonExistingVertexException e) {
             flag = true;
-        }
-        finally {
+        } finally {
             assertTrue(flag);
             flag = false;
         }
 
         try {
             graph.addEdge(1, 4);
-        }
-        catch (Graph.NonExistingVertexException e) {
+        } catch (Graph.NonExistingVertexException e) {
             flag = true;
-        }
-        finally {
+        } finally {
             assertFalse(flag);
             flag = false;
         }

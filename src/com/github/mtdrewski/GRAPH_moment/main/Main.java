@@ -1,4 +1,4 @@
-package sample;
+package com.github.mtdrewski.GRAPH_moment.main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("view/sample.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
