@@ -1,6 +1,5 @@
-package com.github.mtdrewski.GRAPH_moment.test.model.graphs;
+package com.github.mtdrewski.GRAPH_moment.model.graphs;
 
-import com.github.mtdrewski.GRAPH_moment.main.model.graphs.Graph;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

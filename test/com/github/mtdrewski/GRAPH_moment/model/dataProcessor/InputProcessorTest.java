@@ -1,6 +1,5 @@
-package com.github.mtdrewski.GRAPH_moment.test.model.dataProcessor;
+package com.github.mtdrewski.GRAPH_moment.model.dataProcessor;
 
-import com.github.mtdrewski.GRAPH_moment.main.model.dataProcessor.DataProcessor;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
