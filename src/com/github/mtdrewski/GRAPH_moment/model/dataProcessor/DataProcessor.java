@@ -1,6 +1,6 @@
-package com.github.mtdrewski.GRAPH_moment.main.model.dataProcessor;
+package com.github.mtdrewski.GRAPH_moment.model.dataProcessor;
 
-import com.github.mtdrewski.GRAPH_moment.main.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 
 public class DataProcessor {       //TODO: when implemented differentiate between directed and undirected,weighted and unweighted edges
     //TODO implement writing output out of given graph

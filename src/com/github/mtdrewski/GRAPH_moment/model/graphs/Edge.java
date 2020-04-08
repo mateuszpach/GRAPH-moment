@@ -1,4 +1,4 @@
-package com.github.mtdrewski.GRAPH_moment.main.model.graphs;
+package com.github.mtdrewski.GRAPH_moment.model.graphs;
 
 import java.util.Objects;
 
