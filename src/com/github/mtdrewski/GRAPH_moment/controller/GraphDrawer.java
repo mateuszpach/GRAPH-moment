@@ -17,11 +17,11 @@ public class GraphDrawer {
     @FXML
     AnchorPane anchorPane;
 
-    private boolean cursorOverVertex = false;
-    private boolean inEdgeMode = false;
+    private static boolean cursorOverVertex = false;
+    private static boolean inEdgeMode = false;
 
-    private EdgeLine currentEdge;
-    private VertexCircle sourceVertex;
+    private static EdgeLine currentEdge;
+    private static VertexCircle sourceVertex;
 
     private static Graph graph;
 
@@ -52,15 +52,19 @@ public class GraphDrawer {
                     enterEdgeMode(vertexShape);
                 } else if (inEdgeMode) {
                     if (sourceVertex != vertexShape) {
-                        currentEdge.setEndX(vertexShape.getCenterX());
-                        currentEdge.setEndY(vertexShape.getCenterY());
+                        currentEdge.setEndVertex(vertexShape);
+                        vertexShape.outcomingEdges.add(currentEdge);
                         exitEdgeMode(true);
+                        vertexShape.clearClickCount();
                     }
                 }
 
                 if (vertexShape.getClickCount() > 1)
                     vertexShape.clearClickCount();
             }
+        });
+        vertexShape.setOnMouseDragged(e -> {
+            vertexShape.setPosition(e);
         });
 
         return vertexShape;
@@ -75,11 +79,8 @@ public class GraphDrawer {
                     if (cursorOverVertex)
                         return;
 
-                    double x = e.getX();
-                    double y = e.getY();
                     VertexCircle vertexShape = vertexShapeFactory.get();
-                    vertexShape.setCenterX(x);
-                    vertexShape.setCenterY(y);
+                    vertexShape.setPosition(e);
 
                     anchorPane.getChildren().add(vertexShape);
                 } else {
@@ -105,8 +106,11 @@ public class GraphDrawer {
 
         EdgeLine edgeShape = new EdgeLine();
         edgeShape.setStrokeWidth(EdgeLine.thickness);
-        edgeShape.setStartX(vertexShape.getCenterX());
-        edgeShape.setStartY(vertexShape.getCenterY());
+        edgeShape.setStartVertex(vertexShape);
+        vertexShape.outcomingEdges.add(edgeShape);
+
+        sourceVertex = vertexShape;
+
         edgeShape.setEndX(edgeShape.getStartX());
         edgeShape.setEndY(edgeShape.getStartY());
 
@@ -116,8 +120,10 @@ public class GraphDrawer {
     }
 
     private void exitEdgeMode(boolean success) {
-        if (!success)
+        if (!success) {
             anchorPane.getChildren().remove(currentEdge);
+            sourceVertex.outcomingEdges.remove(currentEdge);
+        }
         currentEdge = null;
         sourceVertex = null;
         inEdgeMode = false;
@@ -134,17 +140,48 @@ public class GraphDrawer {
         public void incrementClickCount() { clickCount++; }
         public void clearClickCount() { clickCount = 0; }
 
-        private HashSet<EdgeLine> outcomingEdges;
+        private HashSet<EdgeLine> outcomingEdges = new HashSet<>();
+
+        private void setPosition(MouseEvent e) {
+            setCenterX(e.getX());
+            setCenterY(e.getY());
+            for (EdgeLine edge : outcomingEdges) {
+                edge.followVertex(this);
+            }
+        }
     }
 
     private static class EdgeLine extends Line {
 
         private static double thickness = 4.0;
 
+        public enum Orientation {BEGIN, END};
+
         private VertexCircle startVertex;
         private VertexCircle endVertex;
 
         public VertexCircle getStartVertex() { return startVertex; }
         public VertexCircle getEndVertex() { return endVertex; }
+        public void setStartVertex(VertexCircle vertex) {
+            startVertex = vertex;
+            setStartX(vertex.getCenterX());
+            setStartY(vertex.getCenterY());
+        }
+        public void setEndVertex(VertexCircle vertex) {
+            endVertex = vertex;
+            setEndX(vertex.getCenterX());
+            setEndY(vertex.getCenterY());
+        }
+
+        public void followVertex(VertexCircle vertex) {
+            if (vertex == startVertex) {
+                setStartX(vertex.getCenterX());
+                setStartY(vertex.getCenterY());
+            }
+            else if (vertex == endVertex) {
+                setEndX(vertex.getCenterX());
+                setEndY(vertex.getCenterY());
+            }
+        }
     }
 }
