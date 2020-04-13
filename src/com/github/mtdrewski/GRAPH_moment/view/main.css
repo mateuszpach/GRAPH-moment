@@ -1,6 +1,6 @@
 #left-pane {
     -fx-background-color: white;
-    -fx-padding: 100 0 0 0;
+    -fx-padding: 10 0 0 0;
 }
 
 .left-pane-button {
@@ -29,4 +29,8 @@
 
 .graph-display {
     -fx-background-color: dimgrey;
+}
+
+#logoView {
+    -fx-start-margin: 50 0 50 0;
 }
