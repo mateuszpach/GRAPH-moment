@@ -39,23 +39,18 @@
                     <FontIcon iconLiteral="mdi-alarm" iconSize="30"/>
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="left-pane-button" text="Export" VBox.vgrow="ALWAYS">
-                <graphic>
-                    <FontIcon iconLiteral="mdi-alarm" iconSize="30"/>
-                </graphic>
-            </JFXButton>
             <Separator prefHeight="50.0" prefWidth="200.0"/>
             <JFXButton styleClass="left-pane-button" text="Import" VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="mdi-alarm" iconSize="30"/>
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="left-pane-button" text="Cheatsheet" VBox.vgrow="ALWAYS">
+            <JFXButton styleClass="left-pane-button" text="Generate" VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="mdi-alarm" iconSize="30"/>
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="left-pane-button" text="Generate" VBox.vgrow="ALWAYS">
+            <JFXButton styleClass="left-pane-button" text="Export" VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="mdi-alarm" iconSize="30"/>
                 </graphic>
