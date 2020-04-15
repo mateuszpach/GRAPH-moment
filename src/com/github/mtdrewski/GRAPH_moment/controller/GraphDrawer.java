@@ -51,8 +51,6 @@ public class GraphDrawer {
     public void initialize() {
 
         anchorPane.setOnMousePressed(e -> {
-            System.out.println(this.hashCode());
-
             if (e.getButton().equals(MouseButton.PRIMARY)) {
                 if (!inEdgeMode) {
                     if (cursorOverVertex)
@@ -104,9 +102,7 @@ public class GraphDrawer {
     }
 
     public void passGraphAndDraw(Graph graph1){
-        System.out.println("Halo");
         graph=graph1;
-        System.out.println(this.hashCode());
         reDrawGraph();
     }
 

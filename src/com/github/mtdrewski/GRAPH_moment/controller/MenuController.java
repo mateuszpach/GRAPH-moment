@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -18,8 +19,12 @@ public class MenuController {
     private VBox menu;
 
     @FXML
-    GraphDrawer graphDrawer;
+    private BorderPane root;
 
+    @FXML
+    public void initialize(){
+        System.out.println(root==null);
+    }
 
     private Supplier<Stage> dialogFactory = () -> {
         Stage dialog = new Stage();
@@ -54,7 +59,7 @@ public class MenuController {
         dialog.show();
 
         ImportController controller=fxmlLoader.<ImportController>getController();
-        controller.canYouHearMe();
+        controller.passCurrentScene(menu.getScene());
 
     }
 }

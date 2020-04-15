@@ -5,6 +5,7 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -13,11 +14,10 @@ import java.io.IOException;
 public class ImportController {
 
     @FXML
-    TextArea textArea;
+    private TextArea textArea;
 
-    public GraphDrawer graphDrawer;
-
-    DataProcessor dataProcessor = new DataProcessor();
+    private DataProcessor dataProcessor = new DataProcessor();
+    private Scene mainScene;
 
     public void importGraphOnClick() throws IOException {
         String textInput = textArea.getText();
@@ -28,12 +28,16 @@ public class ImportController {
             System.out.println(e.getMessage());         //TODO: maybe make this message as pop-up
             return;
         }
-        ((Stage) textArea.getScene().getWindow()).close();
-        System.out.println(graph);
 
+        ((Stage) textArea.getScene().getWindow()).close();
+
+        System.out.println(graph);
+        Stage rootStage=(Stage)mainScene.getWindow();
+        
     }
-    public void canYouHearMe(){
-        System.out.println("hello hello hello");
+
+    public void passCurrentScene(Scene scene){
+        mainScene=scene;
     }
 
 }
