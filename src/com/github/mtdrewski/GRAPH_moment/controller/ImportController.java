@@ -17,7 +17,7 @@ public class ImportController {
     private TextArea textArea;
 
     private DataProcessor dataProcessor = new DataProcessor();
-    private Scene mainScene;
+    private GraphDrawer graphDrawer;
 
     public void importGraphOnClick() throws IOException {
         String textInput = textArea.getText();
@@ -30,14 +30,11 @@ public class ImportController {
         }
 
         ((Stage) textArea.getScene().getWindow()).close();
-
         System.out.println(graph);
-        Stage rootStage=(Stage)mainScene.getWindow();
-        
+        graphDrawer.passGraphAndDraw(graph);
     }
 
-    public void passCurrentScene(Scene scene){
-        mainScene=scene;
+    public void passGraphDrawer(GraphDrawer gd){
+        graphDrawer=gd;
     }
-
 }

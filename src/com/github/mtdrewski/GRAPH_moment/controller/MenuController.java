@@ -1,11 +1,13 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -15,16 +17,35 @@ import java.io.IOException;
 import java.util.function.Supplier;
 
 public class MenuController {
+
     @FXML
     private VBox menu;
-
     @FXML
     private BorderPane root;
 
-    @FXML
-    public void initialize(){
-        System.out.println(root==null);
+    public void initialize() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        System.out.println("EH");
+        AnchorPane achorPane = fxmlLoader.load(getClass().getResource("../view/graph_display.fxml"));
+        GraphDrawer graphDrawer=fxmlLoader.<GraphDrawer>getController();
+        System.out.println(graphDrawer==null);
+        //System.out.println(root.getChildren());
+        //root.getChildren().add(achorPane);
+
     }
+
+    public void MenuController() {
+
+
+        try {
+           //
+         //
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     private Supplier<Stage> dialogFactory = () -> {
         Stage dialog = new Stage();
@@ -59,7 +80,6 @@ public class MenuController {
         dialog.show();
 
         ImportController controller=fxmlLoader.<ImportController>getController();
-        controller.passCurrentScene(menu.getScene());
-
+//        controller.passGraphDrawer(menu.getScene());
     }
 }

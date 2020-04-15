@@ -15,10 +15,6 @@
         <URL value="@main.css"/>
     </stylesheets>
 
-    <center>
-        <fx:include fx:id="graphDisplay" source="graph_display.fxml"/>
-    </center>
-
     <left>
         <VBox fx:id="menu" id="menu" maxWidth="250" minWidth="250" xmlns="http://javafx.com/javafx/10.0.2-internal"
               xmlns:fx="http://javafx.com/fxml/1" >
