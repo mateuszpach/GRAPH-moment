@@ -27,7 +27,6 @@ public class GraphDrawer {
 
 
     private Supplier<VertexCircle> vertexShapeFactory = () -> {
-
         VertexCircle vertex = new VertexCircle(this);
         vertex.prepareLooks();
         vertex.createBehaviour();

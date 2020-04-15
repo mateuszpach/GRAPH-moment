@@ -1,9 +1,11 @@
-#left-pane {
+#menu {
     -fx-background-color: white;
     -fx-padding: 10 0 0 0;
 }
 
 .left-pane-button {
+
+    -fx-focus-traversable: false;
 
     -fx-font-size: 18px;
     -fx-alignment: baseline-left;
@@ -33,4 +35,53 @@
 
 #logoView {
     -fx-start-margin: 50 0 50 0;
+}
+
+#text-area {
+    -fx-background-color: beige;
+    -fx-font-size: 16px;
+    -fx-font-family: monospace;
+    -fx-border-color: black;
+}
+
+.dialog-pane {
+    -fx-background-color: white;
+}
+
+.drag-pane {
+    -fx-background-color: darkgray;
+}
+
+.input-radio-button {
+    -fx-focus-traversable: false;
+
+    -fx-font-size: 16px;
+
+    -fx-background-radius: 0;
+
+    -fx-min-width: 200px;
+    -fx-max-width: 200px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+}
+
+.input-label {
+    -fx-font-size: 16px;
+    -fx-min-width: 200px;
+    -fx-max-width: 200px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+}
+
+.import-button {
+    -fx-focus-traversable: false;
+
+    -fx-font-size: 16px;
+    -fx-translate-x: 100px;
+    -fx-min-width: 200px;
+    -fx-max-width: 200px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+
+    -fx-background-color: mediumseagreen;
 }

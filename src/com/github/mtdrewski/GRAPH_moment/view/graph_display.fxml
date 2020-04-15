@@ -1,8 +1,4 @@
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.AnchorPane?>
-
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="200.0" styleClass="graph-display-container"
             fx:controller="com.github.mtdrewski.GRAPH_moment.controller.GraphDrawer"
             xmlns="http://javafx.com/javafx/10.0.2"
