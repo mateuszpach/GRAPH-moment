@@ -24,6 +24,14 @@ public class Vertex {
         return id;
     }
 
+    public void setxPos(float x){
+        xPos=x;
+    }
+
+    public void setyPos(float y){
+        yPos=y;
+    }
+
     public float xPos() {
         return xPos;
     }

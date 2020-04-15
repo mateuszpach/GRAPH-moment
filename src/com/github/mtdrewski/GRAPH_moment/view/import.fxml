@@ -12,7 +12,7 @@
 
 <?import javafx.scene.layout.Region?>
 <BorderPane prefHeight="500.0" prefWidth="800.0" styleClass="dialog-pane" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1">
+            xmlns:fx="http://javafx.com/fxml/1"  fx:controller="com.github.mtdrewski.GRAPH_moment.controller.ImportController">
     <stylesheets>
         <URL value="@main.css"/>
     </stylesheets>
@@ -30,7 +30,7 @@
                         <Label styleClass="input-label" text="Input format"/>
                         <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
                                         text="Adjacency matrix"/>
-                        <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button" text="Adjacency list"/>
+                        <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button" text="Incidence matrix"/>
                         <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button" text="Edges list"/>
                     </children>
                     <VBox.margin>
@@ -49,7 +49,7 @@
                     </VBox.margin>
                 </VBox>
                 <Region VBox.vgrow="ALWAYS"/>
-                <JFXButton mnemonicParsing="false" styleClass="import-button" text="Import"/>
+                <JFXButton onAction="#importGraphOnClick" mnemonicParsing="false" styleClass="import-button" text="Import"/>
             </children>
             <BorderPane.margin>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
@@ -57,7 +57,7 @@
         </VBox>
     </right>
     <center>
-        <JFXTextArea id="text-area" prefHeight="500.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+        <JFXTextArea fx:id="textArea"  id="text-area" prefHeight="500.0" prefWidth="500.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
             </BorderPane.margin>

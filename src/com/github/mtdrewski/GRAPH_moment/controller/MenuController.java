@@ -13,9 +13,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.function.Supplier;
 
-public class Menu {
+public class MenuController {
     @FXML
     private VBox menu;
+
+    @FXML
+    GraphDrawer graphDrawer;
+
 
     private Supplier<Stage> dialogFactory = () -> {
         Stage dialog = new Stage();
@@ -25,29 +29,32 @@ public class Menu {
         return dialog;
     };
 
-
     //TODO: consider catching this exception
     //TODO: finish newProject window
     public void newProjectOnClick(ActionEvent event) throws IOException {
         Stage dialog = dialogFactory.get();
-
         Parent root = FXMLLoader.load(getClass().getResource("../view/newProject.fxml"));
         dialog.setTitle("GRAPH Moment");
         dialog.setScene(new Scene(root, 1200, 800));
         dialog.setMinWidth(800);
         dialog.setMinHeight(500);
-
         dialog.show();
+
     }
 
     public void importOnClick(ActionEvent event) throws IOException {
+
         Stage dialog = dialogFactory.get();
-        Parent root = FXMLLoader.load(getClass().getResource("../view/import.fxml"));
+        FXMLLoader fxmlLoader=new FXMLLoader(getClass().getResource("../view/import.fxml"));
+        Parent root = fxmlLoader.load();
         dialog.setTitle("Import Options");
         dialog.setScene(new Scene(root, 800, 500));
         dialog.setMinWidth(800);
         dialog.setMinHeight(500);
-
         dialog.show();
+
+        ImportController controller=fxmlLoader.<ImportController>getController();
+        controller.canYouHearMe();
+
     }
 }

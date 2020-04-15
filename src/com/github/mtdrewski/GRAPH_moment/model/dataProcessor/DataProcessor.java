@@ -1,23 +1,23 @@
 package com.github.mtdrewski.GRAPH_moment.model.dataProcessor;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
+
+import java.util.Random;
 
 public class DataProcessor {       //TODO: when implemented differentiate between directed and undirected,weighted and unweighted edges
-    //TODO implement writing output out of given graph
+                                  //TODO implement writing output out of given graph
     public enum Type {
-        ADJACENCY_MATRIX, EDGE_LIST, INCIDENCE_MATRIX;  //TODO: implement adjacencyList
+        ADJACENCY_MATRIX, EDGE_LIST, INCIDENCE_MATRIX;
     }
 
     private Graph inputGraph;
     private Type inputType;
 
     //textInput is in form of regular representation of graph such as in algorithm tasks
-
-    public Graph makeGraphFromInput(String textInput, Type tempType) throws IncorrectInputFormatException {    //TODO: is this what we want from this method, just to give Graph out of text and Type?
-
+    public Graph makeGraphFromInput(String textInput, Type tempType) throws IncorrectInputFormatException {
         if (textInput == null || tempType == null)
             throw new IncorrectInputFormatException(tempType, textInput);
-
         inputType = tempType;
         inputGraph = new Graph();
         switch (inputType) {
@@ -32,10 +32,17 @@ public class DataProcessor {       //TODO: when implemented differentiate betwee
                 break;
         }
 
+        Random r = new Random();
+        float max = 400f;
+        float min = 0f;
+        for (Vertex v1 : inputGraph.getVertices()) {
+            v1.setxPos(min + r.nextFloat() * (max - min));
+            v1.setyPos(min + r.nextFloat() * (max - min));
+        }
+
         return inputGraph;
     }
 
-    //TODO: do we care about 0-indexed verticies?
     void readEdgeList(String textInput) throws IncorrectInputFormatException { //1-st line ->n,2-nd line-> m, rest: 2 edges and 1-indexed
         try {
             String[] lines = textInput.split(System.getProperty("line.separator"));
