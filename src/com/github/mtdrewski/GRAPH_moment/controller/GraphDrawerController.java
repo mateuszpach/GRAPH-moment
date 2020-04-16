@@ -1,13 +1,16 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
-public class GraphDrawer {
+public class GraphDrawerController {
 
     @FXML
     AnchorPane anchorPane;
@@ -16,15 +19,25 @@ public class GraphDrawer {
     private boolean inEdgeMode = false;
 
     private EdgeLine currentEdge;
-    private VertexCircle sourceVertex;
+    private VertexCircle sourceVertex = null;
 
     private Graph graph;
 
-    public void setCursorOverVertex(boolean value) { cursorOverVertex = value; }
-    public boolean isInEdgeMode() { return inEdgeMode; }
-    protected EdgeLine getCurrentEdge() { return currentEdge; }
-    protected VertexCircle getSourceVertex() { return sourceVertex; }
+    public void setCursorOverVertex(boolean value) {
+        cursorOverVertex = value;
+    }
 
+    public boolean isInEdgeMode() {
+        return inEdgeMode;
+    }
+
+    protected EdgeLine getCurrentEdge() {
+        return currentEdge;
+    }
+
+    protected VertexCircle getSourceVertex() {
+        return sourceVertex;
+    }
 
     private Supplier<VertexCircle> vertexShapeFactory = () -> {
         VertexCircle vertex = new VertexCircle(this);
@@ -41,9 +54,9 @@ public class GraphDrawer {
     };
 
     public void initialize() {
+        ImportController.graphDrawerController = this;
 
         anchorPane.setOnMousePressed(e -> {
-
             if (e.getButton().equals(MouseButton.PRIMARY)) {
                 if (!inEdgeMode) {
                     if (cursorOverVertex)
@@ -92,5 +105,40 @@ public class GraphDrawer {
         currentEdge = null;
         sourceVertex = null;
         inEdgeMode = false;
+    }
+
+    public void passGraphAndDraw(Graph graphFromInput) {
+        graph = graphFromInput;
+        reDrawGraph();
+    }
+
+    private void reDrawGraph() {
+
+        anchorPane.getChildren().clear();
+        ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
+
+        for (Vertex graphVertex : graph.getVertices()) {
+            VertexCircle vertexShape = vertexShapeFactory.get();
+            vertexShape.setCenterX(graphVertex.xPos());
+            vertexShape.setCenterY(graphVertex.yPos());
+            vertexCircles.add(vertexShape);
+            anchorPane.getChildren().add(vertexShape);
+        }
+
+        for (Edge graphEdge : graph.getEdges()) {
+
+            EdgeLine edgeLine = new EdgeLine(this);
+            edgeLine.prepareLooks();
+
+            edgeLine.setStartVertex(vertexCircles.get(graphEdge.vert1().id() - 1));
+            vertexCircles.get(graphEdge.vert1().id() - 1).addOutcomingEdge(edgeLine);
+
+            anchorPane.getChildren().add(0, edgeLine);
+
+            edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
+            vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);
+        }
+        currentEdge = null;
+        sourceVertex = null;
     }
 }

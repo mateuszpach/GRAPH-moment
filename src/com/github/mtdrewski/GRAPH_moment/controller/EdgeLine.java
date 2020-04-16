@@ -9,26 +9,33 @@ public class EdgeLine extends Line {
     private double thickness = 4.0;
     private Color color = Color.BLACK;
 
-    public enum Orientation {BEGIN, END};
+    public enum Orientation {BEGIN, END}
+
+    ;
 
     private VertexCircle startVertex;
     private VertexCircle endVertex;
 
-    private GraphDrawer graphDrawer;
+    private GraphDrawerController graphDrawerController;
 
 
-    public EdgeLine(GraphDrawer drawer) {
-        graphDrawer = drawer;
+    public EdgeLine(GraphDrawerController drawer) {
+        graphDrawerController = drawer;
     }
 
-    public EdgeLine(GraphDrawer drawer, double thickness, Color color) {
-        graphDrawer = drawer;
+    public EdgeLine(GraphDrawerController drawer, double thickness, Color color) {
+        graphDrawerController = drawer;
         this.thickness = thickness;
         this.color = color;
     }
 
-    public VertexCircle getStartVertex() { return startVertex; }
-    public VertexCircle getEndVertex() { return endVertex; }
+    public VertexCircle getStartVertex() {
+        return startVertex;
+    }
+
+    public VertexCircle getEndVertex() {
+        return endVertex;
+    }
 
     public void setStartVertex(VertexCircle vertex) {
 

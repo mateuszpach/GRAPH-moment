@@ -7,6 +7,13 @@ public class Graph {
     private Vector<Vertex> vertices;
     private Vector<Edge> edges;
 
+    public Vector<Vertex> getVertices(){
+        return vertices;
+    }
+    public Vector<Edge> getEdges(){
+        return edges;
+    }
+
     public Graph() {
         vertices = new Vector<Vertex>();
         edges = new Vector<Edge>();
