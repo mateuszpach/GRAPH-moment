@@ -3,9 +3,6 @@ package com.github.mtdrewski.GRAPH_moment.controller;
 import com.github.mtdrewski.GRAPH_moment.model.dataProcessor.DataProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -13,13 +10,14 @@ import java.io.IOException;
 
 public class ImportController {
 
+    static GraphDrawerController graphDrawerController;
+
     @FXML
     private TextArea textArea;
 
     private DataProcessor dataProcessor = new DataProcessor();
-    private GraphDrawer graphDrawer;
 
-    public void importGraphOnClick() throws IOException {
+    public void importGraphDataFromTextArea() throws IOException {
         String textInput = textArea.getText();
         Graph graph;
         try {
@@ -30,11 +28,7 @@ public class ImportController {
         }
 
         ((Stage) textArea.getScene().getWindow()).close();
-        System.out.println(graph);
-        graphDrawer.passGraphAndDraw(graph);
+        graphDrawerController.passGraphAndDraw(graph);
     }
 
-    public void passGraphDrawer(GraphDrawer gd){
-        graphDrawer=gd;
-    }
 }

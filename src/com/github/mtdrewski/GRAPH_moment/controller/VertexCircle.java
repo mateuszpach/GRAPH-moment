@@ -18,15 +18,15 @@ public class VertexCircle extends Circle {
 
     private HashSet<EdgeLine> outcomingEdges = new HashSet<>();
 
-    private GraphDrawer graphDrawer;
+    private GraphDrawerController graphDrawerController;
 
 
-    public VertexCircle(GraphDrawer drawer) {
-        graphDrawer = drawer;
+    public VertexCircle(GraphDrawerController drawer) {
+        graphDrawerController = drawer;
     }
 
-    public VertexCircle(GraphDrawer drawer, Color strokeColor, Color fillColor, double thickness) {
-        graphDrawer = drawer;
+    public VertexCircle(GraphDrawerController drawer, Color strokeColor, Color fillColor, double thickness) {
+        graphDrawerController = drawer;
         this.thickness = thickness;
         this.strokeColor = strokeColor;
         this.fillColor = fillColor;
@@ -59,10 +59,10 @@ public class VertexCircle extends Circle {
     public void createBehaviour() {
 
         setOnMouseEntered(e -> {
-            graphDrawer.setCursorOverVertex(true);
+            graphDrawerController.setCursorOverVertex(true);
         });
         setOnMouseExited(e -> {
-            graphDrawer.setCursorOverVertex(false);
+            graphDrawerController.setCursorOverVertex(false);
         });
         setOnMousePressed(e -> {
 
@@ -73,14 +73,13 @@ public class VertexCircle extends Circle {
 
             if (e.getButton().equals(MouseButton.PRIMARY)) {
 
-                if (!graphDrawer.isInEdgeMode() && e.getClickCount() > 1 && getClickCount() > 1) {
-                    graphDrawer.enterEdgeMode(this);
-                }
-                else if (graphDrawer.isInEdgeMode()) {
-                    if (graphDrawer.getSourceVertex() != this) {
-                        graphDrawer.getCurrentEdge().setEndVertex(this);
-                        outcomingEdges.add(graphDrawer.getCurrentEdge());
-                        graphDrawer.exitEdgeMode(true);
+                if (!graphDrawerController.isInEdgeMode() && e.getClickCount() > 1 && getClickCount() > 1) {
+                    graphDrawerController.enterEdgeMode(this);
+                } else if (graphDrawerController.isInEdgeMode()) {
+                    if (graphDrawerController.getSourceVertex() != this) {
+                        graphDrawerController.getCurrentEdge().setEndVertex(this);
+                        outcomingEdges.add(graphDrawerController.getCurrentEdge());
+                        graphDrawerController.exitEdgeMode(true);
                         clearClickCount();
                     }
                 }

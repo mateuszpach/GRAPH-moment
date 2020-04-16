@@ -20,32 +20,6 @@ public class MenuController {
 
     @FXML
     private VBox menu;
-    @FXML
-    private BorderPane root;
-
-    public void initialize() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        System.out.println("EH");
-        AnchorPane achorPane = fxmlLoader.load(getClass().getResource("../view/graph_display.fxml"));
-        GraphDrawer graphDrawer=fxmlLoader.<GraphDrawer>getController();
-        System.out.println(graphDrawer==null);
-        //System.out.println(root.getChildren());
-        //root.getChildren().add(achorPane);
-
-    }
-
-    public void MenuController() {
-
-
-        try {
-           //
-         //
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
 
     private Supplier<Stage> dialogFactory = () -> {
         Stage dialog = new Stage();
@@ -65,11 +39,9 @@ public class MenuController {
         dialog.setMinWidth(800);
         dialog.setMinHeight(500);
         dialog.show();
-
     }
 
     public void importOnClick(ActionEvent event) throws IOException {
-
         Stage dialog = dialogFactory.get();
         FXMLLoader fxmlLoader=new FXMLLoader(getClass().getResource("../view/import.fxml"));
         Parent root = fxmlLoader.load();
@@ -78,8 +50,5 @@ public class MenuController {
         dialog.setMinWidth(800);
         dialog.setMinHeight(500);
         dialog.show();
-
-        ImportController controller=fxmlLoader.<ImportController>getController();
-//        controller.passGraphDrawer(menu.getScene());
     }
 }

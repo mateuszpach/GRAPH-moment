@@ -49,7 +49,8 @@
                     </VBox.margin>
                 </VBox>
                 <Region VBox.vgrow="ALWAYS"/>
-                <JFXButton onAction="#importGraphOnClick" mnemonicParsing="false" styleClass="import-button" text="Import"/>
+                <JFXButton onAction="#importGraphDataFromTextArea" mnemonicParsing="false" styleClass="import-button"
+                           text="Import"/>
             </children>
             <BorderPane.margin>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
