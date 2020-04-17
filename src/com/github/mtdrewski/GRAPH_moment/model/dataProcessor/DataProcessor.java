@@ -33,10 +33,10 @@ public class DataProcessor {       //TODO: when implemented differentiate betwee
         }
 
         Random r = new Random();
-        float max = 700f;       //TODO: make it change with the Panel size
-        float min = 0f;
+        double max = 700f;       //TODO: make it change with the Panel size
+        double min = 0f;
         for (Vertex v1 : inputGraph.getVertices())
-            v1.setxPos(min + r.nextFloat() * (max - min), min + r.nextFloat() * (max - min));
+            v1.setPos(min + r.nextDouble() * (max - min), min + r.nextDouble() * (max - min));
 
 
         return inputGraph;

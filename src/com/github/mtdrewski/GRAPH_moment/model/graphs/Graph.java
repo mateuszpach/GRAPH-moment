@@ -23,17 +23,21 @@ public class Graph {
         return vertices.size();
     }
 
-    public void addVertex() {
+    public Vertex addVertex() {
         int newId = size() + 1;
-        vertices.add(new Vertex(newId));
+        Vertex vertex = new Vertex(newId);
+        vertices.add(vertex);
+        return vertex;
     }
 
-    public void addVertex(float x, float y) {
+    public Vertex addVertex(double x, double y) {
         int newId = size() + 1;
-        vertices.add(new Vertex(newId, x, y));
+        Vertex vertex = new Vertex(newId, x, y);
+        vertices.add(vertex);
+        return vertex;
     }
 
-    public void addEdge(int vertexId1, int vertexId2) throws LoopEdgeException, NonExistingVertexException {
+    public Edge addEdge(int vertexId1, int vertexId2) throws LoopEdgeException, NonExistingVertexException {
 
         if (vertexId1 < 1 || vertexId1 > size() ||
                 vertexId2 < 1 || vertexId2 > size()) {
@@ -46,7 +50,9 @@ public class Graph {
         }
 
         //TODO maybe change not intuitive indexing
-        edges.add(new Edge(vertices.get(vertexId1 - 1), vertices.get(vertexId2 - 1)));
+        Edge edge = new Edge(vertices.get(vertexId1 - 1), vertices.get(vertexId2 - 1));
+        edges.add(edge);
+        return edge;
     }
 
     public boolean contains(int vertexId) {

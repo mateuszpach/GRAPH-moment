@@ -5,8 +5,8 @@ import java.util.Objects;
 public class Vertex {
 
     private int id;
-    private float xPos;
-    private float yPos;
+    private double xPos;
+    private double yPos;
 
     protected Vertex(int id) {
         this.id = id;
@@ -14,7 +14,7 @@ public class Vertex {
         yPos = 0f;
     }
 
-    protected Vertex(int id, float x, float y) {
+    protected Vertex(int id, double x, double y) {
         this.id = id;
         xPos = x;
         yPos = y;
@@ -25,16 +25,16 @@ public class Vertex {
     }
 
 
-    public void setxPos(float x, float y) {
+    public void setPos(double x, double y) {
         xPos = x;
         yPos = y;
     }
 
-    public float xPos() {
+    public double xPos() {
         return xPos;
     }
 
-    public float yPos() {
+    public double yPos() {
         return yPos;
     }
 
