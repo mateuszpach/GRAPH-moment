@@ -66,7 +66,7 @@ public class GraphDrawerController {
                     VertexCircle vertexShape = vertexShapeFactory.get();
                     vertexShape.setPosition(e);
 
-                    anchorPane.getChildren().add(vertexShape);
+                    anchorPane.getChildren().addAll(vertexShape, vertexShape.getIdText());
                 } else {
                     if (!cursorOverVertex) {
                         exitEdgeMode(false);
@@ -118,7 +118,7 @@ public class GraphDrawerController {
             VertexCircle vertexShape = vertexShapeFactory.get();
             vertexShape.setPosition(graphVertex.xPos(), graphVertex.yPos());
             vertexCircles.add(vertexShape);
-            anchorPane.getChildren().add(vertexShape);
+            anchorPane.getChildren().addAll(vertexShape, vertexShape.getIdText());
         }
 
         for (Edge graphEdge : newGraph.getEdges()) {
