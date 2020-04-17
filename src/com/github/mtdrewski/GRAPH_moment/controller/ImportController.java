@@ -28,7 +28,7 @@ public class ImportController {
         }
 
         ((Stage) textArea.getScene().getWindow()).close();
-        graphDrawerController.passGraphAndDraw(graph);
+        graphDrawerController.reDrawGraph(graph);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -15,22 +17,30 @@ public class VertexCircle extends Circle {
     private Color fillColor = Color.WHITE;
 
     private int clickCount = 0;
+    private Graph graph;
+    private Vertex underlyingVertex;
 
     private HashSet<EdgeLine> outcomingEdges = new HashSet<>();
 
     private GraphDrawerController graphDrawerController;
 
 
-    public VertexCircle(GraphDrawerController drawer) {
+    public VertexCircle(GraphDrawerController drawer, Graph graph) {
+        this.graph = graph;
+        underlyingVertex = graph.addVertex();
         graphDrawerController = drawer;
     }
 
-    public VertexCircle(GraphDrawerController drawer, Color strokeColor, Color fillColor, double thickness) {
+    public VertexCircle(GraphDrawerController drawer, Graph graph, Color strokeColor, Color fillColor, double thickness) {
+        this.graph = graph;
+        underlyingVertex = graph.addVertex();
         graphDrawerController = drawer;
         this.thickness = thickness;
         this.strokeColor = strokeColor;
         this.fillColor = fillColor;
     }
+
+    public int id() { return underlyingVertex.id(); }
 
     public void addOutcomingEdge(EdgeLine edge) {
         outcomingEdges.add(edge);
@@ -43,6 +53,16 @@ public class VertexCircle extends Circle {
     public void setPosition(MouseEvent e) {
         setCenterX(e.getX());
         setCenterY(e.getY());
+        underlyingVertex.setPos(e.getX(), e.getY());
+        for (EdgeLine edge : outcomingEdges) {
+            edge.followVertex(this);
+        }
+    }
+
+    public void setPosition(double x, double y) {
+        setCenterX(x);
+        setCenterY(y);
+        underlyingVertex.setPos(x, y);
         for (EdgeLine edge : outcomingEdges) {
             edge.followVertex(this);
         }
@@ -76,7 +96,9 @@ public class VertexCircle extends Circle {
                 if (!graphDrawerController.isInEdgeMode() && e.getClickCount() > 1 && getClickCount() > 1) {
                     graphDrawerController.enterEdgeMode(this);
                 } else if (graphDrawerController.isInEdgeMode()) {
-                    if (graphDrawerController.getSourceVertex() != this) {
+                    if (graphDrawerController.getSourceVertex() != this &&
+                        !graph.contains(graphDrawerController.getSourceVertex().id(), underlyingVertex.id())) {
+
                         graphDrawerController.getCurrentEdge().setEndVertex(this);
                         outcomingEdges.add(graphDrawerController.getCurrentEdge());
                         graphDrawerController.exitEdgeMode(true);

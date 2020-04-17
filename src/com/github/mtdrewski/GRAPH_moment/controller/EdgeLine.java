@@ -1,5 +1,7 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -9,17 +11,17 @@ public class EdgeLine extends Line {
     private double thickness = 4.0;
     private Color color = Color.BLACK;
 
-    public enum Orientation {BEGIN, END}
+    public enum Orientation {BEGIN, END};
 
-    ;
-
+    private Graph graph;
+    private Edge underlyingEdge;
     private VertexCircle startVertex;
     private VertexCircle endVertex;
 
     private GraphDrawerController graphDrawerController;
 
-
-    public EdgeLine(GraphDrawerController drawer) {
+    public EdgeLine(GraphDrawerController drawer, Graph graph) {
+        this.graph = graph;
         graphDrawerController = drawer;
     }
 
@@ -51,6 +53,7 @@ public class EdgeLine extends Line {
         endVertex = vertex;
         setEndX(vertex.getCenterX());
         setEndY(vertex.getCenterY());
+        underlyingEdge = graph.addEdge(startVertex.id(), endVertex.id());
     }
 
     public void followVertex(VertexCircle vertex) {

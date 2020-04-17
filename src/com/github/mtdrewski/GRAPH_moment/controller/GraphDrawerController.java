@@ -40,14 +40,14 @@ public class GraphDrawerController {
     }
 
     private Supplier<VertexCircle> vertexShapeFactory = () -> {
-        VertexCircle vertex = new VertexCircle(this);
+        VertexCircle vertex = new VertexCircle(this, graph);
         vertex.prepareLooks();
         vertex.createBehaviour();
         return vertex;
     };
 
     public Supplier<EdgeLine> edgeLineFactory = () -> {
-        EdgeLine edge = new EdgeLine(this);
+        EdgeLine edge = new EdgeLine(this, graph);
         edge.prepareLooks();
         edge.setStartVertex(sourceVertex);
         return edge;
@@ -55,6 +55,7 @@ public class GraphDrawerController {
 
     public void initialize() {
         ImportController.graphDrawerController = this;
+        graph = new Graph();
 
         anchorPane.setOnMousePressed(e -> {
             if (e.getButton().equals(MouseButton.PRIMARY)) {
@@ -107,27 +108,22 @@ public class GraphDrawerController {
         inEdgeMode = false;
     }
 
-    public void passGraphAndDraw(Graph graphFromInput) {
-        graph = graphFromInput;
-        reDrawGraph();
-    }
-
-    private void reDrawGraph() {
+    public void reDrawGraph(Graph newGraph) {
 
         anchorPane.getChildren().clear();
+        graph = new Graph();
         ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
 
-        for (Vertex graphVertex : graph.getVertices()) {
+        for (Vertex graphVertex : newGraph.getVertices()) {
             VertexCircle vertexShape = vertexShapeFactory.get();
-            vertexShape.setCenterX(graphVertex.xPos());
-            vertexShape.setCenterY(graphVertex.yPos());
+            vertexShape.setPosition(graphVertex.xPos(), graphVertex.yPos());
             vertexCircles.add(vertexShape);
             anchorPane.getChildren().add(vertexShape);
         }
 
-        for (Edge graphEdge : graph.getEdges()) {
+        for (Edge graphEdge : newGraph.getEdges()) {
 
-            EdgeLine edgeLine = new EdgeLine(this);
+            EdgeLine edgeLine = new EdgeLine(this, graph);
             edgeLine.prepareLooks();
 
             edgeLine.setStartVertex(vertexCircles.get(graphEdge.vert1().id() - 1));
