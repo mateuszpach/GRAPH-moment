@@ -54,7 +54,8 @@ public class GraphDrawerController {
     };
 
     public void initialize() {
-        ImportController.graphDrawerController = this;
+        ImportController.setGraphDrawerController(this);
+        graph = new Graph();
 
         anchorPane.setOnMousePressed(e -> {
             if (e.getButton().equals(MouseButton.PRIMARY)) {
@@ -107,25 +108,20 @@ public class GraphDrawerController {
         inEdgeMode = false;
     }
 
-    public void passGraphAndDraw(Graph graphFromInput) {
-        graph = graphFromInput;
-        reDrawGraph();
-    }
-
-    private void reDrawGraph() {
+    public void reDrawGraph(Graph newGraph) {
 
         anchorPane.getChildren().clear();
+        graph = new Graph();
         ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
 
-        for (Vertex graphVertex : graph.getVertices()) {
+        for (Vertex graphVertex : newGraph.getVertices()) {
             VertexCircle vertexShape = vertexShapeFactory.get();
-            vertexShape.setCenterX(graphVertex.xPos());
-            vertexShape.setCenterY(graphVertex.yPos());
+            vertexShape.setPosition(graphVertex.xPos(), graphVertex.yPos());
             vertexCircles.add(vertexShape);
             anchorPane.getChildren().add(vertexShape);
         }
 
-        for (Edge graphEdge : graph.getEdges()) {
+        for (Edge graphEdge : newGraph.getEdges()) {
 
             EdgeLine edgeLine = new EdgeLine(this);
             edgeLine.prepareLooks();
@@ -141,4 +137,6 @@ public class GraphDrawerController {
         currentEdge = null;
         sourceVertex = null;
     }
+
+    public Graph getGraph() { return graph; }
 }

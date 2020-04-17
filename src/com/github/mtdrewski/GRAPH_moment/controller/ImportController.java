@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ImportController {
 
-    static GraphDrawerController graphDrawerController;
+    private static GraphDrawerController graphDrawerController;
 
     @FXML
     private TextArea textArea;
@@ -28,7 +28,10 @@ public class ImportController {
         }
 
         ((Stage) textArea.getScene().getWindow()).close();
-        graphDrawerController.passGraphAndDraw(graph);
+        graphDrawerController.reDrawGraph(graph);
     }
 
+    public static void setGraphDrawerController(GraphDrawerController graphDrawer) {
+        graphDrawerController = graphDrawer;
+    }
 }
