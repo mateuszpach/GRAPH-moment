@@ -108,7 +108,7 @@ public class GraphDrawerController {
         inEdgeMode = false;
     }
 
-    public void reDrawGraph(Graph newGraph) {
+    public void drawNewGraph(Graph newGraph) {
 
         anchorPane.getChildren().clear();
         graph = new Graph();
