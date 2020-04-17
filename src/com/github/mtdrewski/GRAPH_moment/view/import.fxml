@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ToggleGroup?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
@@ -26,23 +27,32 @@
                     </VBox.margin>
                 </AnchorPane>
                 <VBox prefHeight="200.0" prefWidth="300.0">
+                    <fx:define>
+                        <ToggleGroup fx:id="typeGroup"/>
+                    </fx:define>
                     <children>
                         <Label styleClass="input-label" text="Input format"/>
                         <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
-                                        text="Adjacency matrix"/>
-                        <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button" text="Incidence matrix"/>
-                        <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button" text="Edges list"/>
+                                        text="Adjacency matrix" toggleGroup="$typeGroup"/>
+                        <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
+                                        text="Incidence matrix" toggleGroup="$typeGroup"/>
+                        <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
+                                        text="Edges list" toggleGroup="$typeGroup"/>
                     </children>
                     <VBox.margin>
                         <Insets top="30.0"/>
                     </VBox.margin>
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="300.0">
+                    <fx:define>
+                        <ToggleGroup fx:id="mergeGroup"/>
+                    </fx:define>
                     <children>
                         <Label styleClass="input-label" text="Merge procedure"/>
-                        <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button" text="Union graphs"/>
                         <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
-                                        text="Renumber new graph"/>
+                                        text="Union graphs" toggleGroup="$mergeGroup"/>
+                        <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
+                                        text="Renumber new graph" toggleGroup="$mergeGroup"/>
                     </children>
                     <VBox.margin>
                         <Insets top="30.0"/>
