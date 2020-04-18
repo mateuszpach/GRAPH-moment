@@ -33,11 +33,11 @@
                     <children>
                         <Label styleClass="input-label" text="Input format"/>
                         <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
-                                        text="Adjacency matrix" toggleGroup="$typeGroup"/>
+                                        text="Adjacency matrix" toggleGroup="$typeGroup" onAction="#setGraphType"/>
                         <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
-                                        text="Incidence matrix" toggleGroup="$typeGroup"/>
+                                        text="Incidence matrix" toggleGroup="$typeGroup" onAction="#setGraphType"/>
                         <JFXRadioButton mnemonicParsing="false" styleClass="input-radio-button"
-                                        text="Edges list" toggleGroup="$typeGroup"/>
+                                        text="Edges list" toggleGroup="$typeGroup" onAction="#setGraphType"/>
                     </children>
                     <VBox.margin>
                         <Insets top="30.0"/>
