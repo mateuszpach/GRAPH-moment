@@ -15,7 +15,7 @@ public class Main extends Application {
         primaryStage.setTitle("GRAPH Moment");
         primaryStage.setScene(new Scene(root,1200,800));
         primaryStage.setMinWidth(1000);
-        primaryStage.setMinHeight(700);
+        primaryStage.setMinHeight(800);
         primaryStage.getIcons().add(new Image("icon.png"));
         primaryStage.show();
     }

@@ -4,14 +4,16 @@ import com.github.mtdrewski.GRAPH_moment.model.dataProcessor.DataProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
-import javafx.scene.control.RadioButton;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.awt.event.AdjustmentListener;
 import java.io.IOException;
-import java.util.zip.Adler32;
 
 public class ImportController {
 
@@ -27,12 +29,36 @@ public class ImportController {
 
     private DataProcessor dataProcessor = new DataProcessor();
 
+    private void alert(String message) {
+        Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner((Stage) textArea.getScene().getWindow());
+        dialog.getIcons().add(new Image("icon.png"));
+        dialog.setTitle("Error");
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/error.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ((ErrorAlertController) fxmlLoader.getController()).setMessage(message);
+
+        dialog.setScene(new Scene(root, 400, 200));
+        dialog.setMinWidth(400);
+        dialog.setMinHeight(200);
+        dialog.show();
+    }
+
     public void importGraphDataFromTextArea() throws IOException {
         String textInput = textArea.getText();
         Graph graph;
         try {
+            //TODO: let user have spaces before endl
             graph = dataProcessor.makeGraphFromInput(textInput, graphType);
         } catch (DataProcessor.IncorrectInputFormatException e) {
+            alert("Incorrect input format");
             System.out.println(e.getMessage());         //TODO: maybe make this message as pop-up
             return;
         }
