@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import java.net.URL?>
+<BorderPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.mtdrewski.GRAPH_moment.controller.ErrorAlertController">
+    <stylesheets>
+        <URL value="@main.css"/>
+    </stylesheets>
+    <top>
+        <Label fx:id="errorLabel" id="error-label" text="error message" BorderPane.alignment="TOP_CENTER">
+            <graphic>
+                <FontIcon iconLiteral="gmi-warning" iconSize="30"/>
+            </graphic>
+        </Label>
+    </top>
+    <center>
+        <JFXButton onAction="#okOnClick" id="error-ok-button" styleClass="green-button" text="OK"/>
+    </center>
+</BorderPane>

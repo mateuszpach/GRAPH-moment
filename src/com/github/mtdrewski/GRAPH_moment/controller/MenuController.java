@@ -1,14 +1,11 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
-import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,7 +28,7 @@ public class MenuController {
 
     //TODO: consider catching this exception
     //TODO: finish newProject window
-    public void newProjectOnClick(ActionEvent event) throws IOException {
+    /*public void newProjectOnClick(ActionEvent event) throws IOException {
         Stage dialog = dialogFactory.get();
         Parent root = FXMLLoader.load(getClass().getResource("../view/newProject.fxml"));
         dialog.setTitle("GRAPH Moment");
@@ -39,16 +36,16 @@ public class MenuController {
         dialog.setMinWidth(800);
         dialog.setMinHeight(500);
         dialog.show();
-    }
+    }*/
 
     public void importOnClick(ActionEvent event) throws IOException {
         Stage dialog = dialogFactory.get();
         FXMLLoader fxmlLoader=new FXMLLoader(getClass().getResource("../view/import.fxml"));
         Parent root = fxmlLoader.load();
         dialog.setTitle("Import Options");
-        dialog.setScene(new Scene(root, 800, 500));
+        dialog.setScene(new Scene(root, 800, 600));
         dialog.setMinWidth(800);
-        dialog.setMinHeight(500);
+        dialog.setMinHeight(600);
         dialog.show();
     }
 }
