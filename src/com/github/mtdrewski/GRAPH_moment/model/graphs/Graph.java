@@ -1,6 +1,8 @@
 package com.github.mtdrewski.GRAPH_moment.model.graphs;
 
+import java.util.Collection;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class Graph {
 
@@ -35,6 +37,19 @@ public class Graph {
         Vertex vertex = new Vertex(newId, x, y);
         vertices.add(vertex);
         return vertex;
+    }
+
+    public void removeVertex(int id) {
+        Collection<Edge> toRem = edges.stream().filter(e -> e.vert2().id() == id || e.vert1().id() == id).collect(Collectors.toList());
+        edges.removeAll(toRem);
+        vertices.remove(id - 1);
+        reNumber(id - 1);
+    }
+
+    public void reNumber(int id) {
+        for (int i = id; i < vertices.size(); i++) {
+            vertices.get(i).setId(i + 1);
+        }
     }
 
     public Edge addEdge(int vertexId1, int vertexId2) throws LoopEdgeException, NonExistingVertexException {

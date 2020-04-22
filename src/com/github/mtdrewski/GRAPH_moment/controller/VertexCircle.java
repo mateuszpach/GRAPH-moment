@@ -8,7 +8,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class VertexCircle extends Circle {
 
@@ -20,8 +20,10 @@ public class VertexCircle extends Circle {
     private int clickCount = 0;
     private Vertex underlyingVertex;
     private Text idText;
+    private Circle shadow;
+    private boolean selected = false;
 
-    private HashSet<EdgeLine> outcomingEdges = new HashSet<>();
+    private ArrayList<EdgeLine> outcomingEdges = new ArrayList<>();
 
     private GraphDrawerController graphDrawerController;
 
@@ -32,6 +34,7 @@ public class VertexCircle extends Circle {
         idText = new Text(Integer.toString(underlyingVertex.id()));
         idText.setBoundsType(TextBoundsType.VISUAL);
         idText.setMouseTransparent(true);
+        makeShadow();
     }
 
     public VertexCircle(GraphDrawerController drawer, Color strokeColor, Color fillColor, double thickness) {
@@ -43,6 +46,7 @@ public class VertexCircle extends Circle {
         idText = new Text(Integer.toString(underlyingVertex.id()));
         idText.setBoundsType(TextBoundsType.VISUAL);
         idText.setMouseTransparent(true);
+        makeShadow();
     }
 
     public int id() { return underlyingVertex.id(); }
@@ -55,11 +59,14 @@ public class VertexCircle extends Circle {
         outcomingEdges.remove(edge);
     }
 
+    public ArrayList<EdgeLine> getOutcomingEdges() { return outcomingEdges; }
+
     public void setPosition(MouseEvent e) {
         underlyingVertex.setPos(e.getX(), e.getY());
         setCenterX(e.getX());
         setCenterY(e.getY());
         setLabelPosition(e.getX(), e.getY());
+        setShadowPosition(e.getX(), e.getY());
         for (EdgeLine edge : outcomingEdges) {
             edge.followVertex(this);
         }
@@ -69,6 +76,7 @@ public class VertexCircle extends Circle {
         setCenterX(x);
         setCenterY(y);
         setLabelPosition(x, y);
+        setShadowPosition(x, y);
         underlyingVertex.setPos(x, y);
         for (EdgeLine edge : outcomingEdges) {
             edge.followVertex(this);
@@ -107,7 +115,7 @@ public class VertexCircle extends Circle {
 
             if (e.getButton().equals(MouseButton.PRIMARY)) {
 
-                if (!graphDrawerController.isInEdgeMode() && e.getClickCount() > 1 && getClickCount() > 1) {
+                if (graphDrawerController.isInStandardMode() && e.getClickCount() > 1 && getClickCount() > 1) {
                     graphDrawerController.enterEdgeMode(this);
                 } else if (graphDrawerController.isInEdgeMode()) {
                     if (graphDrawerController.getSourceVertex() != this &&
@@ -120,13 +128,47 @@ public class VertexCircle extends Circle {
                         clearClickCount();
                     }
                 }
+                else if (graphDrawerController.isInSelectMode()) {
+                    if (!selected) {
+                        graphDrawerController.selectVertex(this);
+                        selected = true;
+                    }
+                    else {
+                        graphDrawerController.deselect(this);
+                        selected = false;
+                    }
+                }
 
                 if (getClickCount() > 1)
                     clearClickCount();
             }
         });
-        setOnMouseDragged(this::setPosition);
+        setOnMouseDragged(e -> {
+            if (graphDrawerController.isInStandardMode() && e.isPrimaryButtonDown()) {
+                setPosition(e);
+            }
+        });
+    }
 
+    public void makeShadow() {
+        this.shadow = new Circle();
+        this.shadow.setOpacity(0.5);
+        this.shadow.setRadius(vertexRadius * 1.5);
+    }
+
+    public void setShadowPosition(double x, double y) {
+        shadow.setCenterX(x);
+        shadow.setCenterY(y);
+    }
+
+    public Circle getShadow() { return shadow; }
+
+    protected void deselect() {
+        selected = false;
+    }
+
+    protected void refresh() {
+        idText.setText(Integer.toString(id()));
     }
 
     public int getClickCount() { return clickCount; }
