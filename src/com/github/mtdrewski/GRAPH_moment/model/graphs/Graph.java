@@ -1,8 +1,11 @@
 package com.github.mtdrewski.GRAPH_moment.model.graphs;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Graph {
 
@@ -87,6 +90,15 @@ public class Graph {
             }
         }
         return false;
+    }
+
+    public void randomShuffle() {
+        List<Integer> permutation = Stream.iterate(1, x -> x + 1).limit(size()).collect(Collectors.toList());
+        Collections.shuffle(permutation);
+        for (int i = 1; i <= size(); i++) {
+            vertices.get(i-1).setId(permutation.get(i));
+        }
+        vertices.sort(Vertex::compareTo);
     }
 
     @Override
