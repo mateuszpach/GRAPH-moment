@@ -30,7 +30,7 @@ public class MenuController {
     //TODO: finish newProject window
     /*public void newProjectOnClick(ActionEvent event) throws IOException {
         Stage dialog = dialogFactory.get();
-        Parent root = FXMLLoader.load(getClass().getResource("../view/newProject.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../view/unsaved_alert.fxml"));
         dialog.setTitle("GRAPH Moment");
         dialog.setScene(new Scene(root, 1200, 800));
         dialog.setMinWidth(800);

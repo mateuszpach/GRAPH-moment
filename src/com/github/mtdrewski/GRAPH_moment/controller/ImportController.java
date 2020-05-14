@@ -36,7 +36,7 @@ public class ImportController {
         dialog.getIcons().add(new Image("icon.png"));
         dialog.setTitle("Error");
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/error.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/error_alert.fxml"));
         Parent root = null;
         try {
             root = fxmlLoader.load();
