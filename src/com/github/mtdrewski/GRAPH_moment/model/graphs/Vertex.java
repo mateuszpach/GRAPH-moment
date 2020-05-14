@@ -2,7 +2,7 @@ package com.github.mtdrewski.GRAPH_moment.model.graphs;
 
 import java.util.Objects;
 
-public class Vertex {
+public class Vertex implements Comparable<Vertex> {
 
     private int id;
     private double xPos;
@@ -55,5 +55,10 @@ public class Vertex {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public int compareTo(Vertex o) {
+        return id - o.id();
     }
 }
