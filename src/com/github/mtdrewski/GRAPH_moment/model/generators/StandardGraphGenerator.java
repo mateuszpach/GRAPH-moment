@@ -1,13 +1,12 @@
 package com.github.mtdrewski.GRAPH_moment.model.generators;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.utils.OrderedPairGenerator;
 import javafx.util.Pair;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class StandardGraphGenerator extends IntervalConstrainedGenerator {
 
@@ -35,13 +34,7 @@ public class StandardGraphGenerator extends IntervalConstrainedGenerator {
     }
 
     public List<Pair<Integer, Integer>> possibleEdges(Graph graph) {
-        List<Pair<Integer, Integer>> possibleEdges = Stream.iterate(new Pair<>(1, 2), p -> {
-            if (p.getValue() == graph.size())
-                return new Pair<>(p.getKey() + 1, p.getKey() + 2);
-            else
-                return new Pair<>(p.getKey(), p.getValue() + 1);
-        }).limit(graph.size() * (graph.size() - 1) / 2).collect(Collectors.toList());
-        return possibleEdges;
+        return OrderedPairGenerator.lexicographicalPairs(graph.size());
     }
 
     public void orderPossibleEdges(List<Pair<Integer, Integer>> possibleEdges) {

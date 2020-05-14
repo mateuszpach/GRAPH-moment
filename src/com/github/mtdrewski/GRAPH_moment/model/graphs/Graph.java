@@ -73,6 +73,10 @@ public class Graph {
         return edge;
     }
 
+    public Edge addEdge(Edge edge) {
+        return addEdge(edge.vert1().id(), edge.vert2().id());
+    }
+
     public boolean contains(int vertexId) {
         for (Vertex vertex : vertices) {
             if (vertex.id() == vertexId)
@@ -90,6 +94,10 @@ public class Graph {
             }
         }
         return false;
+    }
+
+    public boolean contains(Edge edge) {
+        return contains(edge.vert1().id(), edge.vert2().id());
     }
 
     public void randomShuffle() {
