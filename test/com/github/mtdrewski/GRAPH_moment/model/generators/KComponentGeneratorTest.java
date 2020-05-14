@@ -6,18 +6,15 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TreeGeneratorTest {
+public class KComponentGeneratorTest {
 
     @Test
-    public void basic() { // test took 1.5s
+    public void basicTest() { // test took 2m 3s
 
         for (int i = 1; i <= 100; i++) {
-            Graph tree = new TreeGenerator(1, 1000).generate();
-            assertEquals(tree.getVertices().size(), tree.getEdges().size() + 1);
-            assertFalse(GraphAlgorithms.hasCycle(tree));
-            assertEquals(1, GraphAlgorithms.numberOfComponents(tree));
+            Graph graph = new KComponentGenerator(1, 100, 0, 100*99/2, i).generate();
+            assertEquals(GraphAlgorithms.numberOfComponents(graph), i);
             System.out.println(i + " ok");
         }
-
     }
 }
