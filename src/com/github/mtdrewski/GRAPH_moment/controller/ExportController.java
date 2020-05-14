@@ -2,6 +2,7 @@ package com.github.mtdrewski.GRAPH_moment.controller;
 
 import com.github.mtdrewski.GRAPH_moment.model.dataProcessor.DataProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ImportController {
+public class ExportController {
 
     private static GraphDrawerController graphDrawerController;
 
@@ -23,12 +24,31 @@ public class ImportController {
     private TextArea textArea;
 
     @FXML
-    ToggleGroup typeGroup;
+    private JFXButton exportButton;
+    @FXML
+    private JFXButton browseButton;
+
+    @FXML
+    private ToggleGroup typeGroup;
+
+    @FXML
+    private JFXRadioButton radioButton1;
+    @FXML
+    private JFXRadioButton radioButton2;
+    @FXML
+    private JFXRadioButton radioButton3;
 
     DataProcessor.Type graphType;
 
     private DataProcessor dataProcessor = new DataProcessor();
 
+    private enum State {
+        BEFORE_EXPORT, AFTER_EXPORT;
+    }
+
+    State state = State.BEFORE_EXPORT;
+
+    //TODO: avoid code duplication
     private void alert(String message) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -51,18 +71,32 @@ public class ImportController {
         dialog.show();
     }
 
-    public void importGraphDataFromTextArea() throws IOException {
-        String textInput = textArea.getText();
-        Graph graph;
-        try {
-            //TODO: let user have spaces before endl
-            graph = dataProcessor.makeGraphFromInput(textInput, graphType);
-        } catch (DataProcessor.IncorrectInputFormatException e) {
-            alert("Incorrect input format");
-            return;
+    public void exportGraphDataToTextArea() {
+        switch (state) {
+            case BEFORE_EXPORT:
+                try {
+                    Graph graph = graphDrawerController.getGraph();
+                    System.out.println(graph);
+                    //TODO: implement makeOutputFromGraph and specify exception
+                    String text = dataProcessor.makeOutputFromGraph(graph, graphType);
+                    textArea.setText(text);
+                } catch (Exception e /*DataProcessor.IncorrectFormatException e*/) {
+                    alert("Graph export failed");
+                    return;
+                }
+                exportButton.getStyleClass().remove("green-button");
+                exportButton.getStyleClass().add("red-button");
+                exportButton.setText("Close");
+                browseButton.setDisable(false);
+                radioButton1.setDisable(true);
+                radioButton2.setDisable(true);
+                radioButton3.setDisable(true);
+                state = State.AFTER_EXPORT;
+                break;
+            case AFTER_EXPORT:
+                ((Stage) textArea.getScene().getWindow()).close();
+                break;
         }
-        ((Stage) textArea.getScene().getWindow()).close();
-        graphDrawerController.drawNewGraph(graph);
     }
 
     public void setGraphType() {
@@ -76,11 +110,8 @@ public class ImportController {
             graphType = DataProcessor.Type.EDGE_LIST;
     }
 
-    //TODO: implement merge response
-
     public static void setGraphDrawerController(GraphDrawerController graphDrawer) {
         graphDrawerController = graphDrawer;
     }
-
 
 }

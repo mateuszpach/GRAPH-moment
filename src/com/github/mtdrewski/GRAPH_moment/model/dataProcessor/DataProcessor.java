@@ -5,8 +5,9 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 
 import java.util.Random;
 
-public class DataProcessor {       //TODO: when implemented differentiate between directed and undirected,weighted and unweighted edges
-                                  //TODO implement writing output out of given graph
+public class DataProcessor {
+    //TODO: when implemented differentiate between directed and undirected,weighted and unweighted edges
+    //TODO implement writing output out of given graph
     public enum Type {
         ADJACENCY_MATRIX, EDGE_LIST, INCIDENCE_MATRIX;
     }
@@ -40,6 +41,11 @@ public class DataProcessor {       //TODO: when implemented differentiate betwee
 
 
         return inputGraph;
+    }
+
+    //TODO: implement this
+    public String makeOutputFromGraph(Graph graph, Type graphType) {
+        return "XDDDDDDDDD\n XDDDXDXD";
     }
 
     void readEdgeList(String textInput) throws IncorrectInputFormatException { //1-st line ->n,2-nd line-> m, rest: 2 edges and 1-indexed

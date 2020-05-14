@@ -30,7 +30,7 @@ public class MenuController {
     //TODO: finish newProject window
     /*public void newProjectOnClick(ActionEvent event) throws IOException {
         Stage dialog = dialogFactory.get();
-        Parent root = FXMLLoader.load(getClass().getResource("../view/newProject.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../view/unsaved_alert.fxml"));
         dialog.setTitle("GRAPH Moment");
         dialog.setScene(new Scene(root, 1200, 800));
         dialog.setMinWidth(800);
@@ -40,9 +40,20 @@ public class MenuController {
 
     public void importOnClick(ActionEvent event) throws IOException {
         Stage dialog = dialogFactory.get();
-        FXMLLoader fxmlLoader=new FXMLLoader(getClass().getResource("../view/import.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/import.fxml"));
         Parent root = fxmlLoader.load();
         dialog.setTitle("Import Options");
+        dialog.setScene(new Scene(root, 800, 600));
+        dialog.setMinWidth(800);
+        dialog.setMinHeight(600);
+        dialog.show();
+    }
+
+    public void exportOnClick(ActionEvent event) throws IOException {
+        Stage dialog = dialogFactory.get();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/export.fxml"));
+        Parent root = fxmlLoader.load();
+        dialog.setTitle("Export Options");
         dialog.setScene(new Scene(root, 800, 600));
         dialog.setMinWidth(800);
         dialog.setMinHeight(600);

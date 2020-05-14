@@ -58,6 +58,7 @@ public class GraphDrawerController {
 
     public void initialize() {
         ImportController.setGraphDrawerController(this);
+        ExportController.setGraphDrawerController(this);
         graph = new Graph();
         mode = Mode.STANDARD;
         selectedVertices = new ArrayList<>();
