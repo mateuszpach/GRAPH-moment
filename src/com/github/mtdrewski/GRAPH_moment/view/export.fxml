@@ -18,7 +18,8 @@
             <children>
                 <BorderPane prefHeight="200.0" prefWidth="200.0">
                     <right>
-                        <JFXButton styleClass="small-green-button" text="Browse" BorderPane.alignment="CENTER">
+                        <JFXButton fx:id="browseButton" disable="true" styleClass="small-green-button" text="Browse"
+                                   BorderPane.alignment="CENTER">
                             <BorderPane.margin>
                                 <Insets right="15.0"/>
                             </BorderPane.margin>
@@ -56,32 +57,20 @@
                     </fx:define>
                     <children>
                         <Label styleClass="input-label" text="Output format"/>
-                        <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button"
-                                        text="Adjacency matrix">
-                            <toggleGroup>
-                                <ToggleGroup fx:id="typeGroup"/>
-                            </toggleGroup>
-                        </JFXRadioButton>
-                        <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button" text="Incidence matrix"
-                                        toggleGroup="$typeGroup"/>
-                        <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button" text="Edges list"
-                                        toggleGroup="$typeGroup"/>
+                        <JFXRadioButton fx:id="radioButton1" onAction="#setGraphType" styleClass="input-radio-button"
+                                        text="Adjacency matrix" toggleGroup="$typeGroup"/>
+                        <JFXRadioButton fx:id="radioButton2" onAction="#setGraphType" styleClass="input-radio-button"
+                                        text="Incidence matrix" toggleGroup="$typeGroup"/>
+                        <JFXRadioButton fx:id="radioButton3" onAction="#setGraphType" styleClass="input-radio-button"
+                                        text="Edges list" toggleGroup="$typeGroup"/>
                     </children>
                     <VBox.margin>
                         <Insets top="10.0"/>
                     </VBox.margin>
                 </VBox>
-                <VBox prefHeight="200.0" prefWidth="300.0">
-                    <fx:define>
-                        <ToggleGroup fx:id="mergeGroup"/>
-                    </fx:define>
-                    <VBox.margin>
-                        <Insets top="10.0"/>
-                    </VBox.margin>
-                </VBox>
                 <Region VBox.vgrow="ALWAYS"/>
-                <JFXButton id="import-button" onAction="#importGraphDataFromTextArea" styleClass="green-button"
-                           text="Export"/>
+                <JFXButton id="export-button" fx:id="exportButton" onAction="#exportGraphDataToTextArea"
+                           styleClass="green-button" text="Export"/>
             </children>
             <BorderPane.margin>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
@@ -89,11 +78,11 @@
         </VBox>
     </right>
     <center>
-        <JFXTextField id="text-area" fx:id="textArea" editable="false" prefHeight="500.0" prefWidth="500.0"
-                      BorderPane.alignment="CENTER">
+        <JFXTextArea id="text-area" fx:id="textArea" editable="false" prefHeight="500.0" prefWidth="500.0"
+                     BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
             </BorderPane.margin>
-        </JFXTextField>
+        </JFXTextArea>
     </center>
 </BorderPane>

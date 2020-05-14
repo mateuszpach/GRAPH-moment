@@ -59,10 +59,8 @@ public class ImportController {
             graph = dataProcessor.makeGraphFromInput(textInput, graphType);
         } catch (DataProcessor.IncorrectInputFormatException e) {
             alert("Incorrect input format");
-            System.out.println(e.getMessage());         //TODO: maybe make this message as pop-up
             return;
         }
-
         ((Stage) textArea.getScene().getWindow()).close();
         graphDrawerController.drawNewGraph(graph);
     }
