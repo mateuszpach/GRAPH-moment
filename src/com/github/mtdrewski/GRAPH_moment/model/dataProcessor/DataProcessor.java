@@ -1,5 +1,6 @@
 package com.github.mtdrewski.GRAPH_moment.model.dataProcessor;
 
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 
@@ -45,7 +46,48 @@ public class DataProcessor {
 
     //TODO: implement this
     public String makeOutputFromGraph(Graph graph, Type graphType) {
-        return "XDDDDDDDDD\n XDDDXDXD";
+        String output = "";
+        switch (graphType) {
+            case EDGE_LIST:
+                output = createEdgeList(graph);
+                break;
+            case ADJACENCY_MATRIX:
+                output = createAdjacencyMatrix(graph);
+                break;
+                //TODO case for Incidence matrix
+        }
+
+        return output;
+    }
+
+    private String createEdgeList(Graph graph) {
+        StringBuilder edgeList = new StringBuilder("");
+        edgeList.append(graph.size()).append("\n");
+        edgeList.append(graph.getEdges().size()).append("\n");
+
+        for (Edge edge : graph.getEdges()) {
+            edgeList.append(edge.vert1().id()).append(" ").append(edge.vert2().id()).append("\n");
+        }
+
+        return edgeList.toString();
+    }
+
+    private String createAdjacencyMatrix(Graph graph) {
+        StringBuilder matrix = new StringBuilder("");
+
+        for (int i = 0; i < graph.size(); i++) {
+            for (int j = 0; j < graph.size() - 1; j++) {
+                matrix.append(0).append(" ");
+            }
+            matrix.append(0).append("\n");
+        }
+
+        for (Edge edge : graph.getEdges()) {
+            matrix.setCharAt(2 * (edge.vert1().id() - 1) * graph.size() + 2 * edge.vert2().id() - 2, '1');
+            matrix.setCharAt(2 * (edge.vert2().id() - 1) * graph.size() + 2 * edge.vert1().id() - 2, '1');
+        }
+
+        return matrix.toString();
     }
 
     void readEdgeList(String textInput) throws IncorrectInputFormatException { //1-st line ->n,2-nd line-> m, rest: 2 edges and 1-indexed
