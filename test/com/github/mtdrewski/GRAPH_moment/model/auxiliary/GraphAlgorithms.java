@@ -1,4 +1,4 @@
-package com.github.mtdrewski.GRAPH_moment.model.utils;
+package com.github.mtdrewski.GRAPH_moment.model.auxiliary;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;

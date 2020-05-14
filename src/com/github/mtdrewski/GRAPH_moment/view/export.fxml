@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <?import java.net.URL?>
-<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="dialog-pane"
+<BorderPane fx:id="root" prefHeight="600.0" prefWidth="800.0" styleClass="dialog-pane"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.github.mtdrewski.GRAPH_moment.controller.ExportController">
     <stylesheets>
@@ -18,7 +18,8 @@
             <children>
                 <BorderPane prefHeight="200.0" prefWidth="200.0">
                     <right>
-                        <JFXButton fx:id="browseButton" disable="true" styleClass="small-green-button" text="Browse"
+                        <JFXButton fx:id="browseButton" onAction="#browseAndSave" disable="true"
+                                   styleClass="small-green-button" text="Browse"
                                    BorderPane.alignment="CENTER">
                             <BorderPane.margin>
                                 <Insets right="15.0"/>

@@ -1,4 +1,4 @@
-package com.github.mtdrewski.GRAPH_moment.model.dataProcessor;
+package com.github.mtdrewski.GRAPH_moment.model.processors;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
@@ -54,7 +54,7 @@ public class DataProcessor {
             case ADJACENCY_MATRIX:
                 output = createAdjacencyMatrix(graph);
                 break;
-                //TODO case for Incidence matrix
+            //TODO case for Incidence matrix
         }
 
         return output;

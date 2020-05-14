@@ -1,7 +1,8 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
-import com.github.mtdrewski.GRAPH_moment.model.dataProcessor.DataProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
+import com.github.mtdrewski.GRAPH_moment.model.processors.FileIOProcessor;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -19,6 +21,9 @@ import java.io.IOException;
 public class ExportController {
 
     private static GraphDrawerController graphDrawerController;
+
+    @FXML
+    private BorderPane root;
 
     @FXML
     private TextArea textArea;
@@ -41,6 +46,7 @@ public class ExportController {
     DataProcessor.Type graphType;
 
     private DataProcessor dataProcessor = new DataProcessor();
+    private FileIOProcessor fileIOProcessor = new FileIOProcessor();
 
     private enum State {
         BEFORE_EXPORT, AFTER_EXPORT;
@@ -52,7 +58,7 @@ public class ExportController {
     private void alert(String message) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner((Stage) textArea.getScene().getWindow());
+        dialog.initOwner((Stage) root.getScene().getWindow());
         dialog.getIcons().add(new Image("icon.png"));
         dialog.setTitle("Error");
 
@@ -93,9 +99,20 @@ public class ExportController {
                 state = State.AFTER_EXPORT;
                 break;
             case AFTER_EXPORT:
-                ((Stage) textArea.getScene().getWindow()).close();
+                ((Stage) root.getScene().getWindow()).close();
                 break;
         }
+    }
+
+    public void browseAndSave() {
+        Stage rootStage = (Stage) root.getScene().getWindow();
+        boolean isSaved = false;
+        try {
+            isSaved = FileIOProcessor.saveAs(rootStage, textArea.getText());
+        } catch (IOException e) {
+            alert("Save failed");
+        }
+        if (isSaved) rootStage.close();
     }
 
     public void setGraphType() {

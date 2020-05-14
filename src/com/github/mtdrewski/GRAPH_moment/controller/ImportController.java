@@ -1,7 +1,7 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
-import com.github.mtdrewski.GRAPH_moment.model.dataProcessor.DataProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

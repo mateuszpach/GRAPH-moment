@@ -1,4 +1,4 @@
-package com.github.mtdrewski.GRAPH_moment.model.dataProcessor;
+package com.github.mtdrewski.GRAPH_moment.model.processors;
 
 import org.junit.Test;
 
