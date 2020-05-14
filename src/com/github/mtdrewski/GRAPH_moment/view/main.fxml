@@ -53,7 +53,7 @@
                     <FontIcon iconLiteral="mdi-file-import" iconSize="30"/>
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="left-pane-button" text="Export" VBox.vgrow="ALWAYS">
+            <JFXButton onAction="#exportOnClick" styleClass="left-pane-button" text="Export" VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="mdi-file-export" iconSize="30"/>
                 </graphic>
