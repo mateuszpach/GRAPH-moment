@@ -76,7 +76,6 @@ public class ExportController {
             case BEFORE_EXPORT:
                 try {
                     Graph graph = graphDrawerController.getGraph();
-                    System.out.println(graph);
                     //TODO: implement makeOutputFromGraph and specify exception
                     String text = dataProcessor.makeOutputFromGraph(graph, graphType);
                     textArea.setText(text);
