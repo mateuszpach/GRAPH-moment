@@ -104,7 +104,7 @@ public class Graph {
         List<Integer> permutation = Stream.iterate(1, x -> x + 1).limit(size()).collect(Collectors.toList());
         Collections.shuffle(permutation);
         for (int i = 1; i <= size(); i++) {
-            vertices.get(i-1).setId(permutation.get(i));
+            vertices.get(i-1).setId(permutation.get(i-1));
         }
         vertices.sort(Vertex::compareTo);
     }

@@ -28,7 +28,7 @@ public class TreeGenerator extends StandardGraphGenerator {
     }
 
     @Override
-    public void prepareEdges(Graph tree) {
+    protected void prepareEdges(Graph tree) {
         Vector<Integer> neighbours = new Vector<>(tree.size());
         for (int i = 1; i <= tree.size(); i++) neighbours.add(i);
         Vector<Boolean> visited = new Vector<>(tree.size() + 1);

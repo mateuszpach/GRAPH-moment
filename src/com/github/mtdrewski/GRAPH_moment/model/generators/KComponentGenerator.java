@@ -1,6 +1,7 @@
 package com.github.mtdrewski.GRAPH_moment.model.generators;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.utils.GraphMerger;
 import javafx.util.Pair;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class KComponentGenerator extends StandardGraphGenerator {
     }
 
     @Override
-    public void addEdges(Graph component, List<Pair<Integer, Integer>> possibleEdges, int numOfEdges) {
+    protected void addEdges(Graph component, List<Pair<Integer, Integer>> possibleEdges, int numOfEdges) {
         int i = 0;
         while (component.getEdges().size() < numOfEdges) {
             if (!component.contains(possibleEdges.get(i).getKey(), possibleEdges.get(i).getValue())) {
@@ -51,7 +52,7 @@ public class KComponentGenerator extends StandardGraphGenerator {
         }
     }
 
-    public Graph generateComponent() {
+    private Graph generateComponent() {
         Graph component = new TreeGenerator(minNumOfVertices, maxNumOfVertices).generate();
         prepareEdges(component);
         return component;
@@ -62,7 +63,7 @@ public class KComponentGenerator extends StandardGraphGenerator {
         Graph graph = new Graph();
         for (int i = 0; i < numOfComponents; i++) {
             Graph component = generateComponent();
-            // disjoint union (graph <-- component)
+            graph = GraphMerger.disjointUnion(graph, component);
         }
         graph.randomShuffle();
         return graph;
