@@ -12,9 +12,9 @@ import static org.junit.Assert.assertEquals;
 
 public class GraphMergerTest {
     @Test
-    public void unionTest() { // test took 50 seconds
+    public void unionTest() {
 
-        StandardGraphGenerator stdGen = new StandardGraphGenerator(10, 200, 0, 200*199/2);
+        StandardGraphGenerator stdGen = new StandardGraphGenerator(10, 100, 0, 200*199/2);
         for (int i = 0; i < 50; i++) {
 
             Graph gr1 = stdGen.generate();
@@ -31,7 +31,7 @@ public class GraphMergerTest {
     }
 
     @Test
-    public void disjointUnionTest() { // took 1.6 seconds
+    public void disjointUnionTest() {
 
         StandardGraphGenerator stdGen = new StandardGraphGenerator(10, 100, 0, 100*99/2);
         for (int i = 0; i < 50; i++) {
