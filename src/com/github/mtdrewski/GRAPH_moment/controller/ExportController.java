@@ -1,7 +1,8 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
-import com.github.mtdrewski.GRAPH_moment.model.dataProcessor.DataProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
+import com.github.mtdrewski.GRAPH_moment.model.processors.FileIOProcessor;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -19,6 +21,9 @@ import java.io.IOException;
 public class ExportController {
 
     private static GraphDrawerController graphDrawerController;
+
+    @FXML
+    private BorderPane root;
 
     @FXML
     private TextArea textArea;
@@ -52,7 +57,7 @@ public class ExportController {
     private void alert(String message) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner((Stage) textArea.getScene().getWindow());
+        dialog.initOwner((Stage) root.getScene().getWindow());
         dialog.getIcons().add(new Image("icon.png"));
         dialog.setTitle("Error");
 
@@ -74,15 +79,10 @@ public class ExportController {
     public void exportGraphDataToTextArea() {
         switch (state) {
             case BEFORE_EXPORT:
-                try {
-                    Graph graph = graphDrawerController.getGraph();
-                    //TODO: implement makeOutputFromGraph and specify exception
-                    String text = dataProcessor.makeOutputFromGraph(graph, graphType);
-                    textArea.setText(text);
-                } catch (Exception e /*DataProcessor.IncorrectFormatException e*/) {
-                    alert("Graph export failed");
-                    return;
-                }
+                Graph graph = graphDrawerController.getGraph();
+                String text = dataProcessor.makeOutputFromGraph(graph, graphType);
+                textArea.setText(text);
+
                 exportButton.getStyleClass().remove("green-button");
                 exportButton.getStyleClass().add("red-button");
                 exportButton.setText("Close");
@@ -90,23 +90,38 @@ public class ExportController {
                 radioButton1.setDisable(true);
                 radioButton2.setDisable(true);
                 radioButton3.setDisable(true);
+
                 state = State.AFTER_EXPORT;
                 break;
             case AFTER_EXPORT:
-                ((Stage) textArea.getScene().getWindow()).close();
+                ((Stage) root.getScene().getWindow()).close();
                 break;
         }
     }
 
+    public void browseAndSave() {
+        Stage rootStage = (Stage) root.getScene().getWindow();
+        boolean isSaved = false;
+        try {
+            isSaved = FileIOProcessor.saveWithChoice(rootStage, textArea.getText());
+        } catch (IOException e) {
+            alert("Save failed");
+        }
+        if (isSaved) rootStage.close();
+    }
+
     public void setGraphType() {
-        JFXRadioButton selectedRadioButton = (JFXRadioButton) typeGroup.getSelectedToggle();
-        String toogleGroupValue = selectedRadioButton.getText();
-        if (toogleGroupValue.equals("Adjacency matrix"))
-            graphType = DataProcessor.Type.ADJACENCY_MATRIX;
-        else if (toogleGroupValue.equals("Incidence matrix"))
-            graphType = DataProcessor.Type.INCIDENCE_MATRIX;
-        else //toogleGroupValue.equals("Edges list")
-            graphType = DataProcessor.Type.EDGE_LIST;
+        switch (((JFXRadioButton) typeGroup.getSelectedToggle()).getText()) {
+            case "Adjacency matrix":
+                graphType = DataProcessor.Type.ADJACENCY_MATRIX;
+                break;
+            case "Incidence matrix":
+                graphType = DataProcessor.Type.INCIDENCE_MATRIX;
+                break;
+            case "Edges list":
+                graphType = DataProcessor.Type.EDGE_LIST;
+                break;
+        }
     }
 
     public static void setGraphDrawerController(GraphDrawerController graphDrawer) {

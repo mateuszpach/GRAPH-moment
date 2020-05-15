@@ -4,8 +4,10 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <?import java.net.URL?>
-<BorderPane prefHeight="600.0" prefWidth="800.0" styleClass="dialog-pane"
+<BorderPane fx:id="root" prefHeight="600.0" prefWidth="800.0" styleClass="dialog-pane"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.github.mtdrewski.GRAPH_moment.controller.ImportController">
     <stylesheets>
@@ -14,12 +16,43 @@
     <right>
         <VBox prefWidth="300.0" BorderPane.alignment="CENTER">
             <children>
-                <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="drag-pane" visible="false">
-                    <JFXButton styleClass="green-button" text="Browse"/>
-                    <VBox.margin>
-                        <Insets/>
-                    </VBox.margin>
-                </AnchorPane>
+                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                    <right>
+                        <JFXButton fx:id="browseButton" onAction="#browseAndPull"
+                                   styleClass="small-green-button" text="Browse"
+                                   BorderPane.alignment="CENTER">
+                            <graphic>
+                                <FontIcon iconLiteral="gmi-folder-open" iconSize="20"/>
+                            </graphic>
+                            <BorderPane.margin>
+                                <Insets right="15.0"/>
+                            </BorderPane.margin>
+                        </JFXButton>
+                    </right>
+                    <left>
+                        <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label text="">
+                                    <graphic>
+                                        <FontIcon iconLiteral="mdi-arrow-left-bold" iconSize="30" translateX="10.0">
+                                            <font>
+                                                <Font size="51.0"/>
+                                            </font>
+                                        </FontIcon>
+                                    </graphic>
+                                </Label>
+                                <Label text="pull from">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="15.0"/>
+                                    </HBox.margin>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </left>
+                </BorderPane>
                 <Separator prefWidth="200.0"/>
                 <VBox prefHeight="200.0" prefWidth="300.0">
                     <fx:define>
@@ -45,8 +78,10 @@
                     </fx:define>
                     <children>
                         <Label styleClass="input-label" text="Merge procedure"/>
-                        <JFXRadioButton styleClass="input-radio-button" text="Union graph" toggleGroup="$mergeGroup"/>
-                        <JFXRadioButton styleClass="input-radio-button" text="Renumber new graph"
+                        <JFXRadioButton onAction="#setMergeType" styleClass="input-radio-button" text="Union graph"
+                                        toggleGroup="$mergeGroup"/>
+                        <JFXRadioButton onAction="#setMergeType" styleClass="input-radio-button"
+                                        text="Renumber new graph"
                                         toggleGroup="$mergeGroup"/>
                     </children>
                     <VBox.margin>

@@ -1,10 +1,10 @@
 package com.github.mtdrewski.GRAPH_moment.model.generators;
 
+import com.github.mtdrewski.GRAPH_moment.model.auxiliary.GraphAlgorithms;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
-import com.github.mtdrewski.GRAPH_moment.model.utils.GraphAlgorithms;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class KComponentGeneratorTest {
 

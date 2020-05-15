@@ -1,4 +1,4 @@
-package com.github.mtdrewski.GRAPH_moment.model.dataProcessor;
+package com.github.mtdrewski.GRAPH_moment.model.processors;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
@@ -6,6 +6,8 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 
 import java.util.Random;
 
+//TODO: consider changing methods to static and then adjusting import/export controllers
+//TODO: (IMPORTANT) let user have spaces before endl
 public class DataProcessor {
     //TODO: when implemented differentiate between directed and undirected,weighted and unweighted edges
     //TODO implement writing output out of given graph
@@ -54,7 +56,7 @@ public class DataProcessor {
             case ADJACENCY_MATRIX:
                 output = createAdjacencyMatrix(graph);
                 break;
-                //TODO case for Incidence matrix
+            //TODO case for Incidence matrix
         }
 
         return output;

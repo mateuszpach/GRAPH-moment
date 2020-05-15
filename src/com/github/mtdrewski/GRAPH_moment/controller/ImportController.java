@@ -1,7 +1,9 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
-import com.github.mtdrewski.GRAPH_moment.model.dataProcessor.DataProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
+import com.github.mtdrewski.GRAPH_moment.model.processors.FileIOProcessor;
+import com.github.mtdrewski.GRAPH_moment.model.utils.GraphMerger;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -20,19 +23,25 @@ public class ImportController {
     private static GraphDrawerController graphDrawerController;
 
     @FXML
+    private BorderPane root;
+
+    @FXML
     private TextArea textArea;
 
     @FXML
     ToggleGroup typeGroup;
+    @FXML
+    ToggleGroup mergeGroup;
 
     DataProcessor.Type graphType;
+    GraphMerger.Type mergeType;
 
     private DataProcessor dataProcessor = new DataProcessor();
 
     private void alert(String message) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner((Stage) textArea.getScene().getWindow());
+        dialog.initOwner((Stage) root.getScene().getWindow());
         dialog.getIcons().add(new Image("icon.png"));
         dialog.setTitle("Error");
 
@@ -51,36 +60,65 @@ public class ImportController {
         dialog.show();
     }
 
-    public void importGraphDataFromTextArea() throws IOException {
+    public void importGraphDataFromTextArea() {
         String textInput = textArea.getText();
-        Graph graph;
+        Graph newGraph;
         try {
-            //TODO: let user have spaces before endl
-            graph = dataProcessor.makeGraphFromInput(textInput, graphType);
+            newGraph = dataProcessor.makeGraphFromInput(textInput, graphType);
         } catch (DataProcessor.IncorrectInputFormatException e) {
             alert("Incorrect input format");
             return;
         }
-        ((Stage) textArea.getScene().getWindow()).close();
-        graphDrawerController.drawNewGraph(graph);
+        ((Stage) root.getScene().getWindow()).close();
+
+        Graph oldGraph = graphDrawerController.getGraph();
+        switch (mergeType) {
+            case UNION:
+                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph));
+                break;
+            case DISJOINT_UNION:
+                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph));
+                break;
+        }
+    }
+
+    public void browseAndPull() {
+        Stage rootStage = (Stage) root.getScene().getWindow();
+        try {
+            textArea.setText(FileIOProcessor.pullWithChoice(rootStage));
+        } catch (FileIOProcessor.CancelledException e) {
+        } catch (IOException e) {
+            alert("Pull failed");
+        }
     }
 
     public void setGraphType() {
-        JFXRadioButton selectedRadioButton = (JFXRadioButton) typeGroup.getSelectedToggle();
-        String toogleGroupValue = selectedRadioButton.getText();
-        if (toogleGroupValue.equals("Adjacency matrix"))
-            graphType = DataProcessor.Type.ADJACENCY_MATRIX;
-        else if (toogleGroupValue.equals("Incidence matrix"))
-            graphType = DataProcessor.Type.INCIDENCE_MATRIX;
-        else //toogleGroupValue.equals("Edges list")
-            graphType = DataProcessor.Type.EDGE_LIST;
+        switch (((JFXRadioButton) typeGroup.getSelectedToggle()).getText()) {
+            case "Adjacency matrix":
+                graphType = DataProcessor.Type.ADJACENCY_MATRIX;
+                break;
+            case "Incidence matrix":
+                graphType = DataProcessor.Type.INCIDENCE_MATRIX;
+                break;
+            case "Edges list":
+                graphType = DataProcessor.Type.EDGE_LIST;
+                break;
+        }
     }
 
-    //TODO: implement merge response
+    public void setMergeType() {
+        switch (((JFXRadioButton) mergeGroup.getSelectedToggle()).getText()) {
+            case "Union graph":
+                mergeType = GraphMerger.Type.UNION;
+                break;
+            case "Renumber new graph":
+                mergeType = GraphMerger.Type.DISJOINT_UNION;
+                break;
+        }
+    }
 
     public static void setGraphDrawerController(GraphDrawerController graphDrawer) {
         graphDrawerController = graphDrawer;
     }
-
 
 }
