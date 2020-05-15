@@ -42,6 +42,13 @@ public class Graph {
         return vertex;
     }
 
+    public Vertex addVertex(Vertex vert) {
+        int newId = size() + 1;
+        Vertex vertex = new Vertex(newId, vert.xPos(), vert.yPos());
+        vertices.add(vertex);
+        return vertex;
+    }
+
     public void removeVertex(int id) {
         Collection<Edge> toRem = edges.stream().filter(e -> e.vert2().id() == id || e.vert1().id() == id).collect(Collectors.toList());
         edges.removeAll(toRem);
