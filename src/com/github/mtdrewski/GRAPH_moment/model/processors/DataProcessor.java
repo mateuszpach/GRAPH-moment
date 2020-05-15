@@ -6,6 +6,8 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 
 import java.util.Random;
 
+//TODO: consider changing methods to static and then adjusting import/export controllers
+//TODO: (IMPORTANT) let user have spaces before endl
 public class DataProcessor {
     //TODO: when implemented differentiate between directed and undirected,weighted and unweighted edges
     //TODO implement writing output out of given graph

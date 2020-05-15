@@ -21,6 +21,9 @@
                         <JFXButton fx:id="browseButton" onAction="#browseAndSave" disable="true"
                                    styleClass="small-green-button" text="Browse"
                                    BorderPane.alignment="CENTER">
+                            <graphic>
+                                <FontIcon iconLiteral="gmi-folder-open" iconSize="20"/>
+                            </graphic>
                             <BorderPane.margin>
                                 <Insets right="15.0"/>
                             </BorderPane.margin>

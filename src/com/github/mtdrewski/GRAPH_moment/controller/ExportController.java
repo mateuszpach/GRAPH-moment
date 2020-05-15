@@ -46,7 +46,6 @@ public class ExportController {
     DataProcessor.Type graphType;
 
     private DataProcessor dataProcessor = new DataProcessor();
-    private FileIOProcessor fileIOProcessor = new FileIOProcessor();
 
     private enum State {
         BEFORE_EXPORT, AFTER_EXPORT;
@@ -80,15 +79,10 @@ public class ExportController {
     public void exportGraphDataToTextArea() {
         switch (state) {
             case BEFORE_EXPORT:
-                try {
-                    Graph graph = graphDrawerController.getGraph();
-                    //TODO: implement makeOutputFromGraph and specify exception
-                    String text = dataProcessor.makeOutputFromGraph(graph, graphType);
-                    textArea.setText(text);
-                } catch (Exception e /*DataProcessor.IncorrectFormatException e*/) {
-                    alert("Graph export failed");
-                    return;
-                }
+                Graph graph = graphDrawerController.getGraph();
+                String text = dataProcessor.makeOutputFromGraph(graph, graphType);
+                textArea.setText(text);
+
                 exportButton.getStyleClass().remove("green-button");
                 exportButton.getStyleClass().add("red-button");
                 exportButton.setText("Close");
@@ -96,6 +90,7 @@ public class ExportController {
                 radioButton1.setDisable(true);
                 radioButton2.setDisable(true);
                 radioButton3.setDisable(true);
+
                 state = State.AFTER_EXPORT;
                 break;
             case AFTER_EXPORT:
@@ -108,7 +103,7 @@ public class ExportController {
         Stage rootStage = (Stage) root.getScene().getWindow();
         boolean isSaved = false;
         try {
-            isSaved = FileIOProcessor.saveAs(rootStage, textArea.getText());
+            isSaved = FileIOProcessor.saveWithChoice(rootStage, textArea.getText());
         } catch (IOException e) {
             alert("Save failed");
         }
@@ -116,14 +111,17 @@ public class ExportController {
     }
 
     public void setGraphType() {
-        JFXRadioButton selectedRadioButton = (JFXRadioButton) typeGroup.getSelectedToggle();
-        String toogleGroupValue = selectedRadioButton.getText();
-        if (toogleGroupValue.equals("Adjacency matrix"))
-            graphType = DataProcessor.Type.ADJACENCY_MATRIX;
-        else if (toogleGroupValue.equals("Incidence matrix"))
-            graphType = DataProcessor.Type.INCIDENCE_MATRIX;
-        else //toogleGroupValue.equals("Edges list")
-            graphType = DataProcessor.Type.EDGE_LIST;
+        switch (((JFXRadioButton) typeGroup.getSelectedToggle()).getText()) {
+            case "Adjacency matrix":
+                graphType = DataProcessor.Type.ADJACENCY_MATRIX;
+                break;
+            case "Incidence matrix":
+                graphType = DataProcessor.Type.INCIDENCE_MATRIX;
+                break;
+            case "Edges list":
+                graphType = DataProcessor.Type.EDGE_LIST;
+                break;
+        }
     }
 
     public static void setGraphDrawerController(GraphDrawerController graphDrawer) {
