@@ -7,25 +7,36 @@ import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class GraphDrawerController {
 
     @FXML
-    AnchorPane anchorPane;
+    private AnchorPane root;
+
+    private File file = null;
 
     private boolean cursorOverVertex = false;
-    private enum Mode { EDGE, SELECT, STANDARD };
+    protected boolean isUnsaved = false;
+
+    private enum Mode {EDGE, SELECT, STANDARD;}
+
+    ;
     Mode mode;
-
     private EdgeLine currentEdge;
-    private VertexCircle sourceVertex = null;
 
+    private VertexCircle sourceVertex = null;
     private ArrayList<VertexCircle> selectedVertices;
 
     private Graph graph;
+
+    public boolean isUnsaved() {
+        return isUnsaved;
+    }
 
     public void setCursorOverVertex(boolean value) {
         cursorOverVertex = value;
@@ -57,13 +68,15 @@ public class GraphDrawerController {
     };
 
     public void initialize() {
+        MainController.setGraphDrawerController(this);
+        NewProjectOptionsController.setGraphDrawerController(this);
         ImportController.setGraphDrawerController(this);
         ExportController.setGraphDrawerController(this);
         graph = new Graph();
         mode = Mode.STANDARD;
         selectedVertices = new ArrayList<>();
 
-        anchorPane.setOnMousePressed(e -> {
+        root.setOnMousePressed(e -> {
             if (e.getButton().equals(MouseButton.PRIMARY)) {
 
                 if (mode == Mode.EDGE && !cursorOverVertex) {
@@ -77,20 +90,20 @@ public class GraphDrawerController {
                 if (mode == Mode.STANDARD && e.getClickCount() == 2 && !cursorOverVertex) {
                     VertexCircle vertexShape = vertexShapeFactory.get();
                     vertexShape.setPosition(e);
-                    anchorPane.getChildren().addAll(vertexShape, vertexShape.getIdText());
+                    root.getChildren().addAll(vertexShape, vertexShape.getIdText());
                 }
             }
         });
-        anchorPane.setOnMouseMoved(e -> {
+        root.setOnMouseMoved(e -> {
             if (currentEdge != null && mode == Mode.EDGE)
                 currentEdge.followCursor(e);
         });
-        anchorPane.setOnMouseDragged(e -> {
+        root.setOnMouseDragged(e -> {
             if (currentEdge != null && mode == Mode.EDGE)
                 currentEdge.followCursor(e);
         });
-        anchorPane.setFocusTraversable(true);
-        anchorPane.setOnKeyPressed(e -> {
+        root.setFocusTraversable(true);
+        root.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.CONTROL && mode == Mode.STANDARD) {
                 mode = Mode.SELECT;
             }
@@ -98,7 +111,7 @@ public class GraphDrawerController {
                 deleteAll();
             }
         });
-        anchorPane.setOnKeyReleased(e -> {
+        root.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.CONTROL && mode == Mode.SELECT) {
                 mode = Mode.STANDARD;
             }
@@ -106,20 +119,18 @@ public class GraphDrawerController {
     }
 
     protected void enterEdgeMode(VertexCircle vertex) {
-
         sourceVertex = vertex;
         EdgeLine edge = edgeLineFactory.get();
         sourceVertex.addOutcomingEdge(edge);
 
         currentEdge = edge;
-        anchorPane.getChildren().add(0, edge);
+        root.getChildren().add(0, edge);
         mode = Mode.EDGE;
     }
 
     protected void exitEdgeMode(boolean success) {
-
         if (!success) {
-            anchorPane.getChildren().remove(currentEdge);
+            root.getChildren().remove(currentEdge);
             sourceVertex.removeOutcomingEdge(currentEdge);
         }
 
@@ -129,32 +140,34 @@ public class GraphDrawerController {
     }
 
     protected void selectVertex(VertexCircle vertex) {
-        int index = anchorPane.getChildren().indexOf(vertex);
-        anchorPane.getChildren().add(index, vertex.getShadow());
+        int index = root.getChildren().indexOf(vertex);
+        root.getChildren().add(index, vertex.getShadow());
         selectedVertices.add(vertex);
     }
 
     protected void deselectAll() {
         selectedVertices.stream().forEach(v -> {
-            anchorPane.getChildren().remove(v.getShadow());
+            root.getChildren().remove(v.getShadow());
             v.deselect();
         });
         selectedVertices.clear();
     }
 
     protected void deselect(VertexCircle vertex) {
-        anchorPane.getChildren().remove(vertex.getShadow());
+        root.getChildren().remove(vertex.getShadow());
         selectedVertices.remove(vertex);
     }
 
     private void deleteAll() {
+        isUnsaved = true;
+
         selectedVertices.stream().forEach(v -> {
-            anchorPane.getChildren().removeAll(v.getOutcomingEdges());
-            anchorPane.getChildren().removeAll(v.getIdText(), v.getShadow(), v);
+            root.getChildren().removeAll(v.getOutcomingEdges());
+            root.getChildren().removeAll(v.getIdText(), v.getShadow(), v);
             graph.removeVertex(v.id());
         });
 
-        anchorPane.getChildren().stream().forEach(n -> {
+        root.getChildren().stream().forEach(n -> {
             if (n.getClass().equals(VertexCircle.class)) {
                 ((VertexCircle) n).refresh();
             }
@@ -164,8 +177,9 @@ public class GraphDrawerController {
     }
 
     public void drawNewGraph(Graph newGraph) {
+        isUnsaved = true;
 
-        anchorPane.getChildren().clear();
+        root.getChildren().clear();
         graph = new Graph();
         ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
 
@@ -173,7 +187,7 @@ public class GraphDrawerController {
             VertexCircle vertexShape = vertexShapeFactory.get();
             vertexShape.setPosition(graphVertex.xPos(), graphVertex.yPos());
             vertexCircles.add(vertexShape);
-            anchorPane.getChildren().addAll(vertexShape, vertexShape.getIdText());
+            root.getChildren().addAll(vertexShape, vertexShape.getIdText());
         }
 
         for (Edge graphEdge : newGraph.getEdges()) {
@@ -184,7 +198,7 @@ public class GraphDrawerController {
             edgeLine.setStartVertex(vertexCircles.get(graphEdge.vert1().id() - 1));
             vertexCircles.get(graphEdge.vert1().id() - 1).addOutcomingEdge(edgeLine);
 
-            anchorPane.getChildren().add(0, edgeLine);
+            root.getChildren().add(0, edgeLine);
 
             edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
             vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);
@@ -193,5 +207,17 @@ public class GraphDrawerController {
         sourceVertex = null;
     }
 
-    public Graph getGraph() { return graph; }
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        //TODO: after adding directed graphs title should look eg. MyGraph [directed/undirected] - GRAPH Moment
+        ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [directed] - GRAPH Moment");
+        this.file = file;
+    }
 }
