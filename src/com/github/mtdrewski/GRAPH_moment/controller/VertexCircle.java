@@ -52,16 +52,19 @@ public class VertexCircle extends Circle {
     public int id() { return underlyingVertex.id(); }
 
     public void addOutcomingEdge(EdgeLine edge) {
+        graphDrawerController.isUnsaved = true;
         outcomingEdges.add(edge);
     }
 
     public void removeOutcomingEdge(EdgeLine edge) {
+        graphDrawerController.isUnsaved = true;
         outcomingEdges.remove(edge);
     }
 
     public ArrayList<EdgeLine> getOutcomingEdges() { return outcomingEdges; }
 
     public void setPosition(MouseEvent e) {
+        graphDrawerController.isUnsaved = true;
         underlyingVertex.setPos(e.getX(), e.getY());
         setCenterX(e.getX());
         setCenterY(e.getY());
@@ -73,6 +76,7 @@ public class VertexCircle extends Circle {
     }
 
     public void setPosition(double x, double y) {
+        graphDrawerController.isUnsaved = true;
         setCenterX(x);
         setCenterY(y);
         setLabelPosition(x, y);
@@ -91,7 +95,6 @@ public class VertexCircle extends Circle {
     }
 
     public void prepareLooks() {
-
         setStrokeWidth(thickness);
         setStroke(strokeColor);
         setFill(fillColor);

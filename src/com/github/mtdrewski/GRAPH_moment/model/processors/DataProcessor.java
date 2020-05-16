@@ -47,8 +47,9 @@ public class DataProcessor {
     }
 
     //TODO: implement this
-    public String makeOutputFromGraph(Graph graph, Type graphType) {
+    public String makeOutputFromGraph(Graph graph, Type graphType) throws NullPointerException {
         String output = "";
+        if (graph == null || graphType == null) throw new NullPointerException();
         switch (graphType) {
             case EDGE_LIST:
                 output = createEdgeList(graph);

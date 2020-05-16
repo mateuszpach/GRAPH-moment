@@ -6,14 +6,9 @@ import com.github.mtdrewski.GRAPH_moment.model.processors.FileIOProcessor;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,18 +19,14 @@ public class ExportController {
 
     @FXML
     private BorderPane root;
-
     @FXML
     private TextArea textArea;
-
     @FXML
     private JFXButton exportButton;
     @FXML
     private JFXButton browseButton;
-
     @FXML
     private ToggleGroup typeGroup;
-
     @FXML
     private JFXRadioButton radioButton1;
     @FXML
@@ -53,35 +44,19 @@ public class ExportController {
 
     State state = State.BEFORE_EXPORT;
 
-    //TODO: avoid code duplication
-    private void alert(String message) {
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner((Stage) root.getScene().getWindow());
-        dialog.getIcons().add(new Image("icon.png"));
-        dialog.setTitle("Error");
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/error_alert.fxml"));
-        Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ((ErrorAlertController) fxmlLoader.getController()).setMessage(message);
-
-        dialog.setScene(new Scene(root, 400, 200));
-        dialog.setMinWidth(400);
-        dialog.setMinHeight(200);
-        dialog.show();
-    }
-
     public void exportGraphDataToTextArea() {
+        Stage rootStage = (Stage) root.getScene().getWindow();
         switch (state) {
             case BEFORE_EXPORT:
                 Graph graph = graphDrawerController.getGraph();
-                String text = dataProcessor.makeOutputFromGraph(graph, graphType);
-                textArea.setText(text);
+
+                try {
+                    String text = dataProcessor.makeOutputFromGraph(graph, graphType);
+                    textArea.setText(text);
+                } catch (NullPointerException e) {
+                    Stager.alert(rootStage, "Format not specified");
+                    return;
+                }
 
                 exportButton.getStyleClass().remove("green-button");
                 exportButton.getStyleClass().add("red-button");
@@ -94,7 +69,7 @@ public class ExportController {
                 state = State.AFTER_EXPORT;
                 break;
             case AFTER_EXPORT:
-                ((Stage) root.getScene().getWindow()).close();
+                rootStage.close();
                 break;
         }
     }
@@ -105,7 +80,7 @@ public class ExportController {
         try {
             isSaved = FileIOProcessor.saveWithChoice(rootStage, textArea.getText());
         } catch (IOException e) {
-            alert("Save failed");
+            Stager.alert(rootStage, "Save failed");
         }
         if (isSaved) rootStage.close();
     }

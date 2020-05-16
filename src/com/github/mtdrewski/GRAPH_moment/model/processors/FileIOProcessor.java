@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 
-
+//TODO: (IMPORTANT) close buffers in case of exception
 public class FileIOProcessor {
     public static boolean saveWithChoice(Stage stage, String source) throws IOException {
         FileChooser fileChooser = new FileChooser();
@@ -22,7 +22,6 @@ public class FileIOProcessor {
         writer.close();
         return true;
     }
-
     public static String pullWithChoice(Stage stage) throws IOException, CancelledException {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(stage);
@@ -34,6 +33,7 @@ public class FileIOProcessor {
         while ((line = reader.readLine()) != null) {
             destination.append(line + '\n');
         }
+        reader.close();
         return destination.toString();
     }
 

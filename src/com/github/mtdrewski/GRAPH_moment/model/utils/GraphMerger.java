@@ -9,8 +9,6 @@ public interface GraphMerger {
         UNION, DISJOINT_UNION
     }
 
-    ;
-
     public static Graph union(Graph graph1, Graph graph2) {
         //TODO check if graphs are simple or directed (or checking can be done inside Graph)
         Graph united = new Graph();

@@ -10,7 +10,7 @@
 <?import java.net.URL?>
 <BorderPane id="root" fx:id="root" minHeight="500.0" minWidth="800.0" prefHeight="800.0" prefWidth="1200.0"
             xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.github.mtdrewski.GRAPH_moment.controller.MenuController">
+            fx:controller="com.github.mtdrewski.GRAPH_moment.controller.MainController">
     <stylesheets>
         <URL value="@main.css"/>
     </stylesheets>
@@ -27,7 +27,8 @@
                 </image>
             </ImageView>
             <Separator prefHeight="50.0" prefWidth="200.0"/>
-            <JFXButton styleClass="left-pane-button" text="New Project" VBox.vgrow="ALWAYS">
+            <JFXButton onAction="#newProjectOnClick" styleClass="left-pane-button" text="New Project"
+                       VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="gmi-add-circle" iconSize="30"/>
                 </graphic>
@@ -39,7 +40,12 @@
             </JFXButton>
             <JFXButton styleClass="left-pane-button" text="Save Project" VBox.vgrow="ALWAYS">
                 <graphic>
-                    <FontIcon iconLiteral="gmi-save" iconSize="30"/>
+                    <FontIcon iconLiteral="mdi-content-save" iconSize="30"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton styleClass="left-pane-button" text="Save Project as" VBox.vgrow="ALWAYS">
+                <graphic>
+                    <FontIcon iconLiteral="mdi-content-save-settings" iconSize="30"/>
                 </graphic>
             </JFXButton>
             <Separator prefHeight="50.0" prefWidth="200.0"/>

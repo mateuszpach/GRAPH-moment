@@ -6,14 +6,9 @@ import com.github.mtdrewski.GRAPH_moment.model.processors.FileIOProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.utils.GraphMerger;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,10 +19,8 @@ public class ImportController {
 
     @FXML
     private BorderPane root;
-
     @FXML
     private TextArea textArea;
-
     @FXML
     ToggleGroup typeGroup;
     @FXML
@@ -38,38 +31,17 @@ public class ImportController {
 
     private DataProcessor dataProcessor = new DataProcessor();
 
-    private void alert(String message) {
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner((Stage) root.getScene().getWindow());
-        dialog.getIcons().add(new Image("icon.png"));
-        dialog.setTitle("Error");
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/error_alert.fxml"));
-        Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ((ErrorAlertController) fxmlLoader.getController()).setMessage(message);
-
-        dialog.setScene(new Scene(root, 400, 200));
-        dialog.setMinWidth(400);
-        dialog.setMinHeight(200);
-        dialog.show();
-    }
-
     public void importGraphDataFromTextArea() {
+        Stage rootStage = (Stage) root.getScene().getWindow();
         String textInput = textArea.getText();
         Graph newGraph;
         try {
             newGraph = dataProcessor.makeGraphFromInput(textInput, graphType);
         } catch (DataProcessor.IncorrectInputFormatException e) {
-            alert("Incorrect input format");
+            Stager.alert(rootStage, "Incorrect input format");
             return;
         }
-        ((Stage) root.getScene().getWindow()).close();
+        rootStage.close();
 
         Graph oldGraph = graphDrawerController.getGraph();
         switch (mergeType) {
@@ -88,7 +60,7 @@ public class ImportController {
             textArea.setText(FileIOProcessor.pullWithChoice(rootStage));
         } catch (FileIOProcessor.CancelledException e) {
         } catch (IOException e) {
-            alert("Pull failed");
+            Stager.alert(rootStage, "Pull failed");
         }
     }
 
