@@ -1,10 +1,10 @@
 package com.github.mtdrewski.GRAPH_moment.model.processors;
 
+import com.github.mtdrewski.GRAPH_moment.controller.GraphDrawerController;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
-
-import java.util.Random;
+import javafx.util.Pair;
 
 //TODO: consider changing methods to static and then adjusting import/export controllers
 //TODO: (IMPORTANT) let user have spaces before endl
@@ -17,6 +17,7 @@ public class DataProcessor {
 
     private Graph inputGraph;
     private Type inputType;
+    private static GraphDrawerController graphDrawerController;
 
     //textInput is in form of regular representation of graph such as in algorithm tasks
     public Graph makeGraphFromInput(String textInput, Type tempType) throws IncorrectInputFormatException {
@@ -36,11 +37,11 @@ public class DataProcessor {
                 break;
         }
 
-        Random r = new Random();
-        double max = 800.0;       //TODO: make it change with the Panel size
-        double min = 100.0;
-        for (Vertex v1 : inputGraph.getVertices())
-            v1.setPos(min + r.nextDouble() * (max - min), min + r.nextDouble() * (max - min));
+
+        for (Vertex v1 : inputGraph.getVertices()) {
+            Pair<Double, Double> coords = graphDrawerController.getRandomCoords();
+            v1.setPos(coords.getKey(), coords.getValue());
+        }
 
 
         return inputGraph;
@@ -181,5 +182,9 @@ public class DataProcessor {
         public String toString() {
             return "Error, given input: " + textInput + " of type:" + inputType.toString() + " is in incorrect format!";
         }
+    }
+
+    public static void setGraphDrawerController(GraphDrawerController graphDrawer) {
+        graphDrawerController = graphDrawer;
     }
 }

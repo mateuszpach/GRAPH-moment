@@ -1,16 +1,20 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
+import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGenerator;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
+import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class GraphDrawerController {
@@ -72,6 +76,8 @@ public class GraphDrawerController {
         GenerateController.setGraphDrawerController(this);
         ImportController.setGraphDrawerController(this);
         ExportController.setGraphDrawerController(this);
+        DataProcessor.setGraphDrawerController(this);
+        IntervalConstrainedGenerator.setGraphDrawerController(this);
         graph = new Graph();
         mode = Mode.STANDARD;
         selectedVertices = new ArrayList<>();
@@ -219,5 +225,12 @@ public class GraphDrawerController {
         //TODO: after adding directed graphs title should look eg. MyGraph [directed/undirected] - GRAPH Moment
         ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [directed] - GRAPH Moment");
         this.file = file;
+    }
+
+    public Pair<Double, Double> getRandomCoords() {
+        Random random = new Random();
+        return new Pair<>(
+                random.nextDouble() * (root.getWidth()- 40.0) + 20.0, random.nextDouble() * (root.getHeight()- 40.0) + 20.0
+        );
     }
 }
