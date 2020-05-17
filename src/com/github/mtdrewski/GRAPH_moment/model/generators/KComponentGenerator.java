@@ -11,18 +11,11 @@ Interval constraints passed to constructors are suposed to constrain a single co
  */
 public class KComponentGenerator extends StandardGraphGenerator {
 
-    private int numOfComponents;
+    private final int numOfComponents;
 
     public KComponentGenerator(int minV, int maxV, int minE, int maxE, int comp) {
         super(minV, maxV, minE, maxE);
         if (maxE < minV - 1 || comp <= 0)
-            throw new IllegalArgumentException();
-        numOfComponents = comp;
-    }
-
-    public KComponentGenerator(int v, int e, int comp) {
-        super(v, e);
-        if (e < v - 1 || comp <= 0)
             throw new IllegalArgumentException();
         numOfComponents = comp;
     }
@@ -34,10 +27,13 @@ public class KComponentGenerator extends StandardGraphGenerator {
         numOfComponents = 1;
     }
 
-    public KComponentGenerator(int v, int e) {
-        super(v, e);
-        if (e < v - 1)
-            throw new IllegalArgumentException();
+    public KComponentGenerator(int minV, int maxV, int comp) {
+        super(minV, maxV, minV - 1, maxV*(maxV-1)/2);
+        numOfComponents = comp;
+    }
+
+    public KComponentGenerator(int minV, int maxV) {
+        super(minV, maxV, minV - 1, maxV*(maxV-1)/2);
         numOfComponents = 1;
     }
 

@@ -14,9 +14,7 @@ public class StandardGraphGenerator extends IntervalConstrainedGenerator {
         super(minV, maxV, minE, maxE);
     }
 
-    public StandardGraphGenerator(int v, int e) { super(v, v, e, e); }
-
-    public StandardGraphGenerator(int v) { super(v, v, 0, v * (v - 1) / 2); }
+    public StandardGraphGenerator(int minV, int maxV) { super(minV, maxV, 0, maxV * (maxV - 1) / 2); }
 
     protected void prepareVertices(Graph graph) {
         Random random = new Random();
