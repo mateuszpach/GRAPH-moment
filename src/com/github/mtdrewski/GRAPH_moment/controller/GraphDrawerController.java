@@ -23,9 +23,8 @@ public class GraphDrawerController {
     private boolean cursorOverVertex = false;
     protected boolean isUnsaved = false;
 
-    private enum Mode {EDGE, SELECT, STANDARD;}
+    private enum Mode {EDGE, SELECT, STANDARD}
 
-    ;
     Mode mode;
     private EdgeLine currentEdge;
 
@@ -70,6 +69,7 @@ public class GraphDrawerController {
     public void initialize() {
         MainController.setGraphDrawerController(this);
         NewProjectOptionsController.setGraphDrawerController(this);
+        GenerateController.setGraphDrawerController(this);
         ImportController.setGraphDrawerController(this);
         ExportController.setGraphDrawerController(this);
         graph = new Graph();

@@ -4,26 +4,27 @@ import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGen
 import com.github.mtdrewski.GRAPH_moment.model.generators.KComponentGenerator;
 import com.github.mtdrewski.GRAPH_moment.model.generators.StandardGraphGenerator;
 import com.github.mtdrewski.GRAPH_moment.model.generators.TreeGenerator;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.utils.GraphMerger;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
+//TODO: max components
 public class GenerateController {
 
     private static GraphDrawerController graphDrawerController;
 
-    private Map<String, IntervalConstrainedGenerator.type> typeConversion;
+    private Map<String, IntervalConstrainedGenerator.type> typeConversion = new HashMap<>();
+    private GraphMerger.Type mergeType;
 
     public void initGraphTypes() {
         typeConversion.put("Standard", IntervalConstrainedGenerator.type.STANDARD);
@@ -35,46 +36,92 @@ public class GenerateController {
     private BorderPane root;
 
     @FXML
-    private ChoiceBox<String> graphTypeSelector;
+    private JFXComboBox graphTypeSelector;
+
+//    @FXML
+//    private CheckBox isDirected; //TODO
 
     @FXML
-    private CheckBox isDirected; //TODO
-
+    private JFXTextField minVertices;
     @FXML
-    private TextArea minVertices;
+    private JFXTextField maxVertices;
     @FXML
-    private TextArea maxVertices;
+    private JFXTextField minEdges;
     @FXML
-    private TextArea minEdges;
+    private JFXTextField maxEdges;
     @FXML
-    private TextArea maxEdges;
+    private JFXTextField minComponents;
     @FXML
-    private TextArea numOfComponents;
+    private JFXTextField maxComponents;
+    @FXML
+    private Label minVerticesLabel;
+    @FXML
+    private Label maxVerticesLabel;
+    @FXML
+    private Label minEdgesLabel;
+    @FXML
+    private Label maxEdgesLabel;
+    @FXML
+    private Label minComponentsLabel;
+    @FXML
+    private Label maxComponentsLabel;
+    @FXML
+    private ToggleGroup mergeGroup;
 
     public void initialize() {
         initGraphTypes();
         graphTypeSelector.getItems().addAll("Standard", "Multicomponent", "Tree");
+
+        //TODO: make it looks better
+        minEdges.setDisable(false);
+        minEdgesLabel.setDisable(false);
+        maxEdges.setDisable(false);
+        maxEdgesLabel.setDisable(false);
+        minComponents.setText("");
+        minComponents.setDisable(true);
+        minComponentsLabel.setDisable(true);
+        maxComponents.setText("");
+        maxComponents.setDisable(true);
+        maxComponentsLabel.setDisable(true);
+
         graphTypeSelector.setOnAction(e -> {
             IntervalConstrainedGenerator.type type = typeConversion.get(graphTypeSelector.getValue());
             switch (type) {
                 case STANDARD:
-                    minEdges.setEditable(true);
-                    maxEdges.setEditable(true);
-                    numOfComponents.setText("");
-                    numOfComponents.setEditable(false);
+                    minEdges.setDisable(false);
+                    minEdgesLabel.setDisable(false);
+                    maxEdges.setDisable(false);
+                    maxEdgesLabel.setDisable(false);
+                    minComponents.setText("");
+                    minComponents.setDisable(true);
+                    minComponentsLabel.setDisable(true);
+                    maxComponents.setText("");
+                    maxComponents.setDisable(true);
+                    maxComponentsLabel.setDisable(true);
                     break;
                 case MULTICOMPONENT:
-                    minEdges.setEditable(true);
-                    maxEdges.setEditable(true);
-                    numOfComponents.setEditable(false);
+                    minEdges.setDisable(false);
+                    minEdgesLabel.setDisable(false);
+                    maxEdges.setDisable(false);
+                    maxEdgesLabel.setDisable(false);
+                    minComponents.setDisable(false);
+                    minComponentsLabel.setDisable(false);
+                    maxComponents.setDisable(false);
+                    maxComponentsLabel.setDisable(false);
                     break;
                 case TREE:
                     minEdges.setText("");
-                    minEdges.setEditable(false);
+                    minEdges.setDisable(true);
+                    minEdgesLabel.setDisable(true);
                     maxEdges.setText("");
-                    maxEdges.setEditable(false);
-                    numOfComponents.setText("");
-                    numOfComponents.setEditable(false);
+                    maxEdges.setDisable(true);
+                    maxEdgesLabel.setDisable(true);
+                    minComponents.setText("");
+                    minComponents.setDisable(true);
+                    minComponentsLabel.setDisable(true);
+                    maxComponents.setText("");
+                    maxComponents.setDisable(true);
+                    maxComponentsLabel.setDisable(true);
             }
         });
     }
@@ -82,24 +129,37 @@ public class GenerateController {
     public void importAndGenerate() {
 
         IntervalConstrainedGenerator.type type = typeConversion.get(graphTypeSelector.getValue());
+        Graph newGraph = null;
 
         switch (type) {
             case STANDARD:
-                generateStandard();
+                newGraph = generateStandard();
                 break;
             case MULTICOMPONENT:
-                generateMulticomponent();
+                newGraph = generateMulticomponent();
                 break;
             case TREE:
-                generateTree();
+                newGraph = generateTree();
                 break;
             default:
-                alert("Specify the type of graph.");
+                Stager.alert((Stage) root.getScene().getWindow(), "Specify the type of graph.");
+                break;
+        }
+
+        ((Stage) root.getScene().getWindow()).close();
+
+        Graph oldGraph = graphDrawerController.getGraph();
+        switch (mergeType) {
+            case UNION:
+                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph));
+                break;
+            case DISJOINT_UNION:
+                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph));
                 break;
         }
     }
 
-    private void generateStandard() {
+    private Graph generateStandard() {
         try {
             String minV, maxV, minE, maxE;
 
@@ -112,23 +172,22 @@ public class GenerateController {
 
             if (minE.equals("") && maxE.equals("")) {
                 generator = new StandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
-            }
-            else if (!minE.equals("") && !maxE.equals("")) {
+            } else if (!minE.equals("") && !maxE.equals("")) {
                 generator = new StandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV),
-                                                       Integer.parseInt(minE), Integer.parseInt(maxE));
+                        Integer.parseInt(minE), Integer.parseInt(maxE));
             }
 
             if (generator == null)
                 throw new IllegalArgumentException("Some field should or shouldn't be empty and isn't as it should");
 
-            graphDrawerController.drawNewGraph(generator.generate());
+            return generator.generate();
+        } catch (IllegalArgumentException e) {
+            Stager.alert((Stage) root.getScene().getWindow(), "Wrong input");
         }
-        catch (IllegalArgumentException e) {
-            alert("Wrong input");
-        }
+        return null;
     }
 
-    private void generateMulticomponent() {
+    private Graph generateMulticomponent() {
         try {
             String minV, maxV, minE, maxE, cNum;
 
@@ -136,7 +195,7 @@ public class GenerateController {
             maxV = maxVertices.getText();
             minE = minEdges.getText();
             maxE = maxEdges.getText();
-            cNum = numOfComponents.getText();
+            cNum = minComponents.getText(); //TODO: maxNumOfComponents
 
             KComponentGenerator generator = null;
 
@@ -145,27 +204,25 @@ public class GenerateController {
                     generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
                 else
                     generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(cNum));
-            }
-            else if (!minE.equals("") && !maxE.equals("")) {
+            } else if (!minE.equals("") && !maxE.equals("")) {
                 if (cNum.equals(""))
                     generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV),
-                                                        Integer.parseInt(minE), Integer.parseInt(maxE));
+                            Integer.parseInt(minE), Integer.parseInt(maxE));
                 else
                     generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV),
-                                                        Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(cNum));
+                            Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(cNum));
             }
-
             if (generator == null)
                 throw new IllegalArgumentException("Some field should or shouldn't be empty and isn't as it should");
 
-            graphDrawerController.drawNewGraph(generator.generate());
+            return generator.generate();
+        } catch (IllegalArgumentException e) {
+            Stager.alert((Stage) root.getScene().getWindow(), "Wrong input");
         }
-        catch (IllegalArgumentException e) {
-            alert("Wrong input");
-        }
+        return null;
     }
 
-    private void generateTree() {
+    private Graph generateTree() {
         try {
             String minV, maxV;
 
@@ -173,33 +230,22 @@ public class GenerateController {
             maxV = maxVertices.getText();
 
             TreeGenerator generator = new TreeGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
-            graphDrawerController.drawNewGraph(generator.generate());
+            return generator.generate();
+        } catch (IllegalArgumentException e) {
+            Stager.alert((Stage) root.getScene().getWindow(), "Wrong input");
         }
-        catch (IllegalArgumentException e) {
-            alert("Wrong input");
-        }
+        return null;
     }
 
-    private void alert(String message) {
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner((Stage) root.getScene().getWindow());
-        dialog.getIcons().add(new Image("icon.png"));
-        dialog.setTitle("Error");
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/error_alert.fxml"));
-        Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void setMergeType() {
+        switch (((JFXRadioButton) mergeGroup.getSelectedToggle()).getText()) {
+            case "Union graph":
+                mergeType = GraphMerger.Type.UNION;
+                break;
+            case "Renumber new graph":
+                mergeType = GraphMerger.Type.DISJOINT_UNION;
+                break;
         }
-        ((ErrorAlertController) fxmlLoader.getController()).setMessage(message);
-
-        dialog.setScene(new Scene(root, 600, 400));
-        dialog.setMinWidth(400);
-        dialog.setMinHeight(600);
-        dialog.show();
     }
 
     public static void setGraphDrawerController(GraphDrawerController graphDrawer) {

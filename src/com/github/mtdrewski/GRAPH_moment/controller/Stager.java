@@ -13,10 +13,10 @@ import java.util.function.Supplier;
 public class Stager {
 
     protected static Supplier<Stage> stageFactory = () -> {
-        Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.getIcons().add(new Image("icon.png"));
-        return dialog;
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.getIcons().add(new Image("icon.png"));
+        return stage;
     };
 
     protected static FXMLLoader initializeStage(Stage owner, Stage stage, String resource, String title, int width, int height) {
@@ -31,6 +31,7 @@ public class Stager {
             stage.showAndWait();
             return fxmlLoader;
         } catch (IOException e) {
+            System.err.println(e.getMessage());
             System.err.println("ERROR: Could not initialize stage.");
         }
         return null;

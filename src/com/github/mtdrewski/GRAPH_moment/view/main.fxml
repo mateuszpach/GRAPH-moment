@@ -49,7 +49,7 @@
                 </graphic>
             </JFXButton>
             <Separator prefHeight="50.0" prefWidth="200.0"/>
-            <JFXButton styleClass="left-pane-button" text="Generate" VBox.vgrow="ALWAYS">
+            <JFXButton onAction="#generateOnClick" styleClass="left-pane-button" text="Generate" VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="mdi-dice-5" iconSize="30"/>
                 </graphic>

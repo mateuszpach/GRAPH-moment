@@ -67,11 +67,21 @@
 
 .input-label {
     -fx-font-size: 16px;
-    -fx-min-width: 200px;
-    -fx-max-width: 200px;
     -fx-min-height: 50px;
     -fx-max-height: 50px;
     -fx-padding: 10 0 10 0;
+}
+
+.mini-input-label {
+    -fx-font-size: 15px;
+    -fx-min-height: 40px;
+    -fx-max-height: 40px;
+    -fx-padding: 10 0 10 0;
+}
+
+.number-input {
+    -fx-translate-y: 8px;
+    -fx-focus-traversable: false;
 }
 
 .green-button {
