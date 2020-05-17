@@ -38,6 +38,17 @@ public class MainController {
                 200);
     }
 
+    public void generateOnClick() {
+        Stage stage = Stager.stageFactory.get();
+        Stager.initializeStage(
+                (Stage) root.getScene().getWindow(),
+                stage,
+                "../view/generate.fxml",
+                "Generate Options",
+                400,
+                720);
+    }
+
     public void importOnClick() {
         Stage stage = Stager.stageFactory.get();
         Stager.initializeStage(

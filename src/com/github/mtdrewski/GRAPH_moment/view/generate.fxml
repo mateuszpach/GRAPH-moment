@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<BorderPane fx:id="root" prefHeight="600.0" prefWidth="400.0" styleClass="dialog-pane"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.mtdrewski.GRAPH_moment.controller.GenerateController">
+    <stylesheets>
+        <URL value="@main.css"/>
+    </stylesheets>
+    <center>
+        <VBox alignment="CENTER" prefWidth="300.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefWidth="100.0">
+                    <children>
+                        <Label styleClass="input-label" text="Type of graph" VBox.vgrow="ALWAYS"/>
+                        <JFXComboBox fx:id="graphTypeSelector" focusTraversable="false"
+                                     maxWidth="1.7976931348623157E308" prefHeight="26.0"
+                                     prefWidth="100.0" VBox.vgrow="ALWAYS">
+                            <value>
+                                <String fx:value="Standard"/>
+                            </value>
+                            <VBox.margin>
+                                <Insets bottom="20.0"/>
+                            </VBox.margin>
+                        </JFXComboBox>
+                    </children>
+                </VBox>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets top="10.0"/>
+                    </VBox.margin>
+                </Separator>
+                <VBox prefWidth="300.0">
+                    <VBox.margin>
+                        <Insets top="10.0"/>
+                    </VBox.margin>
+                    <children>
+                        <Label styleClass="input-label" text="Graph constraints"/>
+                        <Label styleClass="mini-input-label" text="Number of vertices" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets left="10.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <HBox prefWidth="200.0">
+                            <children>
+                                <Label fx:id="minVerticesLabel" styleClass="mini-input-label" text="Minimum:">
+                                    <HBox.margin>
+                                        <Insets left="10.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <JFXTextField fx:id="minVertices" prefWidth="50" styleClass="number-input">
+                                    <HBox.margin>
+                                        <Insets left="15.0"/>
+                                    </HBox.margin>
+                                </JFXTextField>
+                                <Label fx:id="maxVerticesLabel" styleClass="mini-input-label" text="Maximum:">
+                                    <HBox.margin>
+                                        <Insets left="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <JFXTextField fx:id="maxVertices" prefWidth="50" styleClass="number-input">
+                                    <HBox.margin>
+                                        <Insets left="15.0"/>
+                                    </HBox.margin>
+                                </JFXTextField>
+                            </children>
+                        </HBox>
+                        <Label styleClass="mini-input-label" text="Number of edges" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets left="10.0" top="10.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <HBox prefWidth="200.0">
+                            <children>
+                                <Label fx:id="minEdgesLabel" styleClass="mini-input-label" text="Minimum:">
+                                    <HBox.margin>
+                                        <Insets left="10.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <JFXTextField fx:id="minEdges" prefWidth="50" styleClass="number-input">
+                                    <HBox.margin>
+                                        <Insets left="15.0"/>
+                                    </HBox.margin>
+                                </JFXTextField>
+                                <Label fx:id="maxEdgesLabel" styleClass="mini-input-label" text="Maximum:">
+                                    <HBox.margin>
+                                        <Insets left="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <JFXTextField fx:id="maxEdges" prefWidth="50" styleClass="number-input">
+                                    <HBox.margin>
+                                        <Insets left="15.0"/>
+                                    </HBox.margin>
+                                </JFXTextField>
+                            </children>
+                        </HBox>
+                        <Label styleClass="mini-input-label" text="Number of components" VBox.vgrow="ALWAYS">
+                            <VBox.margin>
+                                <Insets left="10.0" top="10.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <HBox prefWidth="200.0">
+                            <children>
+                                <Label fx:id="minComponentsLabel" styleClass="mini-input-label" text="Minimum:">
+                                    <HBox.margin>
+                                        <Insets left="10.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <JFXTextField fx:id="minComponents" prefWidth="50" styleClass="number-input">
+                                    <HBox.margin>
+                                        <Insets left="15.0"/>
+                                    </HBox.margin>
+                                </JFXTextField>
+                                <Label fx:id="maxComponentsLabel" styleClass="mini-input-label" text="Maximum:">
+                                    <HBox.margin>
+                                        <Insets left="20.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <JFXTextField fx:id="maxComponents" prefWidth="50" styleClass="number-input">
+                                    <HBox.margin>
+                                        <Insets left="15.0"/>
+                                    </HBox.margin>
+                                </JFXTextField>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets top="20.0"/>
+                    </VBox.margin>
+                </Separator>
+                <VBox prefWidth="300.0">
+                    <fx:define>
+                        <ToggleGroup fx:id="mergeGroup"/>
+                    </fx:define>
+                    <children>
+                        <Label styleClass="input-label" text="Merge procedure"/>
+                        <JFXRadioButton onAction="#setMergeType" styleClass="input-radio-button" text="Union graph"
+                                        toggleGroup="$mergeGroup">
+                        </JFXRadioButton>
+                        <JFXRadioButton onAction="#setMergeType" styleClass="input-radio-button"
+                                        text="Renumber new graph" toggleGroup="$mergeGroup"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0"/>
+                    </VBox.margin>
+                </VBox>
+                <Separator layoutX="10.0" layoutY="56.0" prefWidth="200.0"/>
+                <Region VBox.vgrow="ALWAYS"/>
+                <JFXButton fx:id="generateButton" alignment="CENTER" maxWidth="1.7976931348623157E308"
+                           onAction="#importAndGenerate" styleClass="green-button" text="Generate"
+                           VBox.vgrow="ALWAYS">
+                    <VBox.margin>
+                        <Insets top="30.0"/>
+                    </VBox.margin>
+                </JFXButton>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+            </BorderPane.margin>
+        </VBox>
+    </center>
+
+</BorderPane>
