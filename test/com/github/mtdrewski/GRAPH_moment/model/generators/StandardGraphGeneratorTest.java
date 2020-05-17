@@ -1,5 +1,6 @@
 package com.github.mtdrewski.GRAPH_moment.model.generators;
 
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import org.junit.Test;
 
@@ -9,6 +10,24 @@ public class StandardGraphGeneratorTest {
 
     @Test
     public void graphCreationThrowing() {
+
+        for (int i = 1; i <= 50; i++) {
+            Graph graph = new StandardGraphGenerator(20, 100, 10, 800).generate();
+            for (int j = 1; j <= graph.getVertices().size(); j++) {
+                assertEquals(j, graph.getVertices().get(j-1).id());
+            }
+            for (Edge e : graph.getEdges()) {
+                assertTrue(e.vert1().id() >= 1 && e.vert1().id() <= graph.size());
+                assertTrue(e.vert2().id() >= 1 && e.vert2().id() <= graph.size());
+                assertNotEquals(e.vert1().id(), e.vert2().id());
+                int met = 0;
+                for (Edge ed : graph.getEdges()) {
+                    if (e.equals(ed))
+                        met++;
+                }
+                assertEquals(1, met);
+            }
+        }
 
         // should not throw
         try {
@@ -29,8 +48,8 @@ public class StandardGraphGeneratorTest {
             assertTrue(g1.getVertices().size() <= 100 && g1.getEdges().size() <= 100*99/2);
             assertTrue(g2.getVertices().size() >= 15 && g2.getVertices().size() <= 30);
             assertTrue(g2.getEdges().size() == 0);
-            assertTrue(g3.getVertices().size() == 4 && g3.getEdges().size() == 6);
-            assertTrue(g4.getVertices().size() == 100 && g4.getEdges().size() == 100);
+            assertTrue(g3.getVertices().size() >= 4 && g3.getVertices().size() <= 6);
+            assertTrue(g4.getVertices().size() == 100);
 
         }
         catch (IllegalArgumentException e) {

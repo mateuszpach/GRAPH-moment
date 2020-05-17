@@ -8,10 +8,6 @@ import java.util.Vector;
 
 public class TreeGenerator extends StandardGraphGenerator {
 
-    public TreeGenerator(int v) {
-        super(v, v-1);
-    }
-
     public TreeGenerator(int minV, int maxV) {
         super(minV, maxV, minV-1, maxV-1);
     }

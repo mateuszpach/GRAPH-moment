@@ -2,6 +2,8 @@ package com.github.mtdrewski.GRAPH_moment.model.generators;
 
 public abstract class IntervalConstrainedGenerator implements GraphGenerator {
 
+    public static enum type { STANDARD, MULTICOMPONENT, TREE};
+
     protected int minNumOfVertices;
     protected int minNumOfEdges;
 
