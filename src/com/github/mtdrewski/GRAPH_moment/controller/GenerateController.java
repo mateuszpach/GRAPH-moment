@@ -127,6 +127,12 @@ public class GenerateController {
     }
 
     public void importAndGenerate() {
+        Stage rootStage = (Stage) root.getScene().getWindow();
+
+        if (mergeType == null) {
+            Stager.alert(rootStage, "Wrong input");
+            return;
+        }
 
         IntervalConstrainedGenerator.type type = typeConversion.get(graphTypeSelector.getValue());
         Graph newGraph = null;
@@ -142,11 +148,13 @@ public class GenerateController {
                 newGraph = generateTree();
                 break;
             default:
-                Stager.alert((Stage) root.getScene().getWindow(), "Specify the type of graph.");
+                Stager.alert(rootStage, "Specify the type of graph.");
                 break;
         }
 
-        ((Stage) root.getScene().getWindow()).close();
+        if (newGraph == null) return;
+
+        rootStage.close();
 
         Graph oldGraph = graphDrawerController.getGraph();
         switch (mergeType) {
@@ -155,7 +163,7 @@ public class GenerateController {
                 break;
             case DISJOINT_UNION:
                 graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph));
-                break;
+                break;//TODO: add sth here!!!!!!!!!!!!
         }
     }
 
@@ -242,8 +250,11 @@ public class GenerateController {
             case "Union graph":
                 mergeType = GraphMerger.Type.UNION;
                 break;
-            case "Renumber new graph":
+            case "Renumber graph":
                 mergeType = GraphMerger.Type.DISJOINT_UNION;
+                break;
+            case "Replace with graph":
+                mergeType = GraphMerger.Type.DISJOINT_UNION; //TODO: change it!!!!!!!!!!!!
                 break;
         }
     }

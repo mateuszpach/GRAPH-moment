@@ -19,7 +19,7 @@ public class Stager {
         return stage;
     };
 
-    protected static FXMLLoader initializeStage(Stage owner, Stage stage, String resource, String title, int width, int height) {
+    protected static FXMLLoader initializeStage(Stage owner, Stage stage, String resource, String title, int width, int height, boolean wait) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Stager.class.getResource(resource));
             Parent root = fxmlLoader.load();
@@ -28,7 +28,11 @@ public class Stager {
             stage.setScene(new Scene(root, width, height));
             stage.setMinWidth(width);
             stage.setMinHeight(height);
-            stage.showAndWait();
+            if (wait) {
+                stage.showAndWait();
+            } else {
+                stage.show();
+            }
             return fxmlLoader;
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -37,9 +41,13 @@ public class Stager {
         return null;
     }
 
+    protected static FXMLLoader initializeStage(Stage owner, Stage stage, String resource, String title, int width, int height) {
+        return initializeStage(owner, stage, resource, title, width, height, true);
+    }
+
     protected static void alert(Stage owner, String message) {
         Stage stage = stageFactory.get();
-        FXMLLoader fxmlLoader = initializeStage(owner, stage, "../view/error_alert.fxml", "Error", 400, 200);
+        FXMLLoader fxmlLoader = initializeStage(owner, stage, "../view/error_alert.fxml", "Error", 400, 200, false);
         ((ErrorAlertController) fxmlLoader.getController()).setMessage(message);
     }
 }

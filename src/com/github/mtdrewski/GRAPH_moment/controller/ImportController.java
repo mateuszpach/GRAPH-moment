@@ -50,7 +50,7 @@ public class ImportController {
                 break;
             case DISJOINT_UNION:
                 graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph));
-                break;
+                break;//TODO: add sth here!!!!!!!!!!!!
         }
     }
 
@@ -83,8 +83,11 @@ public class ImportController {
             case "Union graph":
                 mergeType = GraphMerger.Type.UNION;
                 break;
-            case "Renumber new graph":
+            case "Renumber graph":
                 mergeType = GraphMerger.Type.DISJOINT_UNION;
+                break;
+            case "Replace with graph":
+                mergeType = GraphMerger.Type.DISJOINT_UNION; //TODO change it!!!!!!!!!!
                 break;
         }
     }
