@@ -7,10 +7,12 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 public interface GraphMerger {
 
     public enum Type {
-        UNION, DISJOINT_UNION
+        UNION, DISJOINT_UNION, REPLACE
     }
 
     public static Graph union(Graph graph1, Graph graph2) {
+        if (graph2 == null)
+            return graph1;
         //TODO check if graphs are simple or directed (or checking can be done inside Graph)
         Graph united = new Graph();
 
@@ -33,6 +35,8 @@ public interface GraphMerger {
     }
 
     public static Graph disjointUnion(Graph graph1, Graph graph2) {
+        if (graph2 == null)
+            return graph1;
         //TODO check if graphs are simple or directed (or checking can be done inside Graph)
         Graph united = new Graph();
         for (Vertex vertex : graph1.getVertices()) {

@@ -163,7 +163,12 @@ public class GenerateController {
                 break;
             case DISJOINT_UNION:
                 graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph));
-                break;//TODO: add sth here!!!!!!!!!!!!
+                break;
+            case REPLACE:
+                graphDrawerController.drawNewGraph(newGraph);
+                break;
+            default:
+                break;
         }
     }
 
@@ -197,28 +202,29 @@ public class GenerateController {
 
     private Graph generateMulticomponent() {
         try {
-            String minV, maxV, minE, maxE, cNum;
+            String minV, maxV, minE, maxE, minC, maxC;
 
             minV = minVertices.getText();
             maxV = maxVertices.getText();
             minE = minEdges.getText();
             maxE = maxEdges.getText();
-            cNum = minComponents.getText(); //TODO: maxNumOfComponents
+            minC = minComponents.getText();
+            maxC = maxComponents.getText();
 
             KComponentGenerator generator = null;
 
             if (minE.equals("") && maxE.equals("")) {
-                if (cNum.equals(""))
+                if (minC.equals(""))
                     generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
                 else
-                    generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(cNum));
+                    generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minC), Integer.parseInt(maxC));
             } else if (!minE.equals("") && !maxE.equals("")) {
-                if (cNum.equals(""))
+                if (minC.equals(""))
                     generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV),
                             Integer.parseInt(minE), Integer.parseInt(maxE));
                 else
                     generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV),
-                            Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(cNum));
+                            Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(minC), Integer.parseInt(maxC));
             }
             if (generator == null)
                 throw new IllegalArgumentException("Some field should or shouldn't be empty and isn't as it should");
@@ -254,7 +260,7 @@ public class GenerateController {
                 mergeType = GraphMerger.Type.DISJOINT_UNION;
                 break;
             case "Replace with graph":
-                mergeType = GraphMerger.Type.DISJOINT_UNION; //TODO: change it!!!!!!!!!!!!
+                mergeType = GraphMerger.Type.REPLACE;
                 break;
         }
     }

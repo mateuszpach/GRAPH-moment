@@ -19,8 +19,13 @@ public class StandardGraphGenerator extends IntervalConstrainedGenerator {
     protected void prepareVertices(Graph graph) {
         Random random = new Random();
         int numOfVertices = random.nextInt(maxNumOfVertices - minNumOfVertices + 1) + minNumOfVertices;
-        for (int i = 0; i < numOfVertices; i++)
-            graph.addVertex();
+        for (int i = 0; i < numOfVertices; i++) {
+            if (graphDrawerController != null) {
+                Pair<Double, Double> coords = graphDrawerController.getRandomCoords();
+                graph.addVertex(coords.getKey(), coords.getValue());
+            }
+            else graph.addVertex();
+        }
     }
 
     protected void prepareEdges(Graph graph) {

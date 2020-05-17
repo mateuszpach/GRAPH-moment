@@ -5,36 +5,42 @@ import com.github.mtdrewski.GRAPH_moment.model.utils.GraphMerger;
 import javafx.util.Pair;
 
 import java.util.List;
+import java.util.Random;
 
 /*
 Interval constraints passed to constructors are suposed to constrain a single component.
  */
 public class KComponentGenerator extends StandardGraphGenerator {
 
-    private final int numOfComponents;
+    private final int minNumOfComponents;
+    private final int maxNumOfComponents;
 
-    public KComponentGenerator(int minV, int maxV, int minE, int maxE, int comp) {
+    public KComponentGenerator(int minV, int maxV, int minE, int maxE, int minComp, int maxComp) {
         super(minV, maxV, minE, maxE);
-        if (maxE < minV - 1 || comp <= 0)
+        if (maxE < minV - 1 || minComp <= 0 || maxComp < minComp)
             throw new IllegalArgumentException();
-        numOfComponents = comp;
+        minNumOfComponents = minComp;
+        maxNumOfComponents = maxComp;
     }
 
     public KComponentGenerator(int minV, int maxV, int minE, int maxE) {
         super(minV, maxV, minE, maxE);
         if (maxE < minV - 1)
             throw new IllegalArgumentException();
-        numOfComponents = 1;
+        minNumOfComponents = 1;
+        maxNumOfComponents = 1;
     }
 
-    public KComponentGenerator(int minV, int maxV, int comp) {
+    public KComponentGenerator(int minV, int maxV, int minComp, int maxComp, boolean dummy) {
         super(minV, maxV, minV - 1, maxV*(maxV-1)/2);
-        numOfComponents = comp;
+        minNumOfComponents = minComp;
+        maxNumOfComponents = maxComp;
     }
 
     public KComponentGenerator(int minV, int maxV) {
         super(minV, maxV, minV - 1, maxV*(maxV-1)/2);
-        numOfComponents = 1;
+        minNumOfComponents = 1;
+        maxNumOfComponents = 1;
     }
 
     @Override
@@ -57,6 +63,8 @@ public class KComponentGenerator extends StandardGraphGenerator {
     @Override
     public Graph generate() { //TODO finish when disjoint union will be ready and make unit tests
         Graph graph = new Graph();
+        Random random = new Random();
+        int numOfComponents = random.nextInt(maxNumOfComponents - minNumOfComponents + 1) + minNumOfComponents;
         for (int i = 0; i < numOfComponents; i++) {
             Graph component = generateComponent();
             graph = GraphMerger.disjointUnion(graph, component);

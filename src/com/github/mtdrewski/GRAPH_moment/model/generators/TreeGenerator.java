@@ -2,7 +2,6 @@ package com.github.mtdrewski.GRAPH_moment.model.generators;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 
-import java.util.Collections;
 import java.util.Random;
 import java.util.Vector;
 
@@ -12,24 +11,52 @@ public class TreeGenerator extends StandardGraphGenerator {
         super(minV, maxV, minV-1, maxV-1);
     }
 
-    private void dfs(Vector<Boolean> visited, Vector<Integer> neighbours, Graph tree, int v) {
-        visited.set(v, true);
-        Collections.shuffle(neighbours);
-        for (Integer neighbour : neighbours) {
-            if (!visited.get(neighbour)) {
-                tree.addEdge(v, neighbour);
-                dfs(visited, neighbours, tree, neighbour);
-            }
+    private Vector<Integer> pruferCode(int n) {
+        Vector<Integer> code = new Vector<>();
+        Random random = new Random();
+        for (int i = 0; i < n - 2; i++) {
+            code.add(Math.abs(random.nextInt(n) + 1));
         }
+        return code;
     }
 
+    /* Generating with using Prufer method. */
     @Override
     protected void prepareEdges(Graph tree) {
-        Vector<Integer> neighbours = new Vector<>(tree.size());
-        for (int i = 1; i <= tree.size(); i++) neighbours.add(i);
-        Vector<Boolean> visited = new Vector<>(tree.size() + 1);
-        for (int i = 0; i <= tree.size(); i++) visited.add(false);
-        int source = new Random().nextInt(tree.size()) + 1;
-        dfs(visited, neighbours, tree, source);
+        if (tree.size() == 1 || tree.size() == 0)
+            return;
+
+        Vector<Integer> code = pruferCode(tree.size());
+        Vector<Integer> ocurrences = new Vector<>();
+        for (int i = 0; i <= tree.size(); i++) {
+            ocurrences.add(0);
+        }
+        for (int i = 0; i < code.size(); i++) {
+            ocurrences.setElementAt(ocurrences.get(code.get(i)) + 1, code.get(i));
+        }
+
+        for (int i = 0; i < code.size(); i++) {
+            for (int j = 1; j <= tree.size(); j++) {
+                if (ocurrences.get(j) == 0) {
+                    ocurrences.setElementAt(-1, j);
+                    ocurrences.setElementAt(ocurrences.get(code.get(i)) - 1, code.get(i));
+                    tree.addEdge(j, code.get(i));
+                    break;
+                }
+            }
+        }
+
+        boolean found = false;
+        int v1 = -1, v2 = -1;
+        for (int i = 1; i <= tree.size(); i++) {
+            if (!found && ocurrences.get(i) == 0) {
+                v1 = i;
+                found = true;
+            }
+            else if (found && ocurrences.get(i) == 0) {
+                v2 = i;
+            }
+        }
+        tree.addEdge(v1, v2);
     }
 }
