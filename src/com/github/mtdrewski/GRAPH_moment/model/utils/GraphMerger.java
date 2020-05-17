@@ -7,7 +7,7 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 public interface GraphMerger {
 
     public enum Type {
-        UNION, DISJOINT_UNION
+        UNION, DISJOINT_UNION, REPLACE
     }
 
     public static Graph union(Graph graph1, Graph graph2) {

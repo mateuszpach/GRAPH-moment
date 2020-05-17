@@ -163,7 +163,12 @@ public class GenerateController {
                 break;
             case DISJOINT_UNION:
                 graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph));
-                break;//TODO: add sth here!!!!!!!!!!!!
+                break;
+            case REPLACE:
+                graphDrawerController.drawNewGraph(newGraph);
+                break;
+            default:
+                break;
         }
     }
 
@@ -255,7 +260,7 @@ public class GenerateController {
                 mergeType = GraphMerger.Type.DISJOINT_UNION;
                 break;
             case "Replace with graph":
-                mergeType = GraphMerger.Type.DISJOINT_UNION; //TODO: change it!!!!!!!!!!!!
+                mergeType = GraphMerger.Type.REPLACE;
                 break;
         }
     }
