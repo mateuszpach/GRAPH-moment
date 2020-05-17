@@ -46,7 +46,7 @@ public class MainController {
                 "../view/generate.fxml",
                 "Generate Options",
                 400,
-                720);
+                750);
     }
 
     public void importOnClick() {
