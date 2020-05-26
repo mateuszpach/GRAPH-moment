@@ -65,7 +65,8 @@
                 </graphic>
             </JFXButton>
             <Separator prefHeight="50.0" prefWidth="200.0"/>
-            <JFXButton styleClass="left-pane-button" text="Cheatsheet" VBox.vgrow="ALWAYS">
+            <JFXButton onAction="#cheatsheetOnClick" styleClass="left-pane-button" text="Cheatsheet"
+                       VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="gmi-help" iconSize="30"/>
                 </graphic>
