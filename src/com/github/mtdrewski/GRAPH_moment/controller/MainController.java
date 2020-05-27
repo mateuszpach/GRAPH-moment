@@ -71,6 +71,17 @@ public class MainController {
                 600);
     }
 
+    public void cheatsheetOnClick() {
+        Stage stage = Stager.stageFactory.get();
+        Stager.initializeStage(
+                (Stage) root.getScene().getWindow(),
+                stage,
+                "../view/cheatsheet.fxml",
+                "Cheatsheet",
+                700,
+                500);
+    }
+
     public static void setGraphDrawerController(GraphDrawerController graphDrawer) {
         graphDrawerController = graphDrawer;
     }

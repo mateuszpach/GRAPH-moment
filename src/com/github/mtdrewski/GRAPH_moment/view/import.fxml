@@ -60,11 +60,7 @@
                     <children>
                         <Label styleClass="input-label" text="Input format"/>
                         <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button"
-                                        text="Adjacency matrix">
-                            <toggleGroup>
-                                <ToggleGroup fx:id="typeGroup"/>
-                            </toggleGroup>
-                        </JFXRadioButton>
+                                        text="Adjacency matrix" toggleGroup="$typeGroup"/>
                         <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button" text="Incidence matrix"
                                         toggleGroup="$typeGroup"/>
                         <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button" text="Edges list"
@@ -81,11 +77,8 @@
                     </fx:define>
                     <children>
                         <Label styleClass="input-label" text="Merge procedure"/>
-                        <JFXRadioButton onAction="#setMergeType" styleClass="input-radio-button" text="Union graph">
-                            <toggleGroup>
-                                <ToggleGroup fx:id="mergeGroup"/>
-                            </toggleGroup>
-                        </JFXRadioButton>
+                        <JFXRadioButton onAction="#setMergeType" styleClass="input-radio-button" text="Union graph"
+                                        toggleGroup="$mergeGroup"/>
                         <JFXRadioButton onAction="#setMergeType" styleClass="input-radio-button" text="Renumber graph"
                                         toggleGroup="$mergeGroup"/>
                         <JFXRadioButton onAction="#setMergeType" styleClass="input-radio-button"
