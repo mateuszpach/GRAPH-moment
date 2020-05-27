@@ -9,9 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.File;
 
 public class ExportController {
 
@@ -76,13 +77,14 @@ public class ExportController {
 
     public void browseAndSave() {
         Stage rootStage = (Stage) root.getScene().getWindow();
-        boolean isSaved = false;
         try {
-            isSaved = FileIOProcessor.saveWithChoice(rootStage, textArea.getText());
-        } catch (IOException e) {
+            FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showSaveDialog(rootStage);
+            FileIOProcessor.save(textArea.getText(), file);
+            rootStage.close();
+        } catch (IllegalArgumentException e) {
             Stager.alert(rootStage, "Save failed");
         }
-        if (isSaved) rootStage.close();
     }
 
     public void setGraphType() {

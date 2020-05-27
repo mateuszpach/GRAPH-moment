@@ -10,10 +10,12 @@ public class UnsavedAlertController {
     BorderPane root;
 
     public void save() {
-        ((Stage) root.getScene().getWindow()).close();
+        Stage rootStage = (Stage) root.getScene().getWindow();
+        boolean result = ReaderSaver.saveProject(rootStage);
+        if (!result) ReaderSaver.assuranceFailed();
+        rootStage.close();
     }
 
-    //TODO: (IMPORTANT) Implement this method
     public void discard() {
         ((Stage) root.getScene().getWindow()).close();
     }
