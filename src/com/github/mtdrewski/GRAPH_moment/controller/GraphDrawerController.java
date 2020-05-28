@@ -1,5 +1,6 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
+import com.github.mtdrewski.GRAPH_moment.Main;
 import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGenerator;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
@@ -20,12 +21,13 @@ import java.util.function.Supplier;
 public class GraphDrawerController {
 
     @FXML
-    private AnchorPane root;
+    protected AnchorPane root;
 
     private File file = null;
 
     private boolean cursorOverVertex = false;
-    protected boolean isUnsaved = false;
+    private boolean isUnsaved = false;
+    private boolean isDirected =true;
 
     private enum Mode {EDGE, SELECT, STANDARD}
 
@@ -41,14 +43,26 @@ public class GraphDrawerController {
         return isUnsaved;
     }
 
+    public void setUnsaved(boolean b) {
+        isUnsaved = b;
+    }
+
     public void setCursorOverVertex(boolean value) {
         cursorOverVertex = value;
     }
+
     public boolean isInEdgeMode() {
         return mode == Mode.EDGE;
     }
-    public boolean isInSelectMode() { return mode == Mode.SELECT; }
-    public boolean isInStandardMode() { return mode == Mode.STANDARD; }
+
+    public boolean isInSelectMode() {
+        return mode == Mode.SELECT;
+    }
+
+    public boolean isInStandardMode() {
+        return mode == Mode.STANDARD;
+    }
+
     protected EdgeLine getCurrentEdge() {
         return currentEdge;
     }
@@ -64,15 +78,24 @@ public class GraphDrawerController {
     };
 
     public Supplier<EdgeLine> edgeLineFactory = () -> {
-        EdgeLine edge = new EdgeLine(this);
+
+        EdgeLine edge;
+        if(isDirected)
+            edge = new DirectedEdgeLine(this);
+        else
+            edge= new EdgeLine(this);
+
         edge.prepareLooks();
         edge.setStartVertex(sourceVertex);
         return edge;
     };
 
     public void initialize() {
+        //TODO: Maybe GraphDrawer could remember own instance in some static field
+        Main.setGraphDrawerController(this);
         MainController.setGraphDrawerController(this);
         NewProjectOptionsController.setGraphDrawerController(this);
+        ReaderSaver.setGraphDrawerController(this);
         GenerateController.setGraphDrawerController(this);
         ImportController.setGraphDrawerController(this);
         ExportController.setGraphDrawerController(this);

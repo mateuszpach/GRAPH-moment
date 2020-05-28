@@ -19,10 +19,11 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="jfoenix-9.0.8" level="project" />
-    <orderEntry type="library" name="org.kordamp.ikonli:ikonli-materialdesign-pack:11.3.4" level="project" />
-    <orderEntry type="library" name="org.kordamp.ikonli:ikonli-fontawesome-pack:11.3.4" level="project" />
-    <orderEntry type="library" name="org.kordamp.ikonli:ikonli-javafx:11.3.4" level="project" />
-    <orderEntry type="library" name="org.kordamp.ikonli:ikonli-material-pack:11.3.4" level="project" />
+    <orderEntry type="library" name="jfoenix-9.0.9" level="application" />
+    <orderEntry type="library" name="org.kordamp.ikonli:ikonli-fontawesome-pack:11.3.4" level="application" />
+    <orderEntry type="library" name="org.kordamp.ikonli:ikonli-javafx:11.3.4" level="application" />
+    <orderEntry type="library" name="org.kordamp.ikonli:ikonli-material-pack:11.3.4" level="application" />
+    <orderEntry type="library" name="org.kordamp.ikonli:ikonli-materialdesign-pack:11.3.4" level="application" />
+    <orderEntry type="library" name="javafx-swt" level="application" />
   </component>
 </module>
