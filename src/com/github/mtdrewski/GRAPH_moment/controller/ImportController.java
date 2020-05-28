@@ -9,9 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.File;
 
 public class ImportController {
 
@@ -62,9 +63,11 @@ public class ImportController {
     public void browseAndPull() {
         Stage rootStage = (Stage) root.getScene().getWindow();
         try {
-            textArea.setText(FileIOProcessor.pullWithChoice(rootStage));
-        } catch (FileIOProcessor.CancelledException e) {
-        } catch (IOException e) {
+            FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showOpenDialog(rootStage);
+            if (file == null) return;
+            textArea.setText(FileIOProcessor.read(file));
+        } catch (IllegalArgumentException e) {
             Stager.alert(rootStage, "Pull failed");
         }
     }

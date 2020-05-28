@@ -1,5 +1,7 @@
 package com.github.mtdrewski.GRAPH_moment;
 
+import com.github.mtdrewski.GRAPH_moment.controller.GraphDrawerController;
+import com.github.mtdrewski.GRAPH_moment.controller.ReaderSaver;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+
+    private static GraphDrawerController graphDrawerController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -18,10 +22,17 @@ public class Main extends Application {
         primaryStage.setMinHeight(800);
         primaryStage.getIcons().add(new Image("icon.png"));
         primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> {
+            ReaderSaver.assureIsSaved(primaryStage);
+            if (ReaderSaver.checkIfAssuranceFailed()) event.consume();
+        });
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    public static void setGraphDrawerController(GraphDrawerController graphDrawer) {
+        graphDrawerController = graphDrawer;
+    }
 }

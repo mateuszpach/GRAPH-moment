@@ -1,7 +1,6 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -13,20 +12,9 @@ public class MainController {
     private BorderPane root;
 
     public void newProjectOnClick() {
-
-
-        if (graphDrawerController.isUnsaved()) {
-            Stage unsavedAlert = Stager.stageFactory.get();
-            FXMLLoader fxmlLoader = Stager.initializeStage(
-                    (Stage) root.getScene().getWindow(),
-                    unsavedAlert,
-                    "../view/unsaved_alert.fxml",
-                    "Unsaved Changes",
-                    600,
-                    200);
-            //TODO: save to file class
-        }
-
+        Stage rootStage = (Stage) root.getScene().getWindow();
+        ReaderSaver.assureIsSaved(rootStage);
+        if (ReaderSaver.checkIfAssuranceFailed()) return;
 
         Stage newProjectStage = Stager.stageFactory.get();
         Stager.initializeStage(
@@ -36,6 +24,18 @@ public class MainController {
                 "New Graph Options",
                 600,
                 200);
+    }
+
+    public void openProjectOnClick() {
+        ReaderSaver.openProject((Stage) root.getScene().getWindow());
+    }
+
+    public void saveProjectOnClick() {
+        ReaderSaver.saveProject((Stage) root.getScene().getWindow());
+    }
+
+    public void saveProjectAsOnClick() {
+        ReaderSaver.saveProjectAs((Stage) root.getScene().getWindow());
     }
 
     public void generateOnClick() {

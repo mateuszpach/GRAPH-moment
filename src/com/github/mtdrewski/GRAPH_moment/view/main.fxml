@@ -33,17 +33,20 @@
                     <FontIcon iconLiteral="gmi-add-circle" iconSize="30"/>
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="left-pane-button" text="Open Project" VBox.vgrow="ALWAYS">
+            <JFXButton onAction="#openProjectOnClick" styleClass="left-pane-button" text="Open Project"
+                       VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="gmi-folder" iconSize="30"/>
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="left-pane-button" text="Save Project" VBox.vgrow="ALWAYS">
+            <JFXButton onAction="#saveProjectOnClick" styleClass="left-pane-button" text="Save Project"
+                       VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="mdi-content-save" iconSize="30"/>
                 </graphic>
             </JFXButton>
-            <JFXButton styleClass="left-pane-button" text="Save Project as" VBox.vgrow="ALWAYS">
+            <JFXButton onAction="#saveProjectAsOnClick" styleClass="left-pane-button" text="Save Project as"
+                       VBox.vgrow="ALWAYS">
                 <graphic>
                     <FontIcon iconLiteral="mdi-content-save-settings" iconSize="30"/>
                 </graphic>
