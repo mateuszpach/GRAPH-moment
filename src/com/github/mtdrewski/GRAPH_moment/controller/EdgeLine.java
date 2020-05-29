@@ -4,6 +4,7 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 
 public class EdgeLine extends Line {
 
@@ -74,4 +75,9 @@ public class EdgeLine extends Line {
         setEndX(e.getX());
         setEndY(e.getY());
     }
+
+    public void clear(){
+        graphDrawerController.root.getChildren().remove(this);
+    }
+
 }

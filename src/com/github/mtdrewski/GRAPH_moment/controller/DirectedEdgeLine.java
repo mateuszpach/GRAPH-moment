@@ -13,6 +13,10 @@ public class DirectedEdgeLine extends EdgeLine{
 
     public DirectedEdgeLine(GraphDrawerController drawer) {
         super(drawer);
+        setTriangle();
+    }
+
+    private void setTriangle(){
         dx = endXProperty().add(startXProperty().negate());
         dy = endYProperty().add(startYProperty().negate());
         triangle = new Polygon(getEndX(), getEndY(), getEndX() - 16, getEndY() + 8, getEndX() - 16, getEndY() - 8);
@@ -26,14 +30,18 @@ public class DirectedEdgeLine extends EdgeLine{
             rotate.setAngle(getAngle(newValue.doubleValue(), dx.doubleValue()));
         });
 
-        triangle.layoutXProperty().bind(endXProperty());
-        triangle.layoutYProperty().bind(endYProperty());
+        triangle.layoutXProperty().bindBidirectional(endXProperty());
+        triangle.layoutYProperty().bindBidirectional(endYProperty());
         graphDrawerController.root.getChildren().add(triangle);
     }
-
 
     private double getAngle(double dy ,double dx){
         return Math.toDegrees(Math.atan2(dy, dx));
     }
 
+    @Override
+    public void clear(){
+        graphDrawerController.root.getChildren().remove(triangle);
+        super.clear();
+    }
 }

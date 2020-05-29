@@ -27,7 +27,6 @@ public class GraphDrawerController {
 
     private boolean cursorOverVertex = false;
     private boolean isUnsaved = false;
-    private boolean isDirected =true;
 
     private enum Mode {EDGE, SELECT, STANDARD}
 
@@ -80,7 +79,7 @@ public class GraphDrawerController {
     public Supplier<EdgeLine> edgeLineFactory = () -> {
 
         EdgeLine edge;
-        if(isDirected)
+        if(graph.isDirected())
             edge = new DirectedEdgeLine(this);
         else
             edge= new EdgeLine(this);
@@ -101,7 +100,7 @@ public class GraphDrawerController {
         ExportController.setGraphDrawerController(this);
         DataProcessor.setGraphDrawerController(this);
         IntervalConstrainedGenerator.setGraphDrawerController(this);
-        graph = new Graph();
+        graph = new Graph();   //by default our graph is undirected
         mode = Mode.STANDARD;
         selectedVertices = new ArrayList<>();
 
@@ -159,7 +158,7 @@ public class GraphDrawerController {
 
     protected void exitEdgeMode(boolean success) {
         if (!success) {
-            root.getChildren().remove(currentEdge);
+            currentEdge.clear();
             sourceVertex.removeOutcomingEdge(currentEdge);
         }
 
@@ -191,7 +190,8 @@ public class GraphDrawerController {
         isUnsaved = true;
 
         selectedVertices.stream().forEach(v -> {
-            root.getChildren().removeAll(v.getOutcomingEdges());
+            for (EdgeLine edge:v.getOutcomingEdges())
+                edge.clear();
             root.getChildren().removeAll(v.getIdText(), v.getShadow(), v);
             graph.removeVertex(v.id());
         });
@@ -209,7 +209,7 @@ public class GraphDrawerController {
         isUnsaved = true;
 
         root.getChildren().clear();
-        graph = new Graph();
+        graph = new Graph(newGraph.isDirected());
         ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
 
         for (Vertex graphVertex : newGraph.getVertices()) {

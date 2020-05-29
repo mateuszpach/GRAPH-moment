@@ -14,13 +14,13 @@ public class NewProjectOptionsController {
 
     public void undirected() {
         graphDrawerController.setUnsaved(true);
-        graphDrawerController.drawNewGraph(new Graph()); //TODO: modify for directed
+        graphDrawerController.drawNewGraph(new Graph(false));
         ((Stage) root.getScene().getWindow()).close();
     }
 
     public void directed() {
         graphDrawerController.setUnsaved(true);
-        graphDrawerController.drawNewGraph(new Graph()); //TODO: modify for undirected
+        graphDrawerController.drawNewGraph(new Graph(true));
         ((Stage) root.getScene().getWindow()).close();
     }
 
