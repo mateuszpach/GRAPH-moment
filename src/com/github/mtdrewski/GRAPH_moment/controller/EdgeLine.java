@@ -1,17 +1,19 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
+import javafx.beans.binding.DoubleBinding;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.util.Pair;
 
 public class EdgeLine extends Line {
 
     protected double thickness = 4.0;
     protected Color color = Color.BLACK;
 
-    public enum Orientation {BEGIN, END};
+    public enum Orientation {BEGIN, END}
 
     protected Edge underlyingEdge;
     protected VertexCircle startVertex;
@@ -49,8 +51,15 @@ public class EdgeLine extends Line {
     public void setEndVertex(VertexCircle vertex) {
 
         endVertex = vertex;
-        setEndX(vertex.getCenterX());
-        setEndY(vertex.getCenterY());
+
+        double height = getEndY() - getStartY();
+        double width = getEndX() - getStartX();
+        double length = Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2));
+        double subtractX = 20 * width / length;
+        double subtractY = 20 * height / length;
+
+        setEndX(vertex.getCenterX()-subtractX);
+        setEndY(vertex.getCenterY()-subtractY);
         underlyingEdge = graphDrawerController.getGraph().addEdge(startVertex.id(), endVertex.id());
     }
 
@@ -61,9 +70,20 @@ public class EdgeLine extends Line {
             setStartY(vertex.getCenterY());
         }
         else if (vertex == endVertex) {
-            setEndX(vertex.getCenterX());
-            setEndY(vertex.getCenterY());
+
+            Pair<Double,Double> offset=getOffset();
+            setEndX(vertex.getCenterX()-offset.getKey());
+            setEndY(vertex.getCenterY()-offset.getValue());
         }
+    }
+
+    Pair<Double, Double> getOffset(){
+        double height = getEndY() - getStartY();
+        double width = getEndX() - getStartX();
+        double length = Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2));
+        double subtractX = 20 * width / length;
+        double subtractY = 20 * height / length;
+        return new Pair<>(subtractX,subtractY);
     }
 
     public void prepareLooks() {

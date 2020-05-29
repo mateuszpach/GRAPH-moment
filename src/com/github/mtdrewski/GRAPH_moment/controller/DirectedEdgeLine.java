@@ -8,8 +8,6 @@ import javafx.scene.transform.Rotate;
 public class DirectedEdgeLine extends EdgeLine{
 
     private Polygon triangle;
-    private DoubleBinding dx;
-    private DoubleBinding dy;
 
     public DirectedEdgeLine(GraphDrawerController drawer) {
         super(drawer);
@@ -17,9 +15,9 @@ public class DirectedEdgeLine extends EdgeLine{
     }
 
     private void setTriangle(){
-        dx = endXProperty().add(startXProperty().negate());
-        dy = endYProperty().add(startYProperty().negate());
-        triangle = new Polygon(getEndX(), getEndY(), getEndX() - 16, getEndY() + 8, getEndX() - 16, getEndY() - 8);
+        DoubleBinding dx = endXProperty().add(startXProperty().negate());
+        DoubleBinding dy = endYProperty().add(startYProperty().negate());
+        triangle = new Polygon(getEndX(), getEndY(), getEndX() - 24, getEndY() + 8, getEndX() - 24, getEndY() - 8);
         var rotate = new Rotate(0,0,0,1,Rotate.Z_AXIS);
 
         triangle.getTransforms().add(rotate);
@@ -32,7 +30,7 @@ public class DirectedEdgeLine extends EdgeLine{
 
         triangle.layoutXProperty().bindBidirectional(endXProperty());
         triangle.layoutYProperty().bindBidirectional(endYProperty());
-        graphDrawerController.root.getChildren().add(triangle);
+        graphDrawerController.root.getChildren().add(0,triangle);
     }
 
     private double getAngle(double dy ,double dx){
