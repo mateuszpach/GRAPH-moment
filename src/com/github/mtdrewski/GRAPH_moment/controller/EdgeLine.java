@@ -1,22 +1,25 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
+import javafx.beans.binding.DoubleBinding;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
+import javafx.util.Pair;
 
 public class EdgeLine extends Line {
 
-    private double thickness = 4.0;
-    private Color color = Color.BLACK;
+    protected double thickness = 4.0;
+    protected Color color = Color.BLACK;
 
-    public enum Orientation {BEGIN, END};
+    public enum Orientation {BEGIN, END}
 
-    private Edge underlyingEdge;
-    private VertexCircle startVertex;
-    private VertexCircle endVertex;
+    protected Edge underlyingEdge;
+    protected VertexCircle startVertex;
+    protected VertexCircle endVertex;
 
-    private GraphDrawerController graphDrawerController;
+    protected GraphDrawerController graphDrawerController;
 
     public EdgeLine(GraphDrawerController drawer) {
         graphDrawerController = drawer;
@@ -41,28 +44,31 @@ public class EdgeLine extends Line {
         startVertex = vertex;
         setStartX(vertex.getCenterX());
         setStartY(vertex.getCenterY());
-        setEndX(vertex.getCenterX());
-        setEndY(vertex.getCenterY());
     }
 
     public void setEndVertex(VertexCircle vertex) {
-
         endVertex = vertex;
-        setEndX(vertex.getCenterX());
-        setEndY(vertex.getCenterY());
+        followWithOffset();
         underlyingEdge = graphDrawerController.getGraph().addEdge(startVertex.id(), endVertex.id());
     }
 
     public void followVertex(VertexCircle vertex) {
 
-        if (vertex == startVertex) {
+        if (vertex == startVertex) {   System.out.println("start");
             setStartX(vertex.getCenterX());
             setStartY(vertex.getCenterY());
         }
-        else if (vertex == endVertex) {
-            setEndX(vertex.getCenterX());
-            setEndY(vertex.getCenterY());
-        }
+        followWithOffset();
+    }
+
+    void followWithOffset(){
+        double height = getEndY() - getStartY();
+        double width = getEndX() - getStartX();
+        double length = Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2));
+        double subtractX = 20 * width / length;
+        double subtractY = 20 * height / length;
+        setEndX(endVertex.getCenterX()-subtractX);
+        setEndY(endVertex.getCenterY()-subtractY);
     }
 
     public void prepareLooks() {
@@ -74,4 +80,9 @@ public class EdgeLine extends Line {
         setEndX(e.getX());
         setEndY(e.getY());
     }
+
+    public void clear(){
+        graphDrawerController.root.getChildren().remove(this);
+    }
+
 }
