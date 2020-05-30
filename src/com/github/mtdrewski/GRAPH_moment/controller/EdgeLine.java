@@ -44,46 +44,31 @@ public class EdgeLine extends Line {
         startVertex = vertex;
         setStartX(vertex.getCenterX());
         setStartY(vertex.getCenterY());
-        setEndX(vertex.getCenterX());
-        setEndY(vertex.getCenterY());
     }
 
     public void setEndVertex(VertexCircle vertex) {
-
         endVertex = vertex;
-
-        double height = getEndY() - getStartY();
-        double width = getEndX() - getStartX();
-        double length = Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2));
-        double subtractX = 20 * width / length;
-        double subtractY = 20 * height / length;
-
-        setEndX(vertex.getCenterX()-subtractX);
-        setEndY(vertex.getCenterY()-subtractY);
+        followWithOffset();
         underlyingEdge = graphDrawerController.getGraph().addEdge(startVertex.id(), endVertex.id());
     }
 
     public void followVertex(VertexCircle vertex) {
 
-        if (vertex == startVertex) {
+        if (vertex == startVertex) {   System.out.println("start");
             setStartX(vertex.getCenterX());
             setStartY(vertex.getCenterY());
         }
-        else if (vertex == endVertex) {
-
-            Pair<Double,Double> offset=getOffset();
-            setEndX(vertex.getCenterX()-offset.getKey());
-            setEndY(vertex.getCenterY()-offset.getValue());
-        }
+        followWithOffset();
     }
 
-    Pair<Double, Double> getOffset(){
+    void followWithOffset(){
         double height = getEndY() - getStartY();
         double width = getEndX() - getStartX();
         double length = Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2));
         double subtractX = 20 * width / length;
         double subtractY = 20 * height / length;
-        return new Pair<>(subtractX,subtractY);
+        setEndX(endVertex.getCenterX()-subtractX);
+        setEndY(endVertex.getCenterY()-subtractY);
     }
 
     public void prepareLooks() {

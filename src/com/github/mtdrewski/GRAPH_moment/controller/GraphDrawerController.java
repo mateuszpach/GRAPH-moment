@@ -221,16 +221,21 @@ public class GraphDrawerController {
 
         for (Edge graphEdge : newGraph.getEdges()) {
 
-            EdgeLine edgeLine = new EdgeLine(this);
+            EdgeLine edgeLine;
+            if(graph.isDirected())
+                edgeLine=new DirectedEdgeLine(this);
+            else
+                edgeLine=new EdgeLine(this);
             edgeLine.prepareLooks();
 
             edgeLine.setStartVertex(vertexCircles.get(graphEdge.vert1().id() - 1));
-            vertexCircles.get(graphEdge.vert1().id() - 1).addOutcomingEdge(edgeLine);
-
+            edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
             root.getChildren().add(0, edgeLine);
 
-            edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
+            edgeLine.followVertex(vertexCircles.get(graphEdge.vert1().id() - 1));
+            vertexCircles.get(graphEdge.vert1().id() - 1).addOutcomingEdge(edgeLine);
             vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);
+
         }
         currentEdge = null;
         sourceVertex = null;
@@ -245,8 +250,11 @@ public class GraphDrawerController {
     }
 
     public void setFile(File file) {
-        //TODO: after adding directed graphs title should look eg. MyGraph [directed/undirected] - GRAPH Moment
-        ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [directed] - GRAPH Moment");
+
+        if(graph.isDirected())  //TODO: it doesn't change the title of the window, resolve this issue
+            ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [directed] - GRAPH Moment");
+        else
+            ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [undirected] - GRAPH Moment");
         this.file = file;
     }
 
