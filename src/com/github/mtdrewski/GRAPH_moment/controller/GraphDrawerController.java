@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 public class GraphDrawerController {
 
     @FXML
-    protected AnchorPane root;
+    private AnchorPane root;
 
     private File file = null;
 
@@ -77,13 +77,7 @@ public class GraphDrawerController {
     };
 
     public Supplier<EdgeLine> edgeLineFactory = () -> {
-
-        EdgeLine edge;
-        if(graph.isDirected())
-            edge = new DirectedEdgeLine(this);
-        else
-            edge= new EdgeLine(this);
-
+        EdgeLine edge = new EdgeLine(this);
         edge.prepareLooks();
         edge.setStartVertex(sourceVertex);
         return edge;
@@ -100,7 +94,7 @@ public class GraphDrawerController {
         ExportController.setGraphDrawerController(this);
         DataProcessor.setGraphDrawerController(this);
         IntervalConstrainedGenerator.setGraphDrawerController(this);
-        graph = new Graph();   //by default our graph is undirected
+        graph = new Graph();
         mode = Mode.STANDARD;
         selectedVertices = new ArrayList<>();
 
@@ -158,7 +152,7 @@ public class GraphDrawerController {
 
     protected void exitEdgeMode(boolean success) {
         if (!success) {
-            currentEdge.clear();
+            root.getChildren().remove(currentEdge);
             sourceVertex.removeOutcomingEdge(currentEdge);
         }
 
@@ -190,8 +184,7 @@ public class GraphDrawerController {
         isUnsaved = true;
 
         selectedVertices.stream().forEach(v -> {
-            for (EdgeLine edge:v.getOutcomingEdges())
-                edge.clear();
+            root.getChildren().removeAll(v.getOutcomingEdges());
             root.getChildren().removeAll(v.getIdText(), v.getShadow(), v);
             graph.removeVertex(v.id());
         });
@@ -209,7 +202,7 @@ public class GraphDrawerController {
         isUnsaved = true;
 
         root.getChildren().clear();
-        graph = new Graph(newGraph.isDirected());
+        graph = new Graph();
         ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
 
         for (Vertex graphVertex : newGraph.getVertices()) {
@@ -221,21 +214,16 @@ public class GraphDrawerController {
 
         for (Edge graphEdge : newGraph.getEdges()) {
 
-            EdgeLine edgeLine;
-            if(graph.isDirected())
-                edgeLine=new DirectedEdgeLine(this);
-            else
-                edgeLine=new EdgeLine(this);
+            EdgeLine edgeLine = new EdgeLine(this);
             edgeLine.prepareLooks();
 
             edgeLine.setStartVertex(vertexCircles.get(graphEdge.vert1().id() - 1));
-            edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
+            vertexCircles.get(graphEdge.vert1().id() - 1).addOutcomingEdge(edgeLine);
+
             root.getChildren().add(0, edgeLine);
 
-            edgeLine.followVertex(vertexCircles.get(graphEdge.vert1().id() - 1));
-            vertexCircles.get(graphEdge.vert1().id() - 1).addOutcomingEdge(edgeLine);
+            edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
             vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);
-
         }
         currentEdge = null;
         sourceVertex = null;
@@ -250,11 +238,8 @@ public class GraphDrawerController {
     }
 
     public void setFile(File file) {
-
-        if(graph.isDirected())  //TODO: it doesn't change the title of the window, resolve this issue
-            ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [directed] - GRAPH Moment");
-        else
-            ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [undirected] - GRAPH Moment");
+        //TODO: after adding directed graphs title should look eg. MyGraph [directed/undirected] - GRAPH Moment
+        ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [directed] - GRAPH Moment");
         this.file = file;
     }
 

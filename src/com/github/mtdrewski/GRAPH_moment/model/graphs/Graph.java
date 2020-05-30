@@ -19,19 +19,9 @@ public class Graph {
         return edges;
     }
 
-    private boolean directed;
-    public boolean isDirected(){ return directed; }
-
-    public Graph(){
+    public Graph() {
         vertices = new Vector<Vertex>();
         edges = new Vector<Edge>();
-        directed=false;
-    }
-
-    public Graph(boolean isItDirected) {
-        vertices = new Vector<Vertex>();
-        edges = new Vector<Edge>();
-        directed=isItDirected;
     }
 
     public int size() {
