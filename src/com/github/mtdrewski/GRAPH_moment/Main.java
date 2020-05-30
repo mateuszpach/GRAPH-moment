@@ -16,7 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("view/main.fxml"));
-        primaryStage.setTitle("Untitled [undirected] - GRAPH Moment");
+        primaryStage.setTitle("Untitled [directed] - GRAPH Moment");
         primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(800);
