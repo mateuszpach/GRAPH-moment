@@ -1,5 +1,6 @@
 package com.github.mtdrewski.GRAPH_moment.model.utils;
 
+import com.github.mtdrewski.GRAPH_moment.model.graphs.DirectedGraph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
@@ -10,11 +11,15 @@ public interface GraphMerger {
         UNION, DISJOINT_UNION, REPLACE
     }
 
-    public static Graph union(Graph graph1, Graph graph2) {
+    public static Graph union(Graph graph1, Graph graph2, boolean directed) {
         if (graph2 == null)
             return graph1;
-        //TODO check if graphs are simple or directed (or checking can be done inside Graph)
-        Graph united = new Graph();
+
+        Graph united;
+        if (!directed)
+            united = new Graph();
+        else
+            united = new DirectedGraph();
 
         for (Vertex vertex : graph1.getVertices()) {
             united.addVertex(vertex);
@@ -34,11 +39,16 @@ public interface GraphMerger {
         return united;
     }
 
-    public static Graph disjointUnion(Graph graph1, Graph graph2) {
+    public static Graph disjointUnion(Graph graph1, Graph graph2, boolean directed) {
         if (graph2 == null)
             return graph1;
-        //TODO check if graphs are simple or directed (or checking can be done inside Graph)
-        Graph united = new Graph();
+
+        Graph united;
+        if (!directed)
+            united = new Graph();
+        else
+            united = new DirectedGraph();
+
         for (Vertex vertex : graph1.getVertices()) {
             united.addVertex(vertex);
         }

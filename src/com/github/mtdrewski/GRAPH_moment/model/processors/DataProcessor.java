@@ -1,6 +1,7 @@
 package com.github.mtdrewski.GRAPH_moment.model.processors;
 
 import com.github.mtdrewski.GRAPH_moment.controller.GraphDrawerController;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.DirectedGraph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
@@ -24,7 +25,13 @@ public class DataProcessor {
         if (textInput == null || tempType == null)
             throw new IncorrectInputFormatException(tempType, textInput);
         inputType = tempType;
+
         inputGraph = new Graph();
+        if (graphDrawerController.getDirected())
+            inputGraph = new DirectedGraph();
+        else
+            inputGraph = new Graph();
+
         switch (inputType) {
             case EDGE_LIST:
                 readEdgeList(textInput);
@@ -83,7 +90,12 @@ public class DataProcessor {
     }
 
     public Graph makeFullGraphFromInput(String textInput) throws NullPointerException {
-        Graph graph = new Graph();
+        Graph graph;
+        if (graphDrawerController.getDirected())
+            graph = new DirectedGraph();
+        else
+            graph = new Graph();
+
         String[] lines = textInput.split(System.getProperty("line.separator"));
         String type = lines[2].substring(5);
         //TODO: IMPORTANT adjust it according to graph type
@@ -129,7 +141,8 @@ public class DataProcessor {
 
         for (Edge edge : graph.getEdges()) {
             matrix.setCharAt(2 * (edge.vert1().id() - 1) * graph.size() + 2 * edge.vert2().id() - 2, '1');
-            matrix.setCharAt(2 * (edge.vert2().id() - 1) * graph.size() + 2 * edge.vert1().id() - 2, '1');
+            if (!graphDrawerController.getDirected())
+                matrix.setCharAt(2 * (edge.vert2().id() - 1) * graph.size() + 2 * edge.vert1().id() - 2, '1');
         }
 
         return matrix.toString();
@@ -176,8 +189,6 @@ public class DataProcessor {
                 for (int j = i; j < n; j++) {
                     if (matrix[i][j].equals("1"))
                         inputGraph.addEdge(i + 1, j + 1);
-                    if (!matrix[i][j].equals(matrix[j][i]))
-                        throw new IncorrectInputFormatException(inputType, textInput);
                 }
             }
         } catch (Exception e) {

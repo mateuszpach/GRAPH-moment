@@ -47,10 +47,10 @@ public class ImportController {
         Graph oldGraph = graphDrawerController.getGraph();
         switch (mergeType) {
             case UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph));
+                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph, graphDrawerController.getDirected()));
                 break;
             case DISJOINT_UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph));
+                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph, graphDrawerController.getDirected()));
                 break;
             case REPLACE:
                 graphDrawerController.drawNewGraph(newGraph);
