@@ -7,11 +7,11 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 
 public interface GraphMerger {
 
-    public enum Type {
+    enum Type {
         UNION, DISJOINT_UNION, REPLACE
     }
 
-    public static Graph union(Graph graph1, Graph graph2, boolean directed) {
+    static Graph union(Graph graph1, Graph graph2, boolean directed) {
         if (graph2 == null)
             return graph1;
 
@@ -39,7 +39,7 @@ public interface GraphMerger {
         return united;
     }
 
-    public static Graph disjointUnion(Graph graph1, Graph graph2, boolean directed) {
+    static Graph disjointUnion(Graph graph1, Graph graph2, boolean directed) {
         if (graph2 == null)
             return graph1;
 
