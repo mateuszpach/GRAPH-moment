@@ -21,6 +21,12 @@ public class Edge {
         return vertex2;
     }
 
+    public void swap() { // useful for directed edge randomization
+        Vertex temp = vertex1;
+        vertex1 = vertex2;
+        vertex2 = temp;
+    }
+
     @Override
     public String toString() {
         return "{" + vertex1.toString() + ", " + vertex2.toString() + "}";

@@ -7,16 +7,16 @@ import javafx.scene.shape.Line;
 
 public class EdgeLine extends Line {
 
-    private double thickness = 4.0;
-    private Color color = Color.BLACK;
+    protected double thickness = 4.0;
+    protected Color color = Color.BLACK;
 
     public enum Orientation {BEGIN, END};
 
-    private Edge underlyingEdge;
-    private VertexCircle startVertex;
-    private VertexCircle endVertex;
+    protected Edge underlyingEdge;
+    protected VertexCircle startVertex;
+    protected VertexCircle endVertex;
 
-    private GraphDrawerController graphDrawerController;
+    protected GraphDrawerController graphDrawerController;
 
     public EdgeLine(GraphDrawerController drawer) {
         graphDrawerController = drawer;
@@ -48,8 +48,7 @@ public class EdgeLine extends Line {
     public void setEndVertex(VertexCircle vertex) {
 
         endVertex = vertex;
-        setEndX(vertex.getCenterX());
-        setEndY(vertex.getCenterY());
+        followVertex(vertex);
         underlyingEdge = graphDrawerController.getGraph().addEdge(startVertex.id(), endVertex.id());
     }
 
@@ -73,5 +72,13 @@ public class EdgeLine extends Line {
     public void followCursor(MouseEvent e) {
         setEndX(e.getX());
         setEndY(e.getY());
+    }
+
+    public void appearOnScene() {
+        graphDrawerController.getRoot().getChildren().add(0, this);
+    }
+
+    public void disappearFromScene() {
+        graphDrawerController.getRoot().getChildren().remove(this);
     }
 }
