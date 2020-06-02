@@ -2,6 +2,7 @@ package com.github.mtdrewski.GRAPH_moment.controller;
 
 import com.github.mtdrewski.GRAPH_moment.Main;
 import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGenerator;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.DirectedGraph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
@@ -9,6 +10,7 @@ import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -29,6 +31,7 @@ public class GraphDrawerController {
     private boolean isUnsaved = false;
 
     private enum Mode {EDGE, SELECT, STANDARD}
+    protected boolean isDirected = false;
 
     Mode mode;
     private EdgeLine currentEdge;
@@ -45,6 +48,9 @@ public class GraphDrawerController {
     public void setUnsaved(boolean b) {
         isUnsaved = b;
     }
+
+    public void setDirected(boolean value) { isDirected = value; }
+    public boolean getDirected() { return isDirected; }
 
     public void setCursorOverVertex(boolean value) {
         cursorOverVertex = value;
@@ -69,6 +75,8 @@ public class GraphDrawerController {
         return sourceVertex;
     }
 
+    protected AnchorPane getRoot() { return root; }
+
     private Supplier<VertexCircle> vertexShapeFactory = () -> {
         VertexCircle vertex = new VertexCircle(this);
         vertex.prepareLooks();
@@ -78,6 +86,13 @@ public class GraphDrawerController {
 
     public Supplier<EdgeLine> edgeLineFactory = () -> {
         EdgeLine edge = new EdgeLine(this);
+        edge.prepareLooks();
+        edge.setStartVertex(sourceVertex);
+        return edge;
+    };
+
+    public Supplier<DirectedEdgeLine> directedEdgeLineFactory = () -> {
+        DirectedEdgeLine edge = new DirectedEdgeLine(this);
         edge.prepareLooks();
         edge.setStartVertex(sourceVertex);
         return edge;
@@ -112,7 +127,7 @@ public class GraphDrawerController {
                 if (mode == Mode.STANDARD && e.getClickCount() == 2 && !cursorOverVertex) {
                     VertexCircle vertexShape = vertexShapeFactory.get();
                     vertexShape.setPosition(e);
-                    root.getChildren().addAll(vertexShape, vertexShape.getIdText());
+                    vertexShape.appearOnScene();
                 }
             }
         });
@@ -140,20 +155,26 @@ public class GraphDrawerController {
         });
     }
 
-    protected void enterEdgeMode(VertexCircle vertex) {
+    protected void enterEdgeMode(VertexCircle vertex, MouseEvent event) {
         sourceVertex = vertex;
-        EdgeLine edge = edgeLineFactory.get();
-        sourceVertex.addOutcomingEdge(edge);
+        EdgeLine edge;
 
+        if (!isDirected)
+            edge = edgeLineFactory.get();
+        else
+            edge = directedEdgeLineFactory.get();
+
+        sourceVertex.addOutcomingEdge(edge);
+        edge.followCursor(event);
+        edge.appearOnScene();
         currentEdge = edge;
-        root.getChildren().add(0, edge);
         mode = Mode.EDGE;
     }
 
     protected void exitEdgeMode(boolean success) {
         if (!success) {
-            root.getChildren().remove(currentEdge);
             sourceVertex.removeOutcomingEdge(currentEdge);
+            currentEdge.disappearFromScene();
         }
 
         currentEdge = null;
@@ -169,14 +190,14 @@ public class GraphDrawerController {
 
     protected void deselectAll() {
         selectedVertices.stream().forEach(v -> {
-            root.getChildren().remove(v.getShadow());
+            v.hideShadow();
             v.deselect();
         });
         selectedVertices.clear();
     }
 
     protected void deselect(VertexCircle vertex) {
-        root.getChildren().remove(vertex.getShadow());
+        vertex.hideShadow();
         selectedVertices.remove(vertex);
     }
 
@@ -184,8 +205,8 @@ public class GraphDrawerController {
         isUnsaved = true;
 
         selectedVertices.stream().forEach(v -> {
-            root.getChildren().removeAll(v.getOutcomingEdges());
-            root.getChildren().removeAll(v.getIdText(), v.getShadow(), v);
+            v.getOutcomingEdges().stream().forEach(EdgeLine::disappearFromScene);
+            v.disappearFromScene();
             graph.removeVertex(v.id());
         });
 
@@ -202,25 +223,32 @@ public class GraphDrawerController {
         isUnsaved = true;
 
         root.getChildren().clear();
-        graph = new Graph();
+        if (isDirected)
+            graph = new DirectedGraph();
+        else
+            graph = new Graph();
         ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
 
         for (Vertex graphVertex : newGraph.getVertices()) {
             VertexCircle vertexShape = vertexShapeFactory.get();
             vertexShape.setPosition(graphVertex.xPos(), graphVertex.yPos());
             vertexCircles.add(vertexShape);
-            root.getChildren().addAll(vertexShape, vertexShape.getIdText());
+            vertexShape.appearOnScene();
         }
 
         for (Edge graphEdge : newGraph.getEdges()) {
 
-            EdgeLine edgeLine = new EdgeLine(this);
-            edgeLine.prepareLooks();
+            EdgeLine edgeLine;
+            if (isDirected)
+                edgeLine = new DirectedEdgeLine(this);
+            else
+                edgeLine = new EdgeLine(this);
 
+            edgeLine.prepareLooks();
             edgeLine.setStartVertex(vertexCircles.get(graphEdge.vert1().id() - 1));
             vertexCircles.get(graphEdge.vert1().id() - 1).addOutcomingEdge(edgeLine);
 
-            root.getChildren().add(0, edgeLine);
+            edgeLine.appearOnScene();
 
             edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
             vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);

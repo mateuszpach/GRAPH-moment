@@ -14,7 +14,11 @@ public class StandardGraphGenerator extends IntervalConstrainedGenerator {
         super(minV, maxV, minE, maxE);
     }
 
-    public StandardGraphGenerator(int minV, int maxV) { super(minV, maxV, 0, maxV * (maxV - 1) / 2); }
+    public StandardGraphGenerator(int minV, int maxV) { super(minV, maxV, 0, maxV * maxV); } // just an upper bound
+
+    protected int maxEdgesPossible(int numOfV) {
+        return numOfV * (numOfV - 1) / 2;
+    }
 
     protected void prepareVertices(Graph graph) {
         Random random = new Random();
@@ -30,7 +34,7 @@ public class StandardGraphGenerator extends IntervalConstrainedGenerator {
 
     protected void prepareEdges(Graph graph) {
         int numOfEdges = new Random().nextInt(maxNumOfEdges - minNumOfEdges + 1) + minNumOfEdges;
-        numOfEdges = Math.min(numOfEdges, graph.size() * (graph.size() - 1) / 2);
+        numOfEdges = Math.min(numOfEdges, maxEdgesPossible(graph.size()));
         List<Pair<Integer, Integer>> possibleEdges = possibleEdges(graph);
         orderPossibleEdges(possibleEdges);
         addEdges(graph, possibleEdges, numOfEdges);

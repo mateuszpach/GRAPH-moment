@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 public class Graph {
 
-    private Vector<Vertex> vertices;
-    private Vector<Edge> edges;
+    protected Vector<Vertex> vertices;
+    protected Vector<Edge> edges;
 
     public Vector<Vertex> getVertices(){
         return vertices;
@@ -75,6 +75,8 @@ public class Graph {
         }
 
         //TODO maybe change not intuitive indexing
+        if (contains(vertexId1, vertexId2))
+            return null;
         Edge edge = new Edge(vertices.get(vertexId1 - 1), vertices.get(vertexId2 - 1));
         edges.add(edge);
         return edge;

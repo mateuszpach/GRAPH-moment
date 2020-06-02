@@ -54,10 +54,10 @@ public class KComponentGenerator extends StandardGraphGenerator {
         }
     }
 
-    private Graph generateComponent() {
+    protected Graph generateComponentAndMerge(Graph graph) {
         Graph component = new TreeGenerator(minNumOfVertices, maxNumOfVertices).generate();
         prepareEdges(component);
-        return component;
+        return GraphMerger.disjointUnion(graph, component, false);
     }
 
     @Override
@@ -66,8 +66,7 @@ public class KComponentGenerator extends StandardGraphGenerator {
         Random random = new Random();
         int numOfComponents = random.nextInt(maxNumOfComponents - minNumOfComponents + 1) + minNumOfComponents;
         for (int i = 0; i < numOfComponents; i++) {
-            Graph component = generateComponent();
-            graph = GraphMerger.disjointUnion(graph, component);
+            graph = generateComponentAndMerge(graph);
         }
         graph.randomShuffle();
         return graph;

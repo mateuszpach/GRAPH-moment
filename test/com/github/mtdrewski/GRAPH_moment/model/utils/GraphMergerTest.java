@@ -19,7 +19,7 @@ public class GraphMergerTest {
 
             Graph gr1 = stdGen.generate();
             Graph gr2 = stdGen.generate();
-            Graph united = GraphMerger.union(gr1, gr2);
+            Graph united = GraphMerger.union(gr1, gr2, false);
 
             assertEquals(Math.max(gr1.size(), gr2.size()), united.size());
             List<Pair<Integer, Integer>> pairs = OrderedPairGenerator.lexicographicalPairs(Math.max(gr1.size(), gr2.size()));
@@ -38,7 +38,7 @@ public class GraphMergerTest {
 
             Graph gr1 = stdGen.generate();
             Graph gr2 = stdGen.generate();
-            Graph united = GraphMerger.disjointUnion(gr1, gr2);
+            Graph united = GraphMerger.disjointUnion(gr1, gr2, false);
 
             assertEquals(gr1.size() + gr2.size(), united.size());
             assertEquals(gr1.getEdges().size() + gr2.getEdges().size(), united.getEdges().size());

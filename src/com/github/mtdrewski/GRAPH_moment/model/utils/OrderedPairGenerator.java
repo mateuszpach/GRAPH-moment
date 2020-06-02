@@ -17,13 +17,15 @@ public interface OrderedPairGenerator {
         return pairs;
     }
 
-    public static List<Pair<Integer, Integer>> allPairs(int upTo) {
-        List<Pair<Integer, Integer>> pairs = Stream.iterate(new Pair<>(1, 1), p -> {
+    public static List<Pair<Integer, Integer>> allPairsNonLoop(int upTo) {
+        List<Pair<Integer, Integer>> pairs = Stream.iterate(new Pair<>(1, 2), p -> {
             if (p.getValue() == upTo)
                 return new Pair<>(p.getKey() + 1, 1);
+            else if (p.getValue() == p.getKey() - 1)
+                return new Pair<>(p.getKey(), p.getValue() + 2);
             else
                 return new Pair<>(p.getKey(), p.getValue() + 1);
-        }).limit(upTo * upTo).collect(Collectors.toList());
+        }).limit(upTo * upTo - upTo).collect(Collectors.toList());
         return pairs;
     }
 }

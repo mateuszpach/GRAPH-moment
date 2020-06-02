@@ -1,9 +1,6 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
-import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGenerator;
-import com.github.mtdrewski.GRAPH_moment.model.generators.KComponentGenerator;
-import com.github.mtdrewski.GRAPH_moment.model.generators.StandardGraphGenerator;
-import com.github.mtdrewski.GRAPH_moment.model.generators.TreeGenerator;
+import com.github.mtdrewski.GRAPH_moment.model.generators.*;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.utils.GraphMerger;
 import com.jfoenix.controls.JFXComboBox;
@@ -157,12 +154,13 @@ public class GenerateController {
         rootStage.close();
 
         Graph oldGraph = graphDrawerController.getGraph();
+        System.out.println(oldGraph);
         switch (mergeType) {
             case UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph));
+                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph, graphDrawerController.getDirected()));
                 break;
             case DISJOINT_UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph));
+                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph, graphDrawerController.getDirected()));
                 break;
             case REPLACE:
                 graphDrawerController.drawNewGraph(newGraph);
@@ -184,10 +182,15 @@ public class GenerateController {
             StandardGraphGenerator generator = null;
 
             if (minE.equals("") && maxE.equals("")) {
-                generator = new StandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
+                if (!graphDrawerController.getDirected())
+                    generator = new StandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
+                else
+                    generator = new DirStandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
             } else if (!minE.equals("") && !maxE.equals("")) {
-                generator = new StandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV),
-                        Integer.parseInt(minE), Integer.parseInt(maxE));
+                if (!graphDrawerController.getDirected())
+                    generator = new StandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
+                else
+                    generator = new DirStandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
             }
 
             if (generator == null)
@@ -214,17 +217,31 @@ public class GenerateController {
             KComponentGenerator generator = null;
 
             if (minE.equals("") && maxE.equals("")) {
-                if (minC.equals(""))
-                    generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
-                else
-                    generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minC), Integer.parseInt(maxC));
+                if (minC.equals("")) {
+                    if (!graphDrawerController.getDirected())
+                        generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
+                    else
+                        generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
+                }
+                else {
+                    if (!graphDrawerController.getDirected())
+                        generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minC), Integer.parseInt(maxC));
+                    else
+                        generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minC), Integer.parseInt(maxC));
+                }
             } else if (!minE.equals("") && !maxE.equals("")) {
-                if (minC.equals(""))
-                    generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV),
-                            Integer.parseInt(minE), Integer.parseInt(maxE));
-                else
-                    generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV),
-                            Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(minC), Integer.parseInt(maxC));
+                if (minC.equals("")) {
+                    if (!graphDrawerController.getDirected())
+                        generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
+                    else
+                        generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
+                }
+                else {
+                    if (!graphDrawerController.getDirected())
+                        generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(minC), Integer.parseInt(maxC));
+                    else
+                        generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(minC), Integer.parseInt(maxC));
+                }
             }
             if (generator == null)
                 throw new IllegalArgumentException("Some field should or shouldn't be empty and isn't as it should");
@@ -243,7 +260,11 @@ public class GenerateController {
             minV = minVertices.getText();
             maxV = maxVertices.getText();
 
-            TreeGenerator generator = new TreeGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
+            TreeGenerator generator;
+            if (!graphDrawerController.getDirected())
+                generator = new TreeGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
+            else
+                generator = new DirTreeGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
             return generator.generate();
         } catch (IllegalArgumentException e) {
             Stager.alert((Stage) root.getScene().getWindow(), "Wrong input");

@@ -119,7 +119,7 @@ public class VertexCircle extends Circle {
             if (e.getButton().equals(MouseButton.PRIMARY)) {
 
                 if (graphDrawerController.isInStandardMode() && e.getClickCount() > 1 && getClickCount() > 1) {
-                    graphDrawerController.enterEdgeMode(this);
+                    graphDrawerController.enterEdgeMode(this, e);
                 } else if (graphDrawerController.isInEdgeMode()) {
                     if (graphDrawerController.getSourceVertex() != this &&
                         !graphDrawerController.getGraph().contains( graphDrawerController.getSourceVertex().id(),
@@ -178,4 +178,19 @@ public class VertexCircle extends Circle {
     public void incrementClickCount() { clickCount++; }
     public void clearClickCount() { clickCount = 0; }
     public Text getIdText() { return idText; }
+
+    public void appearOnScene() {
+        graphDrawerController.getRoot().getChildren().add(this);
+        graphDrawerController.getRoot().getChildren().add(idText);
+    }
+
+    public void disappearFromScene() {
+        hideShadow();
+        graphDrawerController.getRoot().getChildren().remove(idText);
+        graphDrawerController.getRoot().getChildren().remove(this);
+    }
+
+    public void hideShadow()  {
+        graphDrawerController.getRoot().getChildren().remove(shadow);
+    }
 }
