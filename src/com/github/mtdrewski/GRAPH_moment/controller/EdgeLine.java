@@ -4,6 +4,7 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 public class EdgeLine extends Line {
 
@@ -18,12 +19,14 @@ public class EdgeLine extends Line {
     boolean selected = false;
 
     private Line shadow;
+    private Text label;
 
     protected final GraphDrawerController graphDrawerController;
 
     public EdgeLine(GraphDrawerController drawer) {
         graphDrawerController = drawer;
         createBehaviour();
+        makeLabel();
     }
 
     public VertexCircle getStartVertex() {
@@ -61,6 +64,7 @@ public class EdgeLine extends Line {
             setEndY(vertex.getCenterY());
         }
         moveShadow();
+        moveLabel();
     }
 
     public void prepareLooks() {
@@ -73,6 +77,7 @@ public class EdgeLine extends Line {
         setEndX(e.getX());
         setEndY(e.getY());
         moveShadow();
+        moveLabel();
     }
 
     public void makeShadow() {
@@ -89,21 +94,48 @@ public class EdgeLine extends Line {
         shadow.setEndY(getEndY());
     }
 
+    public void makeLabel() {
+        label = new Text("");
+        label.setStroke(Color.BLACK);
+        label.setStrokeWidth(0.5);
+        label.setFill(Color.WHITE);
+        label.setScaleX(2);
+        label.setScaleY(2);
+        moveLabel();
+    }
+
+    public void moveLabel() {
+        double x = getStartX() + (getEndX() - getStartX()) / 2;
+        double y = getStartY() + (getEndY() - getStartY()) / 2;
+        x -= label.getBoundsInLocal().getWidth() / 2;
+        y -= label.getBoundsInLocal().getHeight() / 2;
+        label.setX(x);
+        label.setY(y);
+    }
+
     public void hideShadow()  {
         graphDrawerController.getRoot().getChildren().remove(shadow);
     }
+    public void hideLabel()  { graphDrawerController.getRoot().getChildren().remove(label); }
 
     public void showShadow() {
         int index = graphDrawerController.getRoot().getChildren().indexOf(this);
         graphDrawerController.getRoot().getChildren().add(index, shadow);
     }
 
+    public void showLabel() {
+        int index = graphDrawerController.getRoot().getChildren().indexOf(this);
+        graphDrawerController.getRoot().getChildren().add(index + 1, label);
+    }
+
     public void appearOnScene() {
         graphDrawerController.getRoot().getChildren().add(0, this);
+        showLabel();
     }
 
     public void disappearFromScene() {
         hideShadow();
+        hideLabel();
         graphDrawerController.getRoot().getChildren().remove(this);
     }
 
