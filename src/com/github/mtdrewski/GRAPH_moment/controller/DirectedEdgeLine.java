@@ -40,7 +40,9 @@ public class DirectedEdgeLine extends EdgeLine{
                 friendEdge = e;
         }
         if (friendEdge != null) {
-            graphDrawerController.getRoot().getChildren().remove(friendEdge);
+            graphDrawerController.getRoot().getChildren().remove(label);
+            label = friendEdge.label;
+            friendEdge.setVisible(false);
         }
     }
 

@@ -154,8 +154,10 @@ public class GraphDrawerController {
                 for (Node edge : root.getChildren()) {
                     if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
                         ((EdgeLine) edge).editLabel(false);
+                        ((EdgeLine) edge).underlyingEdge.setLabel(((EdgeLine) edge).label.getText());
                     }
                 }
+                System.out.println(graph);
             }
 
         });
