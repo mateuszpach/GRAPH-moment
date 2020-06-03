@@ -2,12 +2,10 @@ package com.github.mtdrewski.GRAPH_moment.controller;
 
 import com.github.mtdrewski.GRAPH_moment.Main;
 import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGenerator;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.DirectedGraph;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.*;
 import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -31,11 +29,12 @@ public class GraphDrawerController {
     protected boolean cursorOverEdge = false;
     private boolean isUnsaved = false;
 
-    private enum Mode {EDGE, SELECT, STANDARD}
+    private enum Mode {EDGE, SELECT, STANDARD, TYPING}
     protected boolean isDirected = false;
 
-    Mode mode;
+    private Mode mode;
     private EdgeLine currentEdge;
+    private EdgeLine typingOnEdge;
 
     private VertexCircle sourceVertex = null;
     protected ArrayList<VertexCircle> selectedVertices;
@@ -57,14 +56,13 @@ public class GraphDrawerController {
     public boolean isInEdgeMode() {
         return mode == Mode.EDGE;
     }
-
     public boolean isInSelectMode() {
         return mode == Mode.SELECT;
     }
-
     public boolean isInStandardMode() {
         return mode == Mode.STANDARD;
     }
+    public boolean isInTypingMode() { return mode == Mode.TYPING; }
 
     protected EdgeLine getCurrentEdge() {
         return currentEdge;
@@ -87,8 +85,8 @@ public class GraphDrawerController {
             edge = new EdgeLine(this);
         else
             edge = new DirectedEdgeLine(this);
-        edge.prepareLooks();
         edge.setStartVertex(sourceVertex);
+        edge.prepareLooks();
         return edge;
     };
 
@@ -139,9 +137,27 @@ public class GraphDrawerController {
             if (e.getCode() == KeyCode.CONTROL && mode == Mode.STANDARD) {
                 mode = Mode.SELECT;
             }
-            if (e.getCode() == KeyCode.DELETE) {
+            else if (e.getCode() == KeyCode.DELETE) {
                 deleteAll();
             }
+            else if (e.getCode() == KeyCode.ALT && mode == Mode.STANDARD) {
+                System.out.println("lol");
+                mode = Mode.TYPING;
+                for (Node edge : root.getChildren()) {
+                    if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
+                        ((EdgeLine) edge).editLabel(true);
+                    }
+                }
+            }
+            else if (e.getCode() == KeyCode.ALT && mode == Mode.TYPING) {
+                mode = Mode.STANDARD;
+                for (Node edge : root.getChildren()) {
+                    if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
+                        ((EdgeLine) edge).editLabel(false);
+                    }
+                }
+            }
+
         });
         root.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.CONTROL && mode == Mode.SELECT) {
@@ -152,8 +168,7 @@ public class GraphDrawerController {
 
     protected void enterEdgeMode(VertexCircle vertex, MouseEvent event) {
         sourceVertex = vertex;
-        EdgeLine edge;
-        edge = edgeLineFactory.get();
+        EdgeLine edge = edgeLineFactory.get();
         sourceVertex.addOutcomingEdge(edge);
         edge.followCursor(event);
         edge.appearOnScene();

@@ -1,10 +1,12 @@
 package com.github.mtdrewski.GRAPH_moment.controller;
 
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
+import javafx.geometry.Pos;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 
 public class EdgeLine extends Line {
 
@@ -18,21 +20,19 @@ public class EdgeLine extends Line {
     protected VertexCircle endVertex;
     boolean selected = false;
 
-    private Line shadow;
-    private Text label;
+    protected Line shadow;
+    protected TextField label;
 
     protected final GraphDrawerController graphDrawerController;
 
     public EdgeLine(GraphDrawerController drawer) {
         graphDrawerController = drawer;
         createBehaviour();
-        makeLabel();
     }
 
     public VertexCircle getStartVertex() {
         return startVertex;
     }
-
     public VertexCircle getEndVertex() {
         return endVertex;
     }
@@ -71,6 +71,7 @@ public class EdgeLine extends Line {
         setStrokeWidth(thickness);
         setStroke(Color.BLACK);
         makeShadow();
+        makeLabel();
     }
 
     public void followCursor(MouseEvent e) {
@@ -95,13 +96,25 @@ public class EdgeLine extends Line {
     }
 
     public void makeLabel() {
-        label = new Text("");
-        label.setStroke(Color.BLACK);
-        label.setStrokeWidth(0.5);
-        label.setFill(Color.WHITE);
+        label = new TextField("");
+        label.setMouseTransparent(true);
+
+        label.setAlignment(Pos.CENTER);
+        label.setBackground(Background.EMPTY);
+
+        label.setStyle("-fx-text-fill: white");
+
+        label.setPrefWidth(60);
+        label.setPrefHeight(10);
         label.setScaleX(2);
         label.setScaleY(2);
-        moveLabel();
+    }
+
+    public void editLabel(boolean value) {
+        label.setMouseTransparent(!value);
+        if (!value) {
+            label.getParent().requestFocus();
+        }
     }
 
     public void moveLabel() {
@@ -109,8 +122,8 @@ public class EdgeLine extends Line {
         double y = getStartY() + (getEndY() - getStartY()) / 2;
         x -= label.getBoundsInLocal().getWidth() / 2;
         y -= label.getBoundsInLocal().getHeight() / 2;
-        label.setX(x);
-        label.setY(y);
+        label.setTranslateX(x);
+        label.setTranslateY(y);
     }
 
     public void hideShadow()  {
