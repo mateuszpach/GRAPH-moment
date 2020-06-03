@@ -141,7 +141,6 @@ public class GraphDrawerController {
                 deleteAll();
             }
             else if (e.getCode() == KeyCode.ALT && mode == Mode.STANDARD) {
-                System.out.println("lol");
                 mode = Mode.TYPING;
                 for (Node edge : root.getChildren()) {
                     if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
@@ -154,6 +153,7 @@ public class GraphDrawerController {
                 for (Node edge : root.getChildren()) {
                     if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
                         ((EdgeLine) edge).editLabel(false);
+                        ((EdgeLine) edge).underlyingEdge.setLabel(((EdgeLine) edge).label.getText());
                     }
                 }
             }
@@ -219,7 +219,6 @@ public class GraphDrawerController {
 
         selectedVertices.clear();
         selectedEdges.clear();
-        System.out.println(graph);
     }
 
     public void drawNewGraph(Graph newGraph) {

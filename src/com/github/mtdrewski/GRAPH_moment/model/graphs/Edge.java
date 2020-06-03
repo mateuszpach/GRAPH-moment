@@ -6,6 +6,7 @@ public class Edge {
 
     protected Vertex vertex1;
     protected Vertex vertex2;
+    protected String label = "";
 
     protected Edge(Vertex u, Vertex v) {
         // Only the Graph class can use this constructor. The graph class assures provided vertices are not null.
@@ -16,16 +17,15 @@ public class Edge {
     public Vertex vert1() {
         return vertex1;
     }
-
-    public Vertex vert2() {
-        return vertex2;
-    }
+    public Vertex vert2() { return vertex2; }
+    public String getLabel() { return label; }
+    public void setLabel(String l) { label =  l; }
 
     public void swap() {}
 
     @Override
     public String toString() {
-        return "{" + vertex1.toString() + ", " + vertex2.toString() + "}";
+        return "{" + vertex1.toString() + ", " + vertex2.toString() + ": " + label + "}";
     }
 
     @Override

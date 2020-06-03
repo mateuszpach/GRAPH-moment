@@ -36,13 +36,10 @@ public class DirectedGraphGeneratorTest {
 
         DirKComponentGenerator gen2 = new DirKComponentGenerator(25, 25, 5000, 5000, 3, 3);
         for (int i = 0; i < 100; i++) {
-            System.out.println(i);
             Graph g = gen2.generate();
             for (Edge e1 : g.getEdges()) {
                 for (Edge e2 : g.getEdges()) {
                     if (e1.equals(e2) && e1 != e2) {
-                        System.out.println(e1);
-                        System.out.println(e2);
                         assertTrue(false);
                     }
                 }
