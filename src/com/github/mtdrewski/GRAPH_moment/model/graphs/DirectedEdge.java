@@ -12,7 +12,7 @@ public class DirectedEdge extends Edge {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Edge edge = (Edge) o;
+        DirectedEdge edge = (DirectedEdge) o;
         return Objects.equals(vertex1, edge.vertex1) &&
                 Objects.equals(vertex2, edge.vertex2);
     }

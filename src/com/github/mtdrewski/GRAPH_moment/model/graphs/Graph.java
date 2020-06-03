@@ -104,11 +104,16 @@ public class Graph {
 
     public boolean contains(int vertexId1, int vertexId2) {
         Edge e = new Edge(vertices.get(vertexId1-1), vertices.get(vertexId2-1));
-        return edges.contains(e); // equals based
+        for (Edge edge : edges) {
+            if (edge.equals(e)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean contains(Edge edge) {
-        return edges.contains(edge);
+        return contains(edge.vert1().id(), edge.vert2().id());
     }
 
     public void randomShuffle() {
