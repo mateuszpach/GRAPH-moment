@@ -25,7 +25,7 @@ public class VertexCircle extends Circle {
 
     private ArrayList<EdgeLine> outcomingEdges = new ArrayList<>();
 
-    private GraphDrawerController graphDrawerController;
+    private final GraphDrawerController graphDrawerController;
 
 
     public VertexCircle(GraphDrawerController drawer) {
@@ -34,18 +34,7 @@ public class VertexCircle extends Circle {
         idText = new Text(Integer.toString(underlyingVertex.id()));
         idText.setBoundsType(TextBoundsType.VISUAL);
         idText.setMouseTransparent(true);
-        makeShadow();
-    }
-
-    public VertexCircle(GraphDrawerController drawer, Color strokeColor, Color fillColor, double thickness) {
-        underlyingVertex = graphDrawerController.getGraph().addVertex();
-        graphDrawerController = drawer;
-        this.thickness = thickness;
-        this.strokeColor = strokeColor;
-        this.fillColor = fillColor;
-        idText = new Text(Integer.toString(underlyingVertex.id()));
-        idText.setBoundsType(TextBoundsType.VISUAL);
-        idText.setMouseTransparent(true);
+        createBehaviour();
         makeShadow();
     }
 
@@ -104,10 +93,10 @@ public class VertexCircle extends Circle {
     public void createBehaviour() {
 
         setOnMouseEntered(e -> {
-            graphDrawerController.setCursorOverVertex(true);
+            graphDrawerController.cursorOverVertex = true;
         });
         setOnMouseExited(e -> {
-            graphDrawerController.setCursorOverVertex(false);
+            graphDrawerController.cursorOverVertex = false;
         });
         setOnMousePressed(e -> {
 
@@ -133,12 +122,10 @@ public class VertexCircle extends Circle {
                 }
                 else if (graphDrawerController.isInSelectMode()) {
                     if (!selected) {
-                        graphDrawerController.selectVertex(this);
-                        selected = true;
+                        select();
                     }
                     else {
-                        graphDrawerController.deselect(this);
-                        selected = false;
+                        deselect();
                     }
                 }
 
@@ -166,10 +153,6 @@ public class VertexCircle extends Circle {
 
     public Circle getShadow() { return shadow; }
 
-    protected void deselect() {
-        selected = false;
-    }
-
     protected void refresh() {
         idText.setText(Integer.toString(id()));
     }
@@ -192,5 +175,22 @@ public class VertexCircle extends Circle {
 
     public void hideShadow()  {
         graphDrawerController.getRoot().getChildren().remove(shadow);
+    }
+
+    public void showShadow() {
+        int index = graphDrawerController.getRoot().getChildren().indexOf(this);
+        graphDrawerController.getRoot().getChildren().add(index, shadow);
+    }
+
+    public void select() {
+        selected = true;
+        showShadow();
+        graphDrawerController.selectedVertices.add(this);
+    }
+
+    public void deselect() {
+        selected = false;
+        hideShadow();
+        graphDrawerController.selectedVertices.remove(this);
     }
 }

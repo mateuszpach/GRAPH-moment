@@ -7,7 +7,7 @@ import javafx.scene.shape.Line;
 
 public class EdgeLine extends Line {
 
-    protected double thickness = 4.0;
+    protected double thickness = 5.0;
     protected Color color = Color.BLACK;
 
     public enum Orientation {BEGIN, END};
@@ -15,17 +15,15 @@ public class EdgeLine extends Line {
     protected Edge underlyingEdge;
     protected VertexCircle startVertex;
     protected VertexCircle endVertex;
+    boolean selected = false;
 
-    protected GraphDrawerController graphDrawerController;
+    private Line shadow;
+
+    protected final GraphDrawerController graphDrawerController;
 
     public EdgeLine(GraphDrawerController drawer) {
         graphDrawerController = drawer;
-    }
-
-    public EdgeLine(GraphDrawerController drawer, double thickness, Color color) {
-        graphDrawerController = drawer;
-        this.thickness = thickness;
-        this.color = color;
+        createBehaviour();
     }
 
     public VertexCircle getStartVertex() {
@@ -62,16 +60,42 @@ public class EdgeLine extends Line {
             setEndX(vertex.getCenterX());
             setEndY(vertex.getCenterY());
         }
+        moveShadow();
     }
 
     public void prepareLooks() {
         setStrokeWidth(thickness);
         setStroke(Color.BLACK);
+        makeShadow();
     }
 
     public void followCursor(MouseEvent e) {
         setEndX(e.getX());
         setEndY(e.getY());
+        moveShadow();
+    }
+
+    public void makeShadow() {
+        shadow = new Line();
+        shadow.setStrokeWidth(thickness * 3);
+        shadow.setStroke(Color.GREY);
+        moveShadow();
+    }
+
+    public void moveShadow() {
+        shadow.setStartX(getStartX());
+        shadow.setStartY(getStartY());
+        shadow.setEndX(getEndX());
+        shadow.setEndY(getEndY());
+    }
+
+    public void hideShadow()  {
+        graphDrawerController.getRoot().getChildren().remove(shadow);
+    }
+
+    public void showShadow() {
+        int index = graphDrawerController.getRoot().getChildren().indexOf(this);
+        graphDrawerController.getRoot().getChildren().add(index, shadow);
     }
 
     public void appearOnScene() {
@@ -79,6 +103,36 @@ public class EdgeLine extends Line {
     }
 
     public void disappearFromScene() {
+        hideShadow();
         graphDrawerController.getRoot().getChildren().remove(this);
+    }
+
+    public void createBehaviour() {
+        setOnMouseEntered(e -> {
+            graphDrawerController.cursorOverEdge = true;
+        });
+        setOnMouseExited(e -> {
+            graphDrawerController.cursorOverEdge = false;
+        });
+        setOnMousePressed(e -> {
+            if (graphDrawerController.isInSelectMode()) {
+                if (!selected)
+                    select();
+                else
+                    deselect();
+            }
+        });
+    }
+
+    public void select() {
+        selected = true;
+        showShadow();
+        graphDrawerController.selectedEdges.add(this);
+    }
+
+    public void deselect() {
+        selected = false;
+        hideShadow();
+        graphDrawerController.selectedEdges.remove(this);
     }
 }
