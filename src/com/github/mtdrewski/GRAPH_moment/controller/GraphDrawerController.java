@@ -156,6 +156,7 @@ public class GraphDrawerController {
                         ((EdgeLine) edge).underlyingEdge.setLabel(((EdgeLine) edge).label.getText());
                     }
                 }
+                System.out.println(graph);
             }
 
         });
