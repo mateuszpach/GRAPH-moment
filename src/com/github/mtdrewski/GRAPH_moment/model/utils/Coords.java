@@ -48,7 +48,7 @@ public class Coords {
         return Math.sqrt((x-c.getX())*(x-c.getX()) + (y-c.getY())*(y-c.getY()));
     }
 
-    public Coords scale(float k){
+    public Coords scale(double k){
         return new Coords(k*x,k*y);
     }
 }

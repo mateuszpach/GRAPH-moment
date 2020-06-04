@@ -4,6 +4,7 @@ import com.github.mtdrewski.GRAPH_moment.Main;
 import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGenerator;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.*;
 import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
+import com.github.mtdrewski.GRAPH_moment.model.utils.Coords;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
@@ -231,6 +232,7 @@ public class GraphDrawerController {
             graph = new Graph();
         ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
 
+
         for (Vertex graphVertex : newGraph.getVertices()) {
             VertexCircle vertexShape = vertexShapeFactory.get();
             vertexShape.setPosition(graphVertex.xPos(), graphVertex.yPos());
@@ -257,6 +259,68 @@ public class GraphDrawerController {
         }
         currentEdge = null;
         sourceVertex = null;
+    }
+
+
+    public void fruchtermanReingoldLayout(){
+
+        double w = root.getWidth(), h = root.getHeight();
+        double area = w*h;
+        int nVertices=graph.getVertices().size();
+        if(nVertices==0)
+            return;
+
+        double k = Math.sqrt(area/nVertices); //TODO: check what's the deal with C constant in various implementations
+        double temperature = 1000;
+
+        for(int m = 0; m< 900; m++){    //number of iterations
+
+            for(int i = 0; i < graph.getVertices().size(); i++){    //first phase: calculate repulsive force between nodes
+                Vertex v = graph.getVertices().get(i);
+                v.setOffset(0,0);
+
+                for(int j = 0; j< nVertices; j++){
+                    Vertex u = graph.getVertices().get(j);
+                    if(i!= j){
+                        Coords delta = v.getPosCoords().subtract(u.getPosCoords());
+                        double myFr = repulsiveForce(u,v,k);
+                        v.setOffset(v.getOffset().add(delta.unit().scale(myFr)));
+                    }
+                }
+            }
+
+            for(Edge edge : graph.getEdges()){ //second phase: calculate attractive force in edges
+                Vertex v = edge.vert1();
+                Vertex u = edge.vert2();
+                Coords delta = v.getPosCoords().subtract(u.getPosCoords());
+                double myFa = attractiveForce(u,v,k);
+                v.setOffset(v.getOffset().subtract(delta.unit().scale(myFa)));
+                u.setOffset(u.getOffset().add(delta.unit().scale(myFa)));
+            }
+
+            for(int i = 0; i< nVertices; i++){ //third phase: limit displacement based on temperature
+
+                Vertex v = graph.getVertices().get(i);
+
+                Coords newCoord = (v.getPosCoords().add(v.getOffset().unit().scale(Math.min(v.getOffset().length(), temperature))));
+                v.setPos(newCoord.getX(), newCoord.getY());
+
+                double x = Math.min(w, Math.max(0,v.getPosCoords().getX()));      //prevent from going outside of bound
+                double y = Math.min(h, Math.max(0,v.getPosCoords().getY()));
+                v.setPos(x,y);
+            }
+            temperature *= 0.9;
+        }
+    }
+
+    private double attractiveForce(Vertex ni, Vertex nj, double k){
+        double  distance = ni.getPosCoords().distance(nj.getPosCoords());
+        return distance*distance/k;
+    }
+
+    private double repulsiveForce(Vertex ni, Vertex nj, double k){
+        double  distance = ni.getPosCoords().distance(nj.getPosCoords());
+        return k*k/(distance+0.000001);
     }
 
     public Graph getGraph() {
