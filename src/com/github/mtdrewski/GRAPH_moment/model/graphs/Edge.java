@@ -4,8 +4,9 @@ import java.util.Objects;
 
 public class Edge {
 
-    private Vertex vertex1;
-    private Vertex vertex2;
+    protected Vertex vertex1;
+    protected Vertex vertex2;
+    protected String label = "";
 
     protected Edge(Vertex u, Vertex v) {
         // Only the Graph class can use this constructor. The graph class assures provided vertices are not null.
@@ -16,20 +17,15 @@ public class Edge {
     public Vertex vert1() {
         return vertex1;
     }
+    public Vertex vert2() { return vertex2; }
+    public String getLabel() { return label; }
+    public void setLabel(String l) { label =  l; }
 
-    public Vertex vert2() {
-        return vertex2;
-    }
-
-    public void swap() { // useful for directed edge randomization
-        Vertex temp = vertex1;
-        vertex1 = vertex2;
-        vertex2 = temp;
-    }
+    public void swap() {}
 
     @Override
     public String toString() {
-        return "{" + vertex1.toString() + ", " + vertex2.toString() + "}";
+        return "{" + vertex1.toString() + ", " + vertex2.toString() + ": " + label + "}";
     }
 
     @Override
@@ -37,8 +33,10 @@ public class Edge {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Edge edge = (Edge) o;
-        return Objects.equals(vertex1, edge.vertex1) &&
-                Objects.equals(vertex2, edge.vertex2);
+        return (Objects.equals(vertex1, edge.vertex1) &&
+                Objects.equals(vertex2, edge.vertex2)) ||
+               (Objects.equals(vertex1, edge.vertex2) &&
+                Objects.equals(vertex2, edge.vertex1));
     }
 
     @Override

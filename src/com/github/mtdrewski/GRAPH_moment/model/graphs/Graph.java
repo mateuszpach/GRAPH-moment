@@ -56,6 +56,11 @@ public class Graph {
         reNumber(id - 1);
     }
 
+    public void removeEdge(int id1, int id2) {
+        Edge e = new Edge(vertices.get(id1-1), vertices.get(id2-1));
+        edges.remove(e);
+    }
+
     public void reNumber(int id) {
         for (int i = id; i < vertices.size(); i++) {
             vertices.get(i).setId(i + 1);
@@ -64,6 +69,16 @@ public class Graph {
 
     public Edge addEdge(int vertexId1, int vertexId2) throws LoopEdgeException, NonExistingVertexException {
 
+        checkEdge(vertexId1, vertexId2);
+
+        if (contains(vertexId1, vertexId2))
+            return null;
+        Edge edge = new Edge(vertices.get(vertexId1 - 1), vertices.get(vertexId2 - 1));
+        edges.add(edge);
+        return edge;
+    }
+
+    protected void checkEdge(int vertexId1, int vertexId2) throws LoopEdgeException, NonExistingVertexException {
         if (vertexId1 < 1 || vertexId1 > size() ||
                 vertexId2 < 1 || vertexId2 > size()) {
 
@@ -73,13 +88,6 @@ public class Graph {
         if (vertexId1 == vertexId2) {
             throw new LoopEdgeException(vertexId1);
         }
-
-        //TODO maybe change not intuitive indexing
-        if (contains(vertexId1, vertexId2))
-            return null;
-        Edge edge = new Edge(vertices.get(vertexId1 - 1), vertices.get(vertexId2 - 1));
-        edges.add(edge);
-        return edge;
     }
 
     public Edge addEdge(Edge edge) {
@@ -95,10 +103,9 @@ public class Graph {
     }
 
     public boolean contains(int vertexId1, int vertexId2) {
+        Edge e = new Edge(vertices.get(vertexId1-1), vertices.get(vertexId2-1));
         for (Edge edge : edges) {
-            if ((edge.vert1().id() == vertexId1 && edge.vert2().id() == vertexId2) ||
-                    (edge.vert1().id() == vertexId2 && edge.vert2().id() == vertexId1)) {
-
+            if (edge.equals(e)) {
                 return true;
             }
         }

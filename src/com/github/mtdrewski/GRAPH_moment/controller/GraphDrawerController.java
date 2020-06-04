@@ -2,12 +2,10 @@ package com.github.mtdrewski.GRAPH_moment.controller;
 
 import com.github.mtdrewski.GRAPH_moment.Main;
 import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGenerator;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.DirectedGraph;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.*;
 import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -27,17 +25,20 @@ public class GraphDrawerController {
 
     private File file = null;
 
-    private boolean cursorOverVertex = false;
+    protected boolean cursorOverVertex = false;
+    protected boolean cursorOverEdge = false;
     private boolean isUnsaved = false;
 
-    private enum Mode {EDGE, SELECT, STANDARD}
+    private enum Mode {EDGE, SELECT, STANDARD, TYPING}
     protected boolean isDirected = false;
 
-    Mode mode;
+    private Mode mode;
     private EdgeLine currentEdge;
+    private EdgeLine typingOnEdge;
 
     private VertexCircle sourceVertex = null;
-    private ArrayList<VertexCircle> selectedVertices;
+    protected ArrayList<VertexCircle> selectedVertices;
+    protected ArrayList<EdgeLine> selectedEdges;
 
     private Graph graph;
 
@@ -52,21 +53,16 @@ public class GraphDrawerController {
     public void setDirected(boolean value) { isDirected = value; }
     public boolean getDirected() { return isDirected; }
 
-    public void setCursorOverVertex(boolean value) {
-        cursorOverVertex = value;
-    }
-
     public boolean isInEdgeMode() {
         return mode == Mode.EDGE;
     }
-
     public boolean isInSelectMode() {
         return mode == Mode.SELECT;
     }
-
     public boolean isInStandardMode() {
         return mode == Mode.STANDARD;
     }
+    public boolean isInTypingMode() { return mode == Mode.TYPING; }
 
     protected EdgeLine getCurrentEdge() {
         return currentEdge;
@@ -80,21 +76,17 @@ public class GraphDrawerController {
     private Supplier<VertexCircle> vertexShapeFactory = () -> {
         VertexCircle vertex = new VertexCircle(this);
         vertex.prepareLooks();
-        vertex.createBehaviour();
         return vertex;
     };
 
     public Supplier<EdgeLine> edgeLineFactory = () -> {
-        EdgeLine edge = new EdgeLine(this);
-        edge.prepareLooks();
+        EdgeLine edge;
+        if (!isDirected)
+            edge = new EdgeLine(this);
+        else
+            edge = new DirectedEdgeLine(this);
         edge.setStartVertex(sourceVertex);
-        return edge;
-    };
-
-    public Supplier<DirectedEdgeLine> directedEdgeLineFactory = () -> {
-        DirectedEdgeLine edge = new DirectedEdgeLine(this);
         edge.prepareLooks();
-        edge.setStartVertex(sourceVertex);
         return edge;
     };
 
@@ -112,6 +104,7 @@ public class GraphDrawerController {
         graph = new Graph();
         mode = Mode.STANDARD;
         selectedVertices = new ArrayList<>();
+        selectedEdges = new ArrayList<>();
 
         root.setOnMousePressed(e -> {
             if (e.getButton().equals(MouseButton.PRIMARY)) {
@@ -120,7 +113,7 @@ public class GraphDrawerController {
                     exitEdgeMode(false);
                 }
 
-                if (mode == Mode.SELECT && !cursorOverVertex) {
+                if (mode == Mode.SELECT && !cursorOverVertex && !cursorOverEdge) {
                     deselectAll();
                 }
 
@@ -144,9 +137,27 @@ public class GraphDrawerController {
             if (e.getCode() == KeyCode.CONTROL && mode == Mode.STANDARD) {
                 mode = Mode.SELECT;
             }
-            if (e.getCode() == KeyCode.DELETE) {
+            else if (e.getCode() == KeyCode.DELETE) {
                 deleteAll();
             }
+            else if (e.getCode() == KeyCode.ALT && mode == Mode.STANDARD) {
+                mode = Mode.TYPING;
+                for (Node edge : root.getChildren()) {
+                    if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
+                        ((EdgeLine) edge).editLabel(true);
+                    }
+                }
+            }
+            else if (e.getCode() == KeyCode.ALT && mode == Mode.TYPING) {
+                mode = Mode.STANDARD;
+                for (Node edge : root.getChildren()) {
+                    if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
+                        ((EdgeLine) edge).editLabel(false);
+                        ((EdgeLine) edge).underlyingEdge.setLabel(((EdgeLine) edge).label.getText());
+                    }
+                }
+            }
+
         });
         root.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.CONTROL && mode == Mode.SELECT) {
@@ -157,13 +168,7 @@ public class GraphDrawerController {
 
     protected void enterEdgeMode(VertexCircle vertex, MouseEvent event) {
         sourceVertex = vertex;
-        EdgeLine edge;
-
-        if (!isDirected)
-            edge = edgeLineFactory.get();
-        else
-            edge = directedEdgeLineFactory.get();
-
+        EdgeLine edge = edgeLineFactory.get();
         sourceVertex.addOutcomingEdge(edge);
         edge.followCursor(event);
         edge.appearOnScene();
@@ -182,27 +187,23 @@ public class GraphDrawerController {
         mode = Mode.STANDARD;
     }
 
-    protected void selectVertex(VertexCircle vertex) {
-        int index = root.getChildren().indexOf(vertex);
-        root.getChildren().add(index, vertex.getShadow());
-        selectedVertices.add(vertex);
-    }
 
     protected void deselectAll() {
-        selectedVertices.stream().forEach(v -> {
-            v.hideShadow();
-            v.deselect();
-        });
-        selectedVertices.clear();
-    }
-
-    protected void deselect(VertexCircle vertex) {
-        vertex.hideShadow();
-        selectedVertices.remove(vertex);
+        ArrayList<VertexCircle> toDeselectV = new ArrayList<>(selectedVertices);
+        toDeselectV.stream().forEach(VertexCircle::deselect);
+        ArrayList<EdgeLine> toDeselectE = new ArrayList<>(selectedEdges);
+        toDeselectE.stream().forEach(EdgeLine::deselect);
     }
 
     private void deleteAll() {
         isUnsaved = true;
+
+        selectedEdges.stream().forEach(e -> {
+            graph.removeEdge(e.startVertex.id(), e.endVertex.id());
+            e.startVertex.getOutcomingEdges().remove(e);
+            e.endVertex.getOutcomingEdges().remove(e);
+            e.disappearFromScene();
+        });
 
         selectedVertices.stream().forEach(v -> {
             v.getOutcomingEdges().stream().forEach(EdgeLine::disappearFromScene);
@@ -217,6 +218,7 @@ public class GraphDrawerController {
         });
 
         selectedVertices.clear();
+        selectedEdges.clear();
     }
 
     public void drawNewGraph(Graph newGraph) {

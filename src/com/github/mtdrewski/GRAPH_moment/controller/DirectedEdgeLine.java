@@ -11,6 +11,8 @@ public class DirectedEdgeLine extends EdgeLine{
     private DoubleBinding dx;
     private DoubleBinding dy;
 
+    private EdgeLine friendEdge = null;
+
     public DirectedEdgeLine(GraphDrawerController drawer) {
         super(drawer);
         dx = endXProperty().add(startXProperty().negate());
@@ -28,6 +30,20 @@ public class DirectedEdgeLine extends EdgeLine{
 
         triangle.layoutXProperty().bindBidirectional(endXProperty());
         triangle.layoutYProperty().bindBidirectional(endYProperty());
+    }
+
+    @Override
+    public void setEndVertex(VertexCircle vertex) {
+        super.setEndVertex(vertex);
+        for (EdgeLine e : endVertex.getOutcomingEdges()) {
+            if (e.endVertex == startVertex)
+                friendEdge = e;
+        }
+        if (friendEdge != null) {
+            graphDrawerController.getRoot().getChildren().remove(label);
+            label = friendEdge.label;
+            friendEdge.setVisible(false);
+        }
     }
 
     @Override
@@ -50,13 +66,27 @@ public class DirectedEdgeLine extends EdgeLine{
 
     @Override
     public void appearOnScene() {
+        super.appearOnScene();
         graphDrawerController.getRoot().getChildren().add(0, triangle);
-        graphDrawerController.getRoot().getChildren().add(0, this);
     }
 
     @Override
     public void disappearFromScene() {
+        super.disappearFromScene();
         graphDrawerController.getRoot().getChildren().remove(triangle);
-        graphDrawerController.getRoot().getChildren().remove(this);
+    }
+
+    @Override
+    public void select() {
+        super.select();
+        if (friendEdge != null)
+            graphDrawerController.selectedEdges.add(friendEdge);
+    }
+
+    @Override
+    public void deselect() {
+        super.deselect();
+        if (friendEdge != null)
+            graphDrawerController.selectedEdges.remove(friendEdge);
     }
 }
