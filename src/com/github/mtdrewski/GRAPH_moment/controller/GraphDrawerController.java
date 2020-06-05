@@ -257,12 +257,15 @@ public class GraphDrawerController {
             edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
             vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);
         }
+
+        fruchtermanReingoldLayout(vertexCircles);
+
         currentEdge = null;
         sourceVertex = null;
     }
 
 
-    public void fruchtermanReingoldLayout(){
+    public void fruchtermanReingoldLayout(ArrayList<VertexCircle> vertexCircles){
 
         double w = root.getWidth(), h = root.getHeight();
         double area = w*h;
@@ -270,7 +273,7 @@ public class GraphDrawerController {
         if(nVertices==0)
             return;
 
-        double k = Math.sqrt(area/nVertices); //TODO: check what's the deal with C constant in various implementations
+        double k = Math.sqrt(area/nVertices);
         double temperature = 1000;
 
         for(int m = 0; m< 900; m++){    //number of iterations
@@ -289,6 +292,7 @@ public class GraphDrawerController {
                 }
             }
 
+
             for(Edge edge : graph.getEdges()){ //second phase: calculate attractive force in edges
                 Vertex v = edge.vert1();
                 Vertex u = edge.vert2();
@@ -298,19 +302,43 @@ public class GraphDrawerController {
                 u.setOffset(u.getOffset().add(delta.unit().scale(myFa)));
             }
 
+
             for(int i = 0; i< nVertices; i++){ //third phase: limit displacement based on temperature
-
                 Vertex v = graph.getVertices().get(i);
-
                 Coords newCoord = (v.getPosCoords().add(v.getOffset().unit().scale(Math.min(v.getOffset().length(), temperature))));
                 v.setPos(newCoord.getX(), newCoord.getY());
-
-                double x = Math.min(w, Math.max(0,v.getPosCoords().getX()));      //prevent from going outside of bound
-                double y = Math.min(h, Math.max(0,v.getPosCoords().getY()));
-                v.setPos(x,y);
             }
             temperature *= 0.9;
         }
+
+        //scale everything to fit the screen
+
+        double scale=1;
+        for(int i=0;i<nVertices;i++){
+            Vertex v =graph.getVertices().get(i);
+            double xC=v.xPos();
+            double yC=v.yPos();
+            if(xC>w/2)
+                scale=Math.max(scale,(xC-(w/2))/(w/2-40));
+            else
+                scale=Math.max(scale,-(xC-(w/2))/(w/2-40));
+            if(yC>h/2)
+                scale=Math.max(scale,(yC-(h/2))/(h/2-40));
+            else
+                scale=Math.max(scale,-(yC-(h/2))/(h/2-40));
+        }
+
+        scale=1/scale;
+        for(int i=0;i<nVertices;i++) {
+            Vertex v = graph.getVertices().get(i);
+            double xC = v.xPos();
+            double yC = v.yPos();
+            v.setPos(xC*scale+w/2,yC*scale+h/2);
+        }
+
+        for(int i=0;i<nVertices;i++)
+            vertexCircles.get(i).setPosition(graph.getVertices().get(i).xPos(),graph.getVertices().get(i).yPos());
+
     }
 
     private double attractiveForce(Vertex ni, Vertex nj, double k){
@@ -340,7 +368,7 @@ public class GraphDrawerController {
     public Pair<Double, Double> getRandomCoords() {
         Random random = new Random();
         return new Pair<>(
-                random.nextDouble() * (root.getWidth()- 40.0) + 20.0, random.nextDouble() * (root.getHeight()- 40.0) + 20.0
+                random.nextDouble() * (root.getWidth()), random.nextDouble() * (root.getHeight())
         );
     }
 }
