@@ -16,14 +16,16 @@ public class NewProjectOptionsController {
     public void undirected() {
         graphDrawerController.setUnsaved(true);
         graphDrawerController.setDirected(false);
-        graphDrawerController.drawNewGraph(new Graph()); //TODO: modify for directed
+        graphDrawerController.setFile(null);
+        graphDrawerController.drawNewGraph(new Graph());
         ((Stage) root.getScene().getWindow()).close();
     }
 
     public void directed() {
         graphDrawerController.setUnsaved(true);
         graphDrawerController.setDirected(true);
-        graphDrawerController.drawNewGraph(new DirectedGraph()); //TODO: modify for undirected
+        graphDrawerController.setFile(null);
+        graphDrawerController.drawNewGraph(new DirectedGraph());
         ((Stage) root.getScene().getWindow()).close();
     }
 

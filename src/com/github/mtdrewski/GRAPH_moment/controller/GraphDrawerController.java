@@ -34,6 +34,7 @@ public class GraphDrawerController {
     private boolean isUnsaved = false;
 
     private enum Mode {EDGE, SELECT, STANDARD, TYPING}
+
     protected boolean isDirected = false;
 
     private Mode mode;
@@ -54,28 +55,41 @@ public class GraphDrawerController {
         isUnsaved = b;
     }
 
-    public void setDirected(boolean value) { isDirected = value; }
-    public boolean getDirected() { return isDirected; }
+    public void setDirected(boolean value) {
+        isDirected = value;
+    }
+
+    public boolean getDirected() {
+        return isDirected;
+    }
 
     public boolean isInEdgeMode() {
         return mode == Mode.EDGE;
     }
+
     public boolean isInSelectMode() {
         return mode == Mode.SELECT;
     }
+
     public boolean isInStandardMode() {
         return mode == Mode.STANDARD;
     }
-    public boolean isInTypingMode() { return mode == Mode.TYPING; }
+
+    public boolean isInTypingMode() {
+        return mode == Mode.TYPING;
+    }
 
     protected EdgeLine getCurrentEdge() {
         return currentEdge;
     }
+
     protected VertexCircle getSourceVertex() {
         return sourceVertex;
     }
 
-    protected AnchorPane getRoot() { return root; }
+    protected AnchorPane getRoot() {
+        return root;
+    }
 
     private Supplier<VertexCircle> vertexShapeFactory = () -> {
         VertexCircle vertex = new VertexCircle(this);
@@ -95,7 +109,6 @@ public class GraphDrawerController {
     };
 
     public void initialize() {
-        //TODO: Maybe GraphDrawer could remember own instance in some static field
         Main.setGraphDrawerController(this);
         MainController.setGraphDrawerController(this);
         NewProjectOptionsController.setGraphDrawerController(this);
@@ -105,6 +118,7 @@ public class GraphDrawerController {
         ExportController.setGraphDrawerController(this);
         DataProcessor.setGraphDrawerController(this);
         IntervalConstrainedGenerator.setGraphDrawerController(this);
+
         graph = new Graph();
         mode = Mode.STANDARD;
         selectedVertices = new ArrayList<>();
@@ -140,11 +154,9 @@ public class GraphDrawerController {
         root.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.CONTROL && mode == Mode.STANDARD) {
                 mode = Mode.SELECT;
-            }
-            else if (e.getCode() == KeyCode.DELETE) {
+            } else if (e.getCode() == KeyCode.DELETE) {
                 deleteAll();
-            }
-            else if (e.getCode() == KeyCode.ALT && mode == Mode.STANDARD) {
+            } else if (e.getCode() == KeyCode.ALT && mode == Mode.STANDARD) {
                 mode = Mode.TYPING;
                 for (Node edge : root.getChildren()) {
                     if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
@@ -152,8 +164,7 @@ public class GraphDrawerController {
                         ((EdgeLine) edge).moveLabel();
                     }
                 }
-            }
-            else if (e.getCode() == KeyCode.ALT && mode == Mode.TYPING) {
+            } else if (e.getCode() == KeyCode.ALT && mode == Mode.TYPING) {
                 mode = Mode.STANDARD;
                 for (Node edge : root.getChildren()) {
                     if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
@@ -267,8 +278,6 @@ public class GraphDrawerController {
         currentEdge = null;
         sourceVertex = null;
     }
-
-
     public Graph getGraph() {
         return graph;
     }
@@ -278,8 +287,22 @@ public class GraphDrawerController {
     }
 
     public void setFile(File file) {
-        //TODO: after adding directed graphs title should look eg. MyGraph [directed/undirected] - GRAPH Moment
-        ((Stage) root.getScene().getWindow()).setTitle(file.getName() + " [directed] - GRAPH Moment");
+        StringBuilder title = new StringBuilder();
+
+        if (file == null) {
+            title.append("Untitled");
+        } else {
+            title.append(file.getName());
+        }
+
+        if (isDirected) {
+            title.append(" [directed] - GRAPH Moment");
+        } else {
+            title.append(" [undirected] - GRAPH Moment");
+        }
+
+        ((Stage) root.getScene().getWindow()).setTitle(title.toString());
+
         this.file = file;
     }
 
