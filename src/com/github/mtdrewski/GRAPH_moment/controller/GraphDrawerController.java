@@ -2,9 +2,12 @@ package com.github.mtdrewski.GRAPH_moment.controller;
 
 import com.github.mtdrewski.GRAPH_moment.Main;
 import com.github.mtdrewski.GRAPH_moment.model.generators.IntervalConstrainedGenerator;
-import com.github.mtdrewski.GRAPH_moment.model.graphs.*;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.DirectedGraph;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
+import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
-import com.github.mtdrewski.GRAPH_moment.model.utils.Coords;
+import com.github.mtdrewski.GRAPH_moment.model.utils.GraphEmbedder;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
@@ -146,6 +149,7 @@ public class GraphDrawerController {
                 for (Node edge : root.getChildren()) {
                     if (edge.getClass().isAssignableFrom(DirectedEdgeLine.class)) {
                         ((EdgeLine) edge).editLabel(true);
+                        ((EdgeLine) edge).moveLabel();
                     }
                 }
             }
@@ -258,98 +262,12 @@ public class GraphDrawerController {
             vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);
         }
 
-        fruchtermanReingoldLayout(vertexCircles);
+        GraphEmbedder.fruchtermanReingoldLayout(vertexCircles, graph, root);
 
         currentEdge = null;
         sourceVertex = null;
     }
 
-
-    public void fruchtermanReingoldLayout(ArrayList<VertexCircle> vertexCircles){
-
-        double w = root.getWidth(), h = root.getHeight();
-        double area = w*h;
-        int nVertices=graph.getVertices().size();
-        if(nVertices==0)
-            return;
-
-        double k = Math.sqrt(area/nVertices);
-        double temperature = 1000;
-
-        for(int m = 0; m< 900; m++){    //number of iterations
-
-            for(int i = 0; i < graph.getVertices().size(); i++){    //first phase: calculate repulsive force between nodes
-                Vertex v = graph.getVertices().get(i);
-                v.setOffset(0,0);
-
-                for(int j = 0; j< nVertices; j++){
-                    Vertex u = graph.getVertices().get(j);
-                    if(i!= j){
-                        Coords delta = v.getPosCoords().subtract(u.getPosCoords());
-                        double myFr = repulsiveForce(u,v,k);
-                        v.setOffset(v.getOffset().add(delta.unit().scale(myFr)));
-                    }
-                }
-            }
-
-
-            for(Edge edge : graph.getEdges()){ //second phase: calculate attractive force in edges
-                Vertex v = edge.vert1();
-                Vertex u = edge.vert2();
-                Coords delta = v.getPosCoords().subtract(u.getPosCoords());
-                double myFa = attractiveForce(u,v,k);
-                v.setOffset(v.getOffset().subtract(delta.unit().scale(myFa)));
-                u.setOffset(u.getOffset().add(delta.unit().scale(myFa)));
-            }
-
-
-            for(int i = 0; i< nVertices; i++){ //third phase: limit displacement based on temperature
-                Vertex v = graph.getVertices().get(i);
-                Coords newCoord = (v.getPosCoords().add(v.getOffset().unit().scale(Math.min(v.getOffset().length(), temperature))));
-                v.setPos(newCoord.getX(), newCoord.getY());
-            }
-            temperature *= 0.9;
-        }
-
-        //scale everything to fit the screen
-
-        double scale=1;
-        for(int i=0;i<nVertices;i++){
-            Vertex v =graph.getVertices().get(i);
-            double xC=v.xPos();
-            double yC=v.yPos();
-            if(xC>w/2)
-                scale=Math.max(scale,(xC-(w/2))/(w/2-40));
-            else
-                scale=Math.max(scale,-(xC-(w/2))/(w/2-40));
-            if(yC>h/2)
-                scale=Math.max(scale,(yC-(h/2))/(h/2-40));
-            else
-                scale=Math.max(scale,-(yC-(h/2))/(h/2-40));
-        }
-
-        scale=1/scale;
-        for(int i=0;i<nVertices;i++) {
-            Vertex v = graph.getVertices().get(i);
-            double xC = v.xPos();
-            double yC = v.yPos();
-            v.setPos(xC*scale+w/2,yC*scale+h/2);
-        }
-
-        for(int i=0;i<nVertices;i++)
-            vertexCircles.get(i).setPosition(graph.getVertices().get(i).xPos(),graph.getVertices().get(i).yPos());
-
-    }
-
-    private double attractiveForce(Vertex ni, Vertex nj, double k){
-        double  distance = ni.getPosCoords().distance(nj.getPosCoords());
-        return distance*distance/k;
-    }
-
-    private double repulsiveForce(Vertex ni, Vertex nj, double k){
-        double  distance = ni.getPosCoords().distance(nj.getPosCoords());
-        return k*k/(distance+0.000001);
-    }
 
     public Graph getGraph() {
         return graph;
