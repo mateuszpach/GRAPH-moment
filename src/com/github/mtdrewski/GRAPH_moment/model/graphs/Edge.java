@@ -17,11 +17,21 @@ public class Edge {
     public Vertex vert1() {
         return vertex1;
     }
-    public Vertex vert2() { return vertex2; }
-    public String getLabel() { return label; }
-    public void setLabel(String l) { label =  l; }
 
-    public void swap() {}
+    public Vertex vert2() {
+        return vertex2;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String l) {
+        label = l;
+    }
+
+    public void swap() {
+    }
 
     @Override
     public String toString() {
@@ -35,8 +45,8 @@ public class Edge {
         Edge edge = (Edge) o;
         return (Objects.equals(vertex1, edge.vertex1) &&
                 Objects.equals(vertex2, edge.vertex2)) ||
-               (Objects.equals(vertex1, edge.vertex2) &&
-                Objects.equals(vertex2, edge.vertex1));
+                (Objects.equals(vertex1, edge.vertex2) &&
+                        Objects.equals(vertex2, edge.vertex1));
     }
 
     @Override
