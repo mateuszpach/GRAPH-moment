@@ -23,6 +23,7 @@ public class VertexCircle extends Circle {
     private Circle shadow;
     private boolean selected = false;
 
+
     private ArrayList<EdgeLine> outcomingEdges = new ArrayList<>();
 
     private final GraphDrawerController graphDrawerController;
@@ -53,15 +54,14 @@ public class VertexCircle extends Circle {
     public ArrayList<EdgeLine> getOutcomingEdges() { return outcomingEdges; }
 
     public void setPosition(MouseEvent e) {
-        graphDrawerController.setUnsaved(true);
-        underlyingVertex.setPos(e.getX(), e.getY());
-        setCenterX(e.getX());
-        setCenterY(e.getY());
-        setLabelPosition(e.getX(), e.getY());
-        setShadowPosition(e.getX(), e.getY());
-        for (EdgeLine edge : outcomingEdges) {
-            edge.followVertex(this);
-        }
+        double x = e.getX();
+        double y = e.getY();
+
+        x = Math.min(x, graphDrawerController.getMaxX());
+        x = Math.max(x, vertexRadius + 5);
+        y = Math.min(y, graphDrawerController.getMaxY());
+        y = Math.max(y, vertexRadius + 5);
+        setPosition(x, y);
     }
 
     public void setPosition(double x, double y) {

@@ -46,6 +46,9 @@ public class GraphDrawerController {
     protected ArrayList<EdgeLine> selectedEdges;
 
     private Graph graph;
+    private double maxX, maxY;
+    public double getMaxX() { return maxX; }
+    public double getMaxY() { return maxY; }
 
     public boolean isUnsaved() {
         return isUnsaved;
@@ -125,6 +128,9 @@ public class GraphDrawerController {
         selectedEdges = new ArrayList<>();
 
         root.setOnMousePressed(e -> {
+            maxX = root.getWidth() - 25.0;
+            maxY = root.getHeight() - 25.0;
+
             if (e.getButton().equals(MouseButton.PRIMARY)) {
 
                 if (mode == Mode.EDGE && !cursorOverVertex) {
