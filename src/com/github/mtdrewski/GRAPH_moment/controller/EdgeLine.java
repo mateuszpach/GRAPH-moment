@@ -108,6 +108,16 @@ public class EdgeLine extends Line {
         label.setPrefHeight(10);
         label.setScaleX(2);
         label.setScaleY(2);
+
+        label.setOnKeyTyped(t -> {
+
+            if (label.getText().length() > 5) {
+                int pos = label.getCaretPosition();
+                label.setText(label.getText(0, 5));
+                label.positionCaret(pos);
+            }
+
+        });
     }
 
     public void editLabel(boolean value) {
