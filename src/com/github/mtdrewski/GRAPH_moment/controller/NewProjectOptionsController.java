@@ -17,7 +17,7 @@ public class NewProjectOptionsController {
         graphDrawerController.setUnsaved(true);
         graphDrawerController.setDirected(false);
         graphDrawerController.setFile(null);
-        graphDrawerController.drawNewGraph(new Graph());
+        graphDrawerController.drawNewGraph(new Graph(), false);
         ((Stage) root.getScene().getWindow()).close();
     }
 
@@ -25,7 +25,7 @@ public class NewProjectOptionsController {
         graphDrawerController.setUnsaved(true);
         graphDrawerController.setDirected(true);
         graphDrawerController.setFile(null);
-        graphDrawerController.drawNewGraph(new DirectedGraph());
+        graphDrawerController.drawNewGraph(new DirectedGraph(), false);
         ((Stage) root.getScene().getWindow()).close();
     }
 

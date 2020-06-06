@@ -237,7 +237,7 @@ public class GraphDrawerController {
         selectedEdges.clear();
     }
 
-    public void drawNewGraph(Graph newGraph) {
+    public void drawNewGraph(Graph newGraph, boolean embed) {
         isUnsaved = true;
 
         root.getChildren().clear();
@@ -273,11 +273,13 @@ public class GraphDrawerController {
             vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);
         }
 
-        GraphEmbedder.fruchtermanReingoldLayout(vertexCircles, graph, root);
+        if (embed)
+            GraphEmbedder.fruchtermanReingoldLayout(vertexCircles, graph, root);
 
         currentEdge = null;
         sourceVertex = null;
     }
+
     public Graph getGraph() {
         return graph;
     }

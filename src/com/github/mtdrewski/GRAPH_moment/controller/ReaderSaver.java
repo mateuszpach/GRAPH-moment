@@ -23,7 +23,7 @@ public class ReaderSaver {
             if (file == null) return false;
             String graphInput = FileIOProcessor.read(file);
             Graph graph = dataProcessor.makeFullGraphFromInput(graphInput);
-            graphDrawerController.drawNewGraph(graph);
+            graphDrawerController.drawNewGraph(graph, false);
             graphDrawerController.setFile(file);
             graphDrawerController.setUnsaved(false);
             return true;

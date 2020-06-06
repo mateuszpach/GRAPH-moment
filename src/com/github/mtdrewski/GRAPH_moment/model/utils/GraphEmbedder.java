@@ -12,6 +12,9 @@ public interface GraphEmbedder {
 
     static void fruchtermanReingoldLayout(ArrayList<VertexCircle> vertexCircles, Graph graph, AnchorPane root){
 
+        if (graph.size() < 2)
+            return;
+
         double w = root.getWidth(), h = root.getHeight();
         double area = w*h;
         int nVertices=graph.getVertices().size();
@@ -22,10 +25,9 @@ public interface GraphEmbedder {
         if (vertexCircles.size() > 0)
             radius = vertexCircles.get(0).getRadius();
 
-        double k = Math.sqrt(area/nVertices);
+        double k = Math.sqrt(area/nVertices) * (graph.getEdges().size() + 1);
         double temperature = 1000;
-
-        for(int m = 0; m< 900; m++){    //number of iterations
+        for(int m = 0; m < 100 / (Math.sqrt(graph.size())); m++){    //number of iterations
 
             for(int i = 0; i < graph.getVertices().size(); i++){    //first phase: calculate repulsive force between nodes
                 Vertex v = graph.getVertices().get(i);

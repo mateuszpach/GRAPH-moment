@@ -67,7 +67,8 @@ public class DirectedEdgeLine extends EdgeLine{
     @Override
     public void appearOnScene() {
         super.appearOnScene();
-        graphDrawerController.getRoot().getChildren().add(0, triangle);
+        int index = graphDrawerController.getRoot().getChildren().indexOf(this);
+        graphDrawerController.getRoot().getChildren().add(index + 1, triangle);
     }
 
     @Override
