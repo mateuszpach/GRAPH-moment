@@ -153,13 +153,13 @@ public class GenerateController {
         System.out.println(oldGraph);
         switch (mergeType) {
             case UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph, graphDrawerController.getDirected()));
+                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph, graphDrawerController.getDirected()), true);
                 break;
             case DISJOINT_UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph, graphDrawerController.getDirected()));
+                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph, graphDrawerController.getDirected()), true);
                 break;
             case REPLACE:
-                graphDrawerController.drawNewGraph(newGraph);
+                graphDrawerController.drawNewGraph(newGraph, true);
                 break;
             default:
                 break;
