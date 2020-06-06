@@ -35,9 +35,6 @@ public class GenerateController {
     @FXML
     private JFXComboBox graphTypeSelector;
 
-//    @FXML
-//    private CheckBox isDirected; //TODO
-
     @FXML
     private JFXTextField minVertices;
     @FXML
@@ -69,7 +66,6 @@ public class GenerateController {
         initGraphTypes();
         graphTypeSelector.getItems().addAll("Standard", "Multicomponent", "Tree");
 
-        //TODO: make it looks better
         minEdges.setDisable(false);
         minEdgesLabel.setDisable(false);
         maxEdges.setDisable(false);
@@ -222,8 +218,7 @@ public class GenerateController {
                         generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
                     else
                         generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
-                }
-                else {
+                } else {
                     if (!graphDrawerController.getDirected())
                         generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minC), Integer.parseInt(maxC));
                     else
@@ -235,8 +230,7 @@ public class GenerateController {
                         generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
                     else
                         generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
-                }
-                else {
+                } else {
                     if (!graphDrawerController.getDirected())
                         generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(minC), Integer.parseInt(maxC));
                     else

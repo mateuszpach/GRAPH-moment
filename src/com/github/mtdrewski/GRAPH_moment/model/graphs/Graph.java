@@ -12,10 +12,11 @@ public class Graph {
     protected Vector<Vertex> vertices;
     protected Vector<Edge> edges;
 
-    public Vector<Vertex> getVertices(){
+    public Vector<Vertex> getVertices() {
         return vertices;
     }
-    public Vector<Edge> getEdges(){
+
+    public Vector<Edge> getEdges() {
         return edges;
     }
 
@@ -57,7 +58,7 @@ public class Graph {
     }
 
     public void removeEdge(int id1, int id2) {
-        Edge e = new Edge(vertices.get(id1-1), vertices.get(id2-1));
+        Edge e = new Edge(vertices.get(id1 - 1), vertices.get(id2 - 1));
         edges.remove(e);
     }
 
@@ -103,7 +104,7 @@ public class Graph {
     }
 
     public boolean contains(int vertexId1, int vertexId2) {
-        Edge e = new Edge(vertices.get(vertexId1-1), vertices.get(vertexId2-1));
+        Edge e = new Edge(vertices.get(vertexId1 - 1), vertices.get(vertexId2 - 1));
         for (Edge edge : edges) {
             if (edge.equals(e)) {
                 return true;
@@ -120,7 +121,7 @@ public class Graph {
         List<Integer> permutation = Stream.iterate(1, x -> x + 1).limit(size()).collect(Collectors.toList());
         Collections.shuffle(permutation);
         for (int i = 1; i <= size(); i++) {
-            vertices.get(i-1).setId(permutation.get(i-1));
+            vertices.get(i - 1).setId(permutation.get(i - 1));
         }
         vertices.sort(Vertex::compareTo);
     }
