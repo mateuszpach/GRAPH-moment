@@ -223,15 +223,7 @@ public class GraphDrawerController {
     }
 
     public void drawNewGraph(Graph newGraph) {
-        isUnsaved = true;
-        edgesOnScene.clear();
-        verticesOnScene.clear();
-
-        root.getChildren().clear();
-        if (isDirected)
-            graph = new DirectedGraph();
-        else
-            graph = new Graph();
+        reset();
 
         ArrayList<VertexCircle> vertexCircles = new ArrayList<>();
 
@@ -297,5 +289,27 @@ public class GraphDrawerController {
         return new Pair<>(
                 random.nextDouble() * (root.getWidth() - 50) + 25, random.nextDouble() * (root.getHeight() - 50) + 25
         );
+    }
+
+    public void reset() {
+        isUnsaved = true;
+        cursorOverEdge = false;
+        cursorOverVertex = false;
+        currentEdge = null;
+        sourceVertex = null;
+
+        selectedEdges.clear();
+        selectedVertices.clear();
+
+        edgesOnScene.clear();
+        verticesOnScene.clear();
+        root.getChildren().clear();
+
+        if (isDirected)
+            graph = new DirectedGraph();
+        else
+            graph = new Graph();
+
+        mode = Mode.STANDARD;
     }
 }
