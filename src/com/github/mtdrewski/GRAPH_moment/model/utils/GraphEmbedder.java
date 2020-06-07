@@ -1,33 +1,28 @@
 package com.github.mtdrewski.GRAPH_moment.model.utils;
 
-import com.github.mtdrewski.GRAPH_moment.controller.VertexCircle;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 import javafx.scene.layout.AnchorPane;
 
-import java.util.ArrayList;
-
 public interface GraphEmbedder {
 
-    static void fruchtermanReingoldLayout(ArrayList<VertexCircle> vertexCircles, Graph graph, AnchorPane root){
+    static void fruchtermanReingoldLayout(Graph graph, AnchorPane root){
 
-        if (graph.size() < 2)
+        if (graph.size() < 2 || graph.size() > 50)
             return;
 
-        double w = root.getWidth(), h = root.getHeight();
+        double w = root.getWidth() - 40, h = root.getHeight() - 40;
         double area = w*h;
         int nVertices=graph.getVertices().size();
         if(nVertices==0)
             return;
 
-        double radius = 1;
-        if (vertexCircles.size() > 0)
-            radius = vertexCircles.get(0).getRadius();
+        double radius = 20.0;
 
         double k = Math.sqrt(area/nVertices) * (graph.getEdges().size() + 1);
         double temperature = 1000;
-        for(int m = 0; m < 100 / (Math.sqrt(graph.size())); m++){    //number of iterations
+        for(int m = 0; m < Math.max(3, 40 - graph.size()); m++){    //number of iterations
 
             for(int i = 0; i < graph.getVertices().size(); i++){    //first phase: calculate repulsive force between nodes
                 Vertex v = graph.getVertices().get(i);
@@ -86,10 +81,6 @@ public interface GraphEmbedder {
             double yC = v.yPos();
             v.setPos(xC*scale+w/2,yC*scale+h/2);
         }
-
-        for(int i=0;i<nVertices;i++)
-            vertexCircles.get(i).setPosition(graph.getVertices().get(i).xPos(),graph.getVertices().get(i).yPos());
-
     }
 
     private static double attractiveForce(Vertex ni, Vertex nj, double k, double radius){

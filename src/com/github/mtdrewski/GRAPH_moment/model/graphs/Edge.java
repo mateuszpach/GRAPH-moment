@@ -31,6 +31,9 @@ public class Edge {
     }
 
     public void swap() {
+        Vertex temp = vertex1;
+        vertex1 = vertex2;
+        vertex2 = temp;
     }
 
     @Override

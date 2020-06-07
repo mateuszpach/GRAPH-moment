@@ -62,12 +62,12 @@
                 <Separator prefWidth="200.0"/>
                 <AnchorPane>
                     <Label styleClass="shortcut-entry" text="Enter label edition mode"/>
-                    <Label styleClass="shortcut-entry" text="E on single selected edge" AnchorPane.rightAnchor="0.0"/>
+                    <Label styleClass="shortcut-entry" text="Left Alt" AnchorPane.rightAnchor="0.0"/>
                 </AnchorPane>
                 <Separator prefWidth="200.0"/>
                 <AnchorPane>
                     <Label styleClass="shortcut-entry" text="Leave label edition mode"/>
-                    <Label styleClass="shortcut-entry" text="Esc" AnchorPane.rightAnchor="0.0"/>
+                    <Label styleClass="shortcut-entry" text="Left Alt" AnchorPane.rightAnchor="0.0"/>
                 </AnchorPane>
                 <Separator prefWidth="200.0"/>
             </children>

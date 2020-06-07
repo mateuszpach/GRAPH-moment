@@ -16,11 +16,4 @@ public class DirectedEdge extends Edge {
         return Objects.equals(vertex1, edge.vertex1) &&
                 Objects.equals(vertex2, edge.vertex2);
     }
-
-    @Override
-    public void swap() { // useful for directed edge randomization
-        Vertex temp = vertex1;
-        vertex1 = vertex2;
-        vertex2 = temp;
-    }
 }

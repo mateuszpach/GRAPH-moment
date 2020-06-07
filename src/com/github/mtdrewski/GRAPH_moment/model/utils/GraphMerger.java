@@ -1,5 +1,6 @@
 package com.github.mtdrewski.GRAPH_moment.model.utils;
 
+import com.github.mtdrewski.GRAPH_moment.controller.GraphDrawerController;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.DirectedGraph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
@@ -62,5 +63,38 @@ public interface GraphMerger {
             united.addEdge(edge.vert1().id() + graph1.size(), edge.vert2().id() + graph1.size());
         }
         return united;
+    }
+
+    public static void drawAccordingToMergeType(GraphDrawerController graphDrawerController, Type mergeType,
+                                                Graph oldGraph, Graph newGraph) {
+        switch (mergeType) {
+            case UNION:
+                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph, graphDrawerController.getDirected()));
+                break;
+            case DISJOINT_UNION:
+                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph, graphDrawerController.getDirected()));
+                break;
+            case REPLACE:
+                graphDrawerController.drawNewGraph(newGraph);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static Type recognizeMergeType(String text) {
+        Type mergeType = null;
+        switch (text) {
+            case "Union graph":
+                mergeType = GraphMerger.Type.UNION;
+                break;
+            case "Renumber graph":
+                mergeType = GraphMerger.Type.DISJOINT_UNION;
+                break;
+            case "Replace with graph":
+                mergeType = GraphMerger.Type.REPLACE;
+                break;
+        }
+        return mergeType;
     }
 }
