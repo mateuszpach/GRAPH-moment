@@ -28,7 +28,6 @@ public class ReaderSaver {
             graphDrawerController.setUnsaved(false);
             return true;
         } catch (IllegalArgumentException e) {
-            System.out.println(e);
             Stager.alert(stage, "Read failed");
         }
         return false;
@@ -38,6 +37,7 @@ public class ReaderSaver {
         File file = graphDrawerController.getFile();
         if (graphDrawerController.getFile() == null) {
             saveProjectAs(stage);
+            return true;
         } else {
             try {
                 FileIOProcessor.save(dataProcessor.makeFullOutputFromGraph(graphDrawerController.getGraph()), file);
