@@ -101,6 +101,9 @@ public class Graph {
     }
 
     public boolean contains(int vertexId1, int vertexId2) {
+        if (vertexId1 < 1 || vertexId1 > size() ||
+                vertexId2 < 1 || vertexId2 > size())
+            return false;
         Edge e = new Edge(vertices.get(vertexId1 - 1), vertices.get(vertexId2 - 1));
         for (Edge edge : edges) {
             if (edge.equals(e)) {
