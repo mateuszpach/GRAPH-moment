@@ -31,7 +31,7 @@
                 <Separator prefWidth="200.0"/>
                 <AnchorPane>
                     <Label styleClass="shortcut-entry" text="Move vertex"/>
-                    <Label styleClass="shortcut-entry" text="Right Click and Drag" AnchorPane.rightAnchor="0.0"/>
+                    <Label styleClass="shortcut-entry" text="Left Click and Drag" AnchorPane.rightAnchor="0.0"/>
                 </AnchorPane>
                 <Separator prefWidth="200.0"/>
                 <AnchorPane>
@@ -46,12 +46,12 @@
                 <Separator prefWidth="200.0"/>
                 <AnchorPane>
                     <Label styleClass="shortcut-entry" text="Select/Unselect"/>
-                    <Label styleClass="shortcut-entry" text="Right Ctrl + Left Click" AnchorPane.rightAnchor="0.0"/>
+                    <Label styleClass="shortcut-entry" text="Ctrl + Left Click" AnchorPane.rightAnchor="0.0"/>
                 </AnchorPane>
                 <Separator prefWidth="200.0"/>
                 <AnchorPane>
                     <Label styleClass="shortcut-entry" text="Remove selection"/>
-                    <Label styleClass="shortcut-entry" text="Right Ctrl + Left Click on canvas"
+                    <Label styleClass="shortcut-entry" text="Ctrl + Left Click on canvas"
                            AnchorPane.rightAnchor="0.0"/>
                 </AnchorPane>
                 <Separator prefWidth="200.0"/>

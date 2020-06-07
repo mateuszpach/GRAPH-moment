@@ -165,12 +165,14 @@ public class VertexCircle extends Circle {
     public void appearOnScene() {
         graphDrawerController.getRoot().getChildren().add(this);
         graphDrawerController.getRoot().getChildren().add(idText);
+        graphDrawerController.verticesOnScene.add(this);
     }
 
     public void disappearFromScene() {
         hideShadow();
         graphDrawerController.getRoot().getChildren().remove(idText);
         graphDrawerController.getRoot().getChildren().remove(this);
+        graphDrawerController.verticesOnScene.remove(this);
     }
 
     public void hideShadow()  {

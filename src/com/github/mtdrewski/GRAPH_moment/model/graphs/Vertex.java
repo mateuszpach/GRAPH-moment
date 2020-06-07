@@ -9,7 +9,7 @@ public class Vertex implements Comparable<Vertex> {
     private int id;
 
     private Coords posCoords;
-    private Coords offsetCoords; //it's for Force-directed graph drawing
+    private Coords offsetCoords; // for Force-directed graph drawing
 
     protected Vertex(int id) {
         this.id = id;

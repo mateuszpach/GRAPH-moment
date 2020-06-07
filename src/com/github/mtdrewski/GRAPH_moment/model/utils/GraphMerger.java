@@ -69,10 +69,10 @@ public interface GraphMerger {
                                                 Graph oldGraph, Graph newGraph) {
         switch (mergeType) {
             case UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph, graphDrawerController.getDirected()));
+                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph, graphDrawerController.isDirected()));
                 break;
             case DISJOINT_UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph, graphDrawerController.getDirected()));
+                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph, graphDrawerController.isDirected()));
                 break;
             case REPLACE:
                 graphDrawerController.drawNewGraph(newGraph);
