@@ -6,7 +6,7 @@
     git clone https://github.com/mtdrewski/GRAPH-moment
     ```
 2. Open GRAPH-moment.iml in IntelliJ IDEA .
-3. Add following to VM options in run configuration.
+3. Add the following line to VM options in a run configuration.
     ```
     --module-path <path to repo>/GRAPH-moment/libs/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml
     ```
