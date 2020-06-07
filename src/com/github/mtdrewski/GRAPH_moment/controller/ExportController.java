@@ -92,9 +92,6 @@ public class ExportController {
             case "Adjacency matrix":
                 graphType = DataProcessor.Type.ADJACENCY_MATRIX;
                 break;
-            case "Incidence matrix":
-                graphType = DataProcessor.Type.INCIDENCE_MATRIX;
-                break;
             case "Edges list":
                 graphType = DataProcessor.Type.EDGE_LIST;
                 break;

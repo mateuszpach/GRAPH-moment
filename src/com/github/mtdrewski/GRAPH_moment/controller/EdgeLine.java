@@ -13,8 +13,6 @@ public class EdgeLine extends Line {
     protected double thickness = 5.0;
     protected Color color = Color.BLACK;
 
-    public enum Orientation {BEGIN, END};
-
     protected Edge underlyingEdge;
     protected VertexCircle startVertex;
     protected VertexCircle endVertex;
@@ -153,6 +151,7 @@ public class EdgeLine extends Line {
 
     public void appearOnScene() {
         graphDrawerController.getRoot().getChildren().add(0, this);
+        graphDrawerController.edgesOnScene.add(this);
         showLabel();
     }
 
@@ -160,6 +159,7 @@ public class EdgeLine extends Line {
         hideShadow();
         hideLabel();
         graphDrawerController.getRoot().getChildren().remove(this);
+        graphDrawerController.edgesOnScene.remove(this);
     }
 
     public void createBehaviour() {

@@ -15,7 +15,6 @@ public class Graph {
     public Vector<Vertex> getVertices() {
         return vertices;
     }
-
     public Vector<Edge> getEdges() {
         return edges;
     }
@@ -36,18 +35,16 @@ public class Graph {
         return vertex;
     }
 
-    public Vertex addVertex(double x, double y) {
+    public void addVertex(double x, double y) {
         int newId = size() + 1;
         Vertex vertex = new Vertex(newId, x, y);
         vertices.add(vertex);
-        return vertex;
     }
 
-    public Vertex addVertex(Vertex vert) {
+    public void addVertex(Vertex vert) {
         int newId = size() + 1;
         Vertex vertex = new Vertex(newId, vert.xPos(), vert.yPos());
         vertices.add(vertex);
-        return vertex;
     }
 
     public void removeVertex(int id) {
@@ -91,8 +88,8 @@ public class Graph {
         }
     }
 
-    public Edge addEdge(Edge edge) {
-        return addEdge(edge.vert1().id(), edge.vert2().id());
+    public void addEdge(Edge edge) {
+        addEdge(edge.vert1().id(), edge.vert2().id());
     }
 
     public boolean contains(int vertexId) {
@@ -131,7 +128,7 @@ public class Graph {
         return vertices.toString() + ", " + edges.toString();
     }
 
-    public static class LoopEdgeException extends RuntimeException { //TODO maybe create other file for this?
+    public static class LoopEdgeException extends RuntimeException {
 
         int loopedVertex = 0;
 
@@ -145,7 +142,7 @@ public class Graph {
         }
     }
 
-    public static class NonExistingVertexException extends RuntimeException { //TODO maybe create other file for this?
+    public static class NonExistingVertexException extends RuntimeException {
 
         int vertexId1;
         int vertexId2;

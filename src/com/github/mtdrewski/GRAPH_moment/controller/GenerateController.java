@@ -167,12 +167,12 @@ public class GenerateController {
             StandardGraphGenerator generator = null;
 
             if (minE.equals("") && maxE.equals("")) {
-                if (!graphDrawerController.getDirected())
+                if (!graphDrawerController.isDirected())
                     generator = new StandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
                 else
                     generator = new DirStandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
             } else if (!minE.equals("") && !maxE.equals("")) {
-                if (!graphDrawerController.getDirected())
+                if (!graphDrawerController.isDirected())
                     generator = new StandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
                 else
                     generator = new DirStandardGraphGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
@@ -203,24 +203,24 @@ public class GenerateController {
 
             if (minE.equals("") && maxE.equals("")) {
                 if (minC.equals("")) {
-                    if (!graphDrawerController.getDirected())
+                    if (!graphDrawerController.isDirected())
                         generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
                     else
                         generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
                 } else {
-                    if (!graphDrawerController.getDirected())
+                    if (!graphDrawerController.isDirected())
                         generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minC), Integer.parseInt(maxC));
                     else
                         generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minC), Integer.parseInt(maxC));
                 }
             } else if (!minE.equals("") && !maxE.equals("")) {
                 if (minC.equals("")) {
-                    if (!graphDrawerController.getDirected())
+                    if (!graphDrawerController.isDirected())
                         generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
                     else
                         generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE));
                 } else {
-                    if (!graphDrawerController.getDirected())
+                    if (!graphDrawerController.isDirected())
                         generator = new KComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(minC), Integer.parseInt(maxC));
                     else
                         generator = new DirKComponentGenerator(Integer.parseInt(minV), Integer.parseInt(maxV), Integer.parseInt(minE), Integer.parseInt(maxE), Integer.parseInt(minC), Integer.parseInt(maxC));
@@ -244,7 +244,7 @@ public class GenerateController {
             maxV = maxVertices.getText();
 
             TreeGenerator generator;
-            if (!graphDrawerController.getDirected())
+            if (!graphDrawerController.isDirected())
                 generator = new TreeGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));
             else
                 generator = new DirTreeGenerator(Integer.parseInt(minV), Integer.parseInt(maxV));

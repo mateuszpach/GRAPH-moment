@@ -47,19 +47,6 @@ public class InputProcessorTest {
             assertFalse(flag);
             flag = false;
         }
-
-        try {
-            dataProcessor.makeGraphFromInput(
-                    "1 0 0 0 1 1\n" +
-                            "0 1 0 1 0 1\n" +
-                            "0 0 1 1 1 0\n" +
-                            "1 1 1 0 0 0", DataProcessor.Type.INCIDENCE_MATRIX);
-        } catch (Exception e) {
-            flag = true;
-        } finally {
-            assertFalse(flag);
-            flag = false;
-        }
     }
 
     @Test
@@ -120,19 +107,6 @@ public class InputProcessorTest {
                             "0 0 0 0 1 0 1 0\n" +
                             "0 0 0 0 0 1 0 1\n" +
                             "0 0 1 0 0 0 1 0", DataProcessor.Type.ADJACENCY_MATRIX);
-        } catch (DataProcessor.IncorrectInputFormatException e) {
-            flag = true;
-        } finally {
-            assertTrue(flag);
-            flag = false;
-        }
-
-        try {
-            dataProcessor.makeGraphFromInput(
-                    "1 0 0 0 1 1\n" +
-                            "00 1\n" +
-                            "0 0 1 1 1 0\n" +
-                            "1 1 ", DataProcessor.Type.INCIDENCE_MATRIX);
         } catch (DataProcessor.IncorrectInputFormatException e) {
             flag = true;
         } finally {
