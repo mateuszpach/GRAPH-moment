@@ -3,6 +3,7 @@ package com.github.mtdrewski.GRAPH_moment.controller;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
 import com.github.mtdrewski.GRAPH_moment.model.processors.FileIOProcessor;
+import com.github.mtdrewski.GRAPH_moment.model.utils.GraphEmbedder;
 import com.github.mtdrewski.GRAPH_moment.model.utils.GraphMerger;
 import com.jfoenix.controls.JFXRadioButton;
 import javafx.fxml.FXML;
@@ -45,19 +46,8 @@ public class ImportController {
         rootStage.close();
 
         Graph oldGraph = graphDrawerController.getGraph();
-        switch (mergeType) {
-            case UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.union(oldGraph, newGraph, graphDrawerController.getDirected()), true);
-                break;
-            case DISJOINT_UNION:
-                graphDrawerController.drawNewGraph(GraphMerger.disjointUnion(oldGraph, newGraph, graphDrawerController.getDirected()), true);
-                break;
-            case REPLACE:
-                graphDrawerController.drawNewGraph(newGraph, true);
-                break;
-            default:
-                break;
-        }
+        GraphEmbedder.fruchtermanReingoldLayout(newGraph, graphDrawerController.getRoot());
+        GraphMerger.drawAccordingToMergeType(graphDrawerController, mergeType, oldGraph, newGraph);
     }
 
     public void browseAndPull() {
@@ -87,17 +77,7 @@ public class ImportController {
     }
 
     public void setMergeType() {
-        switch (((JFXRadioButton) mergeGroup.getSelectedToggle()).getText()) {
-            case "Union graph":
-                mergeType = GraphMerger.Type.UNION;
-                break;
-            case "Renumber graph":
-                mergeType = GraphMerger.Type.DISJOINT_UNION;
-                break;
-            case "Replace with graph":
-                mergeType = GraphMerger.Type.REPLACE;
-                break;
-        }
+        mergeType = GraphMerger.recognizeMergeType(((JFXRadioButton) mergeGroup.getSelectedToggle()).getText());
     }
 
     public static void setGraphDrawerController(GraphDrawerController graphDrawer) {

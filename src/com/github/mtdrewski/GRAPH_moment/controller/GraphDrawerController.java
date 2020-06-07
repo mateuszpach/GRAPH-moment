@@ -7,7 +7,6 @@ import com.github.mtdrewski.GRAPH_moment.model.graphs.Edge;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Graph;
 import com.github.mtdrewski.GRAPH_moment.model.graphs.Vertex;
 import com.github.mtdrewski.GRAPH_moment.model.processors.DataProcessor;
-import com.github.mtdrewski.GRAPH_moment.model.utils.GraphEmbedder;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
@@ -44,8 +43,12 @@ public class GraphDrawerController {
     private VertexCircle sourceVertex = null;
     protected ArrayList<VertexCircle> selectedVertices;
     protected ArrayList<EdgeLine> selectedEdges;
+    private ArrayList<Vertex> alreadyEmbeded = new ArrayList<>();
 
     private Graph graph;
+    private double maxX, maxY;
+    public double getMaxX() { return maxX; }
+    public double getMaxY() { return maxY; }
 
     public boolean isUnsaved() {
         return isUnsaved;
@@ -125,6 +128,9 @@ public class GraphDrawerController {
         selectedEdges = new ArrayList<>();
 
         root.setOnMousePressed(e -> {
+            maxX = root.getWidth() - 25.0;
+            maxY = root.getHeight() - 25.0;
+
             if (e.getButton().equals(MouseButton.PRIMARY)) {
 
                 if (mode == Mode.EDGE && !cursorOverVertex) {
@@ -237,7 +243,7 @@ public class GraphDrawerController {
         selectedEdges.clear();
     }
 
-    public void drawNewGraph(Graph newGraph, boolean embed) {
+    public void drawNewGraph(Graph newGraph) {
         isUnsaved = true;
 
         root.getChildren().clear();
@@ -272,9 +278,6 @@ public class GraphDrawerController {
             edgeLine.setEndVertex(vertexCircles.get(graphEdge.vert2().id() - 1));
             vertexCircles.get(graphEdge.vert2().id() - 1).addOutcomingEdge(edgeLine);
         }
-
-        if (embed)
-            GraphEmbedder.fruchtermanReingoldLayout(vertexCircles, graph, root);
 
         currentEdge = null;
         sourceVertex = null;
@@ -311,7 +314,7 @@ public class GraphDrawerController {
     public Pair<Double, Double> getRandomCoords() {
         Random random = new Random();
         return new Pair<>(
-                random.nextDouble() * (root.getWidth()), random.nextDouble() * (root.getHeight())
+                random.nextDouble() * (root.getWidth() - 50) + 25, random.nextDouble() * (root.getHeight() - 50) + 25
         );
     }
 }
