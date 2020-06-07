@@ -7,7 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/assets" type="java-resource" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="corretto-11" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="JUnit4">
@@ -20,11 +20,11 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="jfoenix-9.0.8" level="project" />
-    <orderEntry type="library" name="lib" level="application" />
     <orderEntry type="library" name="ikonli-materialdesign-pack-11.3.4" level="project" />
     <orderEntry type="library" name="ikonli-javafx-11.3.4" level="project" />
     <orderEntry type="library" name="ikonli-material-pack-11.3.4" level="project" />
     <orderEntry type="library" name="ikonli-fontawesome-pack-11.3.4" level="project" />
     <orderEntry type="library" name="ikonli-core-11.3.4" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
