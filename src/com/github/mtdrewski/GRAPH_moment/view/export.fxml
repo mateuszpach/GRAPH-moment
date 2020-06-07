@@ -64,8 +64,6 @@
                         <JFXRadioButton fx:id="radioButton1" onAction="#setGraphType" styleClass="input-radio-button"
                                         text="Adjacency matrix" toggleGroup="$typeGroup"/>
                         <JFXRadioButton fx:id="radioButton2" onAction="#setGraphType" styleClass="input-radio-button"
-                                        text="Incidence matrix" toggleGroup="$typeGroup"/>
-                        <JFXRadioButton fx:id="radioButton3" onAction="#setGraphType" styleClass="input-radio-button"
                                         text="Edges list" toggleGroup="$typeGroup"/>
                     </children>
                     <VBox.margin>

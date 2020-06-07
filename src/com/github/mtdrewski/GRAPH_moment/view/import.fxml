@@ -61,8 +61,6 @@
                         <Label styleClass="input-label" text="Input format"/>
                         <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button"
                                         text="Adjacency matrix" toggleGroup="$typeGroup"/>
-                        <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button" text="Incidence matrix"
-                                        toggleGroup="$typeGroup"/>
                         <JFXRadioButton onAction="#setGraphType" styleClass="input-radio-button" text="Edges list"
                                         toggleGroup="$typeGroup"/>
                     </children>
