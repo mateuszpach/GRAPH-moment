@@ -178,13 +178,15 @@ public class DataProcessor {
 
     public void readAdjacencyMatrix(String textInput) throws IncorrectInputFormatException {
         try {
+            if (textInput.length() == 0)
+                throw new IncorrectInputFormatException(inputType, textInput);
             String[][] matrix = getMatrix(textInput);
             int n = matrix.length;
             for (int i = 0; i < n; i++)
                 inputGraph.addVertex();
 
             for (int i = 0; i < n; i++) {
-                for (int j = i; j < n; j++) {
+                for (int j = 0; j < n; j++) {
                     if (matrix[i][j].equals("1"))
                         inputGraph.addEdge(i + 1, j + 1);
                 }
