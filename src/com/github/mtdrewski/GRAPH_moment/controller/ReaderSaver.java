@@ -27,7 +27,7 @@ public class ReaderSaver {
             graphDrawerController.setFile(file);
             graphDrawerController.setUnsaved(false);
             return true;
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             Stager.alert(stage, "Read failed");
         }
         return false;
