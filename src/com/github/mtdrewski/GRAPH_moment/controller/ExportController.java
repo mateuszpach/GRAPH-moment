@@ -33,7 +33,6 @@ public class ExportController {
     @FXML
     private JFXRadioButton radioButton2;
     @FXML
-    private JFXRadioButton radioButton3;
 
     DataProcessor.Type graphType;
 
@@ -65,7 +64,6 @@ public class ExportController {
                 browseButton.setDisable(false);
                 radioButton1.setDisable(true);
                 radioButton2.setDisable(true);
-                radioButton3.setDisable(true);
 
                 state = State.AFTER_EXPORT;
                 break;

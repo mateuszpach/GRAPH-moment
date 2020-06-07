@@ -43,6 +43,11 @@ public class DirectedEdgeLine extends EdgeLine{
             graphDrawerController.getRoot().getChildren().remove(label);
             label = friendEdge.label;
             friendEdge.setVisible(false);
+            if (graphDrawerController.selectedEdges.contains(friendEdge)) {
+                showShadow();
+                friendEdge.hideShadow();
+                graphDrawerController.selectedEdges.add(this);
+            }
         }
     }
 
@@ -56,6 +61,7 @@ public class DirectedEdgeLine extends EdgeLine{
         double subtractY = 20 * height / length;
         setEndX(endVertex.getCenterX()-subtractX);
         setEndY(endVertex.getCenterY()-subtractY);
+        moveLabel();
     }
 
     private double getAngle(double dy , double dx){
