@@ -14,6 +14,9 @@ public class DirectedGraph extends Graph {
 
     @Override
     public boolean contains(int vertexId1, int vertexId2) {
+        if (vertexId1 < 1 || vertexId1 > size() ||
+                vertexId2 < 1 || vertexId2 > size())
+            return false;
         DirectedEdge e = new DirectedEdge(vertices.get(vertexId1 - 1), vertices.get(vertexId2 - 1));
         for (Edge edge : edges) {
             if (edge.equals(e)) {
