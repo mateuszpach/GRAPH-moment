@@ -148,7 +148,7 @@ public class GraphDrawerController {
         root.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.CONTROL && mode == Mode.STANDARD) {
                 mode = Mode.SELECT;
-            } else if (e.getCode() == KeyCode.DELETE) {
+            } else if (e.getCode() == KeyCode.DELETE && mode != Mode.TYPING) {
                 deleteAll();
             } else if (e.getCode() == KeyCode.ALT && mode == Mode.STANDARD) {
                 mode = Mode.TYPING;
