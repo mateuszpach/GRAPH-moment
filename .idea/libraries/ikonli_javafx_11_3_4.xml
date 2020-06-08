@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/libs/ikonli-javafx-11.3.4.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/ikonli-javafx-11.3.4-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
