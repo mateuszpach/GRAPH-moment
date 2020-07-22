@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane fx:id="root" prefHeight="600.0" prefWidth="600.0" styleClass="dialog-pane"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.mateuszpach.GRAPH_moment.controller.CheatsheetController">
+    <stylesheets>
+        <URL value="@main.css"/>
+    </stylesheets>
+    <bottom>
+        <JFXButton fx:id="okButton" alignment="CENTER" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308"
+                   onAction="#okOnClick" styleClass="green-button" text="OK" BorderPane.alignment="BOTTOM_RIGHT"
+                   VBox.vgrow="ALWAYS">
+            <BorderPane.margin>
+                <Insets bottom="30.0" right="30.0"/>
+            </BorderPane.margin>
+        </JFXButton>
+    </bottom>
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="Add vertex"/>
+                    <Label styleClass="shortcut-entry" text="Double Left Click on canvas" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="Move vertex"/>
+                    <Label styleClass="shortcut-entry" text="Left Click and Drag" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="Start edge"/>
+                    <Label styleClass="shortcut-entry" text="Double Left Click on vertex" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="End edge"/>
+                    <Label styleClass="shortcut-entry" text="Left Click in vertex" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="Select/Unselect"/>
+                    <Label styleClass="shortcut-entry" text="Ctrl + Left Click" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="Remove selection"/>
+                    <Label styleClass="shortcut-entry" text="Ctrl + Left Click on canvas"
+                           AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="Delete selected"/>
+                    <Label styleClass="shortcut-entry" text="Delete" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="Enter label edition mode"/>
+                    <Label styleClass="shortcut-entry" text="Left Alt" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+                <AnchorPane>
+                    <Label styleClass="shortcut-entry" text="Leave label edition mode"/>
+                    <Label styleClass="shortcut-entry" text="Left Alt" AnchorPane.rightAnchor="0.0"/>
+                </AnchorPane>
+                <Separator prefWidth="200.0"/>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+            </BorderPane.margin>
+        </VBox>
+    </center>
+</BorderPane>

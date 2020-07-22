@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane fx:id="root" prefHeight="200.0" prefWidth="500.0" styleClass="unsaved-alert"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.mateuszpach.GRAPH_moment.controller.UnsavedAlertController">
+    <stylesheets>
+        <URL value="@main.css"/>
+    </stylesheets>
+    <top>
+        <Label id="error-label" fx:id="errorLabel" text="Save changes before closing?"
+               BorderPane.alignment="TOP_CENTER">
+            <graphic>
+                <MaterialDesignIconView glyphName="HELP_CIRCLE" size="30"/>
+            </graphic>
+        </Label>
+    </top>
+    <center>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+            <children>
+                <JFXButton id="discard-button" onAction="#discard" styleClass="green-button" text="Discard">
+                    <HBox.margin>
+                        <Insets right="20.0"/>
+                    </HBox.margin>
+                </JFXButton>
+
+                <JFXButton id="save-button" onAction="#save" styleClass="green-button" text="Save">
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                </JFXButton>
+            </children>
+        </HBox>
+    </center>
+
+</BorderPane>

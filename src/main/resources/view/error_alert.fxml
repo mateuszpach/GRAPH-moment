@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import java.net.URL?>
+<BorderPane fx:id="root" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.mateuszpach.GRAPH_moment.controller.ErrorAlertController">
+    <stylesheets>
+        <URL value="@main.css"/>
+    </stylesheets>
+    <top>
+        <Label fx:id="errorLabel" id="error-label" text="error message" BorderPane.alignment="TOP_CENTER">
+            <graphic>
+                <MaterialIconView glyphName="WARNING" size="30"/>
+            </graphic>
+        </Label>
+    </top>
+    <center>
+        <JFXButton onAction="#okOnClick" id="error-ok-button" styleClass="green-button" text="OK"/>
+    </center>
+</BorderPane>

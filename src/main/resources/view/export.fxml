@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+<BorderPane fx:id="root" prefHeight="600.0" prefWidth="800.0" styleClass="dialog-pane"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.mateuszpach.GRAPH_moment.controller.ExportController">
+    <stylesheets>
+        <URL value="@main.css"/>
+    </stylesheets>
+    <right>
+        <VBox prefWidth="300.0" BorderPane.alignment="CENTER">
+            <children>
+                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                    <right>
+                        <JFXButton fx:id="browseButton" onAction="#browseAndSave" disable="true"
+                                   styleClass="small-green-button" text="Browse"
+                                   BorderPane.alignment="CENTER">
+                            <graphic>
+                                <MaterialIconView glyphName="FOLDER_OPEN" size="20"/>
+                            </graphic>
+                            <BorderPane.margin>
+                                <Insets right="15.0"/>
+                            </BorderPane.margin>
+                        </JFXButton>
+                    </right>
+                    <left>
+                        <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                            <children>
+                                <Label text="save to">
+
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="15.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <Label text="">
+                                    <graphic>
+                                        <MaterialDesignIconView glyphName="ARROW_RIGHT_BOLD" size="30"
+                                                                translateX="10.0"/>
+                                    </graphic>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </left>
+                </BorderPane>
+                <Separator prefWidth="200.0"/>
+                <VBox prefHeight="200.0" prefWidth="300.0">
+                    <fx:define>
+                        <ToggleGroup fx:id="typeGroup"/>
+                    </fx:define>
+                    <children>
+                        <Label styleClass="input-label" text="Output format"/>
+                        <JFXRadioButton fx:id="radioButton1" onAction="#setGraphType" styleClass="input-radio-button"
+                                        text="Adjacency matrix" toggleGroup="$typeGroup"/>
+                        <JFXRadioButton fx:id="radioButton2" onAction="#setGraphType" styleClass="input-radio-button"
+                                        text="Edges list" toggleGroup="$typeGroup"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0"/>
+                    </VBox.margin>
+                </VBox>
+                <Region VBox.vgrow="ALWAYS"/>
+                <JFXButton id="export-button" fx:id="exportButton" onAction="#exportGraphDataToTextArea"
+                           styleClass="green-button" text="Export"/>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+            </BorderPane.margin>
+        </VBox>
+    </right>
+    <center>
+        <JFXTextArea id="text-area" fx:id="textArea" editable="false" prefHeight="500.0" prefWidth="500.0"
+                     BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+            </BorderPane.margin>
+        </JFXTextArea>
+    </center>
+</BorderPane>

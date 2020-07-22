@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import com.jfoenix.controls.*?>
+<?import de.jensd.fx.glyphs.materialdesignicons.*?>
+<?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<BorderPane id="root" fx:id="root" minHeight="500.0" minWidth="800.0" prefHeight="800.0" prefWidth="1200.0"
+            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.github.mateuszpach.GRAPH_moment.controller.MainController">
+    <stylesheets>
+        <URL value="@/view/main.css"/>
+    </stylesheets>
+    <center>
+        <fx:include fx:id="graphDisplay" source="graph_display.fxml"/>
+    </center>
+    <left>
+        <VBox fx:id="menu" id="menu" maxWidth="250" minWidth="250" xmlns="http://javafx.com/javafx/10.0.2-internal"
+              xmlns:fx="http://javafx.com/fxml/1">
+            <ImageView id="logo-view" fx:id="logoView" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true"
+                       preserveRatio="true">
+                <image>
+                    <Image url="@/img/smalllogo.png"/>
+                </image>
+            </ImageView>
+            <Separator prefHeight="50.0" prefWidth="200.0"/>
+            <JFXButton onAction="#newProjectOnClick" styleClass="left-pane-button" text="New Project"
+                       VBox.vgrow="ALWAYS">
+                <graphic>
+                    <!--                    <MaterialIconView glyphName="ADD_CIRCLE" size="30" glyphStyle="-fx-fill: green"/>-->
+                    <MaterialIconView glyphName="ADD_CIRCLE" size="30"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton onAction="#openProjectOnClick" styleClass="left-pane-button" text="Open Project"
+                       VBox.vgrow="ALWAYS">
+                <graphic>
+                    <MaterialDesignIconView glyphName="FOLDER" size="30"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton onAction="#saveProjectOnClick" styleClass="left-pane-button" text="Save Project"
+                       VBox.vgrow="ALWAYS">
+                <graphic>
+                    <MaterialDesignIconView glyphName="CONTENT_SAVE" size="30"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton onAction="#saveProjectAsOnClick" styleClass="left-pane-button" text="Save Project as"
+                       VBox.vgrow="ALWAYS">
+                <graphic>
+                    <MaterialDesignIconView glyphName="CONTENT_SAVE_SETTINGS" size="30"/>
+                </graphic>
+            </JFXButton>
+            <Separator prefHeight="50.0" prefWidth="200.0"/>
+            <JFXButton onAction="#generateOnClick" styleClass="left-pane-button" text="Generate" VBox.vgrow="ALWAYS">
+                <graphic>
+                    <MaterialDesignIconView glyphName="DICE_5" size="30"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton onAction="#importOnClick" styleClass="left-pane-button" text="Import" VBox.vgrow="ALWAYS">
+                <graphic>
+                    <MaterialDesignIconView glyphName="FILE_IMPORT" size="30"/>
+                </graphic>
+            </JFXButton>
+            <JFXButton onAction="#exportOnClick" styleClass="left-pane-button" text="Export" VBox.vgrow="ALWAYS">
+                <graphic>
+                    <MaterialDesignIconView glyphName="FILE_EXPORT" size="30"/>
+                </graphic>
+            </JFXButton>
+            <Separator prefHeight="50.0" prefWidth="200.0"/>
+            <JFXButton onAction="#cheatsheetOnClick" styleClass="left-pane-button" text="Cheatsheet"
+                       VBox.vgrow="ALWAYS">
+                <graphic>
+                    <MaterialIconView glyphName="HELP" size="30"/>
+                </graphic>
+            </JFXButton>
+        </VBox>
+    </left>
+</BorderPane>
