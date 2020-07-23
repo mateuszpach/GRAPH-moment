@@ -1,12 +1,27 @@
 # GRAPH-moment
+<img src="src/main/resources/img/logo.svg" width="350">
 
-Due to sophisticated procedure of creating single .jar file when using ikonli framework which uses some maven/gradle plugins (you can read about it [here](https://github.com/kordamp/ikonli/issues/11)) we were unable to provide such a file. Instead we show how to quickly setup intellij environment in order to run our app.
+## About
+GRAPH-moment is a desktop app providing an easy way to create graphs visual representations in just a moment. 
+![i](img/main.png)
+### Features
+- Generating random graphs of various types and sizes.
+- Importing from / exporting to edge list and adjacency matrix.
+- Choosing between directed / undirected graphs.
+- Labeling edges.
+## Release
 
-### Environment setup
+## Building
 1. Clone the repo.
     ```
     git clone https://github.com/mtdrewski/GRAPH-moment
     ```
-2. Open GRAPH-moment in IntelliJ IDEA.
-3. Go to Project Structure>Project Settings>Project>Project SDK and download JDK Amazon Corretto 11.0.7
-4. Run Start.java class.
+2. Build with gradle.
+    ```
+    ./gradlew runShadow
+    ```
+## Frameworks
+GRAPH-moment uses following frameworks:
+- [JavaFX](https://openjfx.io/)
+- [JFoenix](http://www.jfoenix.com/)
+- [fontawesomefx](https://bitbucket.org/Jerady/fontawesomefx/src/master/)
