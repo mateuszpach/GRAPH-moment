@@ -1,9 +1,15 @@
 # GRAPH-moment
 <img src="src/main/resources/img/logo.svg" width="350">
 
+
 ## About
 GRAPH-moment is a desktop app providing an easy way to create graphs visual representations in just a moment. 
-![i](img/main.png)
+
+
+<kbd>
+    <img src="img/main.png">
+</kbd>
+
 ### Features
 - Generating random graphs of various types and sizes.
 - Importing from / exporting to edge list and adjacency matrix.
