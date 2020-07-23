@@ -20,10 +20,11 @@ GRAPH-moment is a desktop app providing an easy way to create graphs visual repr
 ## Building
 1. Clone the repo.
     ```
-    git clone https://github.com/mtdrewski/GRAPH-moment
+    git clone https://github.com/mateuszpach/GRAPH-moment
     ```
 2. Build with gradle.
     ```
+    cd GRAPH-moment/
     ./gradlew runShadow
     ```
 ## Frameworks
