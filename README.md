@@ -15,7 +15,14 @@ GRAPH-moment is a desktop app providing an easy way to create graphs visual repr
 - Importing from / exporting to edge list and adjacency matrix.
 - Choosing between directed / undirected graphs.
 - Labeling edges.
+### Frameworks used
+- [JavaFX](https://openjfx.io/)
+- [JFoenix](http://www.jfoenix.com/)
+- [fontawesomefx](https://bitbucket.org/Jerady/fontawesomefx/src/master/)
+
+
 ## Release
+   You can download GRAPH-moment app [here](https://github.com/mateuszpach/GRAPH-moment/releases/tag/v1.0).
 
 ## Building
 1. Clone the repo.
@@ -24,11 +31,5 @@ GRAPH-moment is a desktop app providing an easy way to create graphs visual repr
     ```
 2. Build with gradle.
     ```
-    cd GRAPH-moment/
     ./gradlew runShadow
     ```
-## Frameworks
-GRAPH-moment uses following frameworks:
-- [JavaFX](https://openjfx.io/)
-- [JFoenix](http://www.jfoenix.com/)
-- [fontawesomefx](https://bitbucket.org/Jerady/fontawesomefx/src/master/)
