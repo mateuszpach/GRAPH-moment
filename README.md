@@ -31,5 +31,6 @@ GRAPH-moment is a desktop app providing an easy way to create graphs visual repr
     ```
 2. Build with gradle.
     ```
+    cd GRAPH-moment/
     ./gradlew runShadow
     ```
