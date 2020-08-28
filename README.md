@@ -1,9 +1,9 @@
-# GRAPH-moment
+# GRAPH moment
 <img src="src/main/resources/img/logo.svg" width="350">
 
 
 ## About
-GRAPH-moment is a desktop app providing an easy way to create graphs visual representations in just a moment. 
+GRAPH moment is a desktop app providing an easy way to create graphs visual representations in just a moment. 
 
 
 <kbd>
@@ -22,7 +22,7 @@ GRAPH-moment is a desktop app providing an easy way to create graphs visual repr
 
 
 ## Release
-   You can download GRAPH-moment app [here](https://github.com/mateuszpach/GRAPH-moment/releases/tag/v1.0).
+   You can download GRAPH moment app [here](https://github.com/mateuszpach/GRAPH-moment/releases/tag/v1.0).
 
 ## Building
 1. Clone the repo.
